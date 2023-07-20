@@ -4,6 +4,9 @@ import viteLogo from '/vite.svg'
 import './App.css'
 import { counterActions } from './store/store'
 import { useSelector, useDispatch } from 'react-redux'
+import PWShown from './components/atoms/PWShown'
+import PWHidden from './components/atoms/PWHidden'
+import InputComponent from './components/atoms/InputComponent'
 
 function App() {
   const count = useSelector((state) => { return state });
@@ -23,6 +26,10 @@ function App() {
   
   console.log(count);
 
+  const type: string | null = "text";
+  const text: string | null = "이름";
+  const notice: string | null = "필수 입력창 입니다람쥐";
+
   return (
     <>
       <div className='flex justify-evenly'>
@@ -34,6 +41,9 @@ function App() {
         </a>
       </div>
       <h1 className="text-3xl font-bold underline">Vite + React</h1>
+      <PWShown />
+      <PWHidden />
+      <InputComponent type={type} text={text} notice={notice} />
       <div className="card">
         <h4>count : {count?.counter.counter}</h4>
         <button onClick={incrementHandler}>
