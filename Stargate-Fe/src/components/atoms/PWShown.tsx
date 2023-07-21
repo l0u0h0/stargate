@@ -4,8 +4,8 @@ const PWShown = () => {
   return (
     <>
     <span className="bg-stone-600 material-symbols-rounded">
-visibility
-</span>
+      visibility
+    </span>
     </>
     
   )

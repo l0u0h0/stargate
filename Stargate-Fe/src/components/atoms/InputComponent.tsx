@@ -7,6 +7,8 @@ import React from "react";
  * @param notice => 있다면 하단에 띄울 공지? 경고 문구
  * @returns
  */
+
+// interface 따로 빼두는 파일 있어야할까요? type.ts
 interface InputProps {
   type: string;
   text: string;
