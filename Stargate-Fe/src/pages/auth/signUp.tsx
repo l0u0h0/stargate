@@ -1,10 +1,11 @@
 import React from 'react';
+import SignUpComponent from '../../components/organisms/SignUpComponent';
 
 const signup = () => {
     return (
-        <div>
-            회원가입이에용
-        </div>
+      <div>
+        <SignUpComponent />
+      </div>
     );
 };
 
