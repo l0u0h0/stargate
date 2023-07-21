@@ -22,7 +22,7 @@ const InputComponent: React.FC<InputProps> = ({ type, text, notice }) => {
       {type == "password" ? (
         <div>
           <input
-            className="text-slate-50 bg-transparent border-b-2 border-slate-50 mt-2 placeholder:text-slate-50"
+            className="min-w-full text-slate-50 bg-transparent border-b-2 border-slate-50 mt-2 placeholder:text-slate-50"
             type={type}
             placeholder={text}
           />
@@ -30,11 +30,10 @@ const InputComponent: React.FC<InputProps> = ({ type, text, notice }) => {
       ) : (
         <div>
           <input
-            className="text-slate-50 bg-transparent border-b-2 border-slate-50 mt-2 placeholder:text-slate-50"
+            className="min-w-full text-slate-50 bg-transparent border-b-2 border-slate-50 mt-2 placeholder:text-slate-50"
             type={type}
             placeholder={text}
           />
-          
         </div>
       )}
 
