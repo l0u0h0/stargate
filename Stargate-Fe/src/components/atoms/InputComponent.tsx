@@ -14,14 +14,15 @@ interface InputProps {
   text: string;
   notice: string | null;
 }
+
 const InputComponent: React.FC<InputProps> = ({ type, text, notice }) => {
   return (
-    <div className="block bg-slate-500 p-1">
-      <p className="text-left text-slate-50">{text}</p>
+    <div className="p-1 m-2">
+      <p className="font-bold text-left text-slate-50">{text}</p>
       {type == "password" ? (
         <div>
           <input
-            className="w-full border-b-2 border-slate-50 mt-2"
+            className="text-slate-50 bg-transparent border-b-2 border-slate-50 mt-2"
             type={type}
             placeholder={text}
           />
@@ -29,7 +30,7 @@ const InputComponent: React.FC<InputProps> = ({ type, text, notice }) => {
       ) : (
         <div>
           <input
-            className="w-full border-b-2 border-slate-50 mt-2"
+            className="text-slate-50 bg-transparent border-b-2 border-slate-50 mt-2"
             type={type}
             placeholder={text}
           />
@@ -38,7 +39,7 @@ const InputComponent: React.FC<InputProps> = ({ type, text, notice }) => {
       )}
 
       {notice != null ? (
-        <p className="text-red-600 text-xs text-left ml-3 mt-3">{notice}</p>
+        <p className="text-red-500 text-xs text-left ml-3 mt-3">{notice}</p>
       ) : (
         <p className="ml-3 mt-3"></p>
       )}

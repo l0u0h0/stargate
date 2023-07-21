@@ -2,11 +2,11 @@ import React from "react";
 
 const PWShown = () => {
   return (
-    <>
-    <span className="bg-stone-600 material-symbols-rounded">
-      visibility
-    </span>
-    </>
+    <div className="m-2">
+      <span className="material-symbols-rounded">
+        visibility
+      </span>
+    </div>
     
   )
 }

@@ -1,63 +1,61 @@
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState } from 'react'
 import './App.css'
-import { counterActions } from './store/store'
-import { useSelector, useDispatch } from 'react-redux'
+import InputComponent from './components/atoms/InputComponent'
 import PWShown from './components/atoms/PWShown'
 import PWHidden from './components/atoms/PWHidden'
-import InputComponent from './components/atoms/InputComponent'
+import AuthNumInputComponent from './components/atoms/AuthNumInputComponent'
+import TimeLeftComponent from './components/atoms/TimeLeftComponent'
+import TextButtonComponent from './components/atoms/TextButtonComponent'
+import ToolTipComponent from './components/atoms/ToolTipComponent'
 
 function App() {
-  const count = useSelector((state) => { return state });
-  const dispatch = useDispatch();
-
-  const incrementHandler = () => {
-    dispatch(counterActions.increment());
-  }
-
-  const decrementHandler = () => {
-    dispatch(counterActions.decrement());
-  }
-
-  const increaseHandler = (num: number) => {
-    dispatch(counterActions.increase(num));
-  }
-  
-  console.log(count);
-
-  const type: string | null = "text";
-  const text: string | null = "이름";
-  const notice: string | null = "필수 입력창 입니다람쥐";
+  const [count, setCount] = useState(0);
+  const min = 1;
+  const sec = 30;
 
   return (
     <>
-      <div className='flex justify-evenly'>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo" alt="React logo" />
-        </a>
-      </div>
-      <h1 className="text-3xl font-bold underline">Vite + React</h1>
-      <PWShown />
-      <PWHidden />
-      <InputComponent type={type} text={text} notice={notice} />
-      <div className="card">
-        <h4>count : {count?.counter.counter}</h4>
-        <button onClick={incrementHandler}>
-          increment
-        </button>
-        <button onClick={decrementHandler}>
-        decrement
-        </button>
-        <button onClick={() => increaseHandler(5)}>
-        increaseHandler
-        </button>
-        <p>
-          Edit <code className="logo">src/App.tsx</code> and save to test HMR
+      <div className='flex justify-center'>
+        <p className='text-20'>
+          Testing Page
         </p>
+        <p>atoms</p>
+      </div>
+      <div className="card">
+        <button onClick={() => setCount((count) => count + 1)}>
+          count is {count}
+        </button>
+        <div className="flex justify-evenly">
+          <div className="m-1 card text-16 items-center bg-slate-300">
+            inputComponent
+            <InputComponent type="text" text="이름" notice="필수 입력" />
+          </div>
+          <div className="m-1 card text-16 bg-slate-300">
+            PWShown/Hidden
+            <PWShown />
+            <PWHidden />
+          </div>
+        </div>
+        <div className="flex justify-evenly">
+          <div className="m-1 card text-16 items-center bg-slate-300">
+            <p className="mb-2">AuthNumInputComponent</p>
+            <AuthNumInputComponent num={count} />
+          </div>
+          <div className="m-1 card text-16 items-center bg-slate-300">
+            TimeLeftComponent
+            <TimeLeftComponent min={min} sec={sec} />
+          </div>
+        </div>
+        <div className="flex justify-evenly">
+          <div className="m-1 card text-16 items-center bg-slate-300">
+            TextButtonComponent
+            <TextButtonComponent text="버튼" />
+          </div>
+          <div className="m-1 card text-16 items-center bg-slate-300">
+            ToolTipComponent
+            <ToolTipComponent />
+          </div>
+        </div>
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more

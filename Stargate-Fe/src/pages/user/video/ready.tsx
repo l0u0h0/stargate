@@ -1,11 +1,11 @@
 import React from 'react';
 
-const signIn = () => {
+const ready = () => {
     return (
         <div>
-            로그인
+            대기방
         </div>
     );
 };
 
-export default signIn;
+export default ready;

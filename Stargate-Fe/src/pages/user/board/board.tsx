@@ -1,11 +1,11 @@
 import React from 'react';
 
-const signIn = () => {
+const board = () => {
     return (
         <div>
-            로그인
+            대쉬보드
         </div>
     );
 };
 
-export default signIn;
+export default board;

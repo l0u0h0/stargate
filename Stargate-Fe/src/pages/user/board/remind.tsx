@@ -1,11 +1,11 @@
 import React from 'react';
 
-const signIn = () => {
+const remind = () => {
     return (
         <div>
-            로그인
+            리마인드
         </div>
     );
 };
 
-export default signIn;
+export default remind;

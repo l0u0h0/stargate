@@ -1,11 +1,11 @@
 import React from 'react';
 
-const signIn = () => {
+const starVideo = () => {
     return (
         <div>
-            로그인
+            스타비디오
         </div>
     );
 };
 
-export default signIn;
+export default starVideo;
