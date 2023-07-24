@@ -6,7 +6,7 @@ import AuthNumInputComponent from "../components/atoms/AuthNumInputComponent";
 import TimeLeftComponent from "../components/atoms/TimeLeftComponent";
 import TextButtonComponent from "../components/atoms/TextButtonComponent";
 import ToolTipComponent from "../components/atoms/ToolTipComponent";
-import { NavLink, Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function MainLending() {
   const [count, setCount] = useState(0);
@@ -32,7 +32,7 @@ function MainLending() {
         <div className="flex justify-evenly">
           <div className="m-1 card text-16 items-center bg-slate-300">
             inputComponent
-            <InputComponent type="text" text="이름" notice="필수 입력" />
+            <InputComponent type="text" text="이름" notice="필수 입력" state='red' />
           </div>
           <div className="m-1 card text-16 bg-slate-300">
             PWShown/Hidden
@@ -62,9 +62,14 @@ function MainLending() {
         </div>
       </div>
       <p className="read-the-docs">
-        <button onClick={() => link(`/signin`)}>signin</button>
-        <button onClick={() => link(`/signup`)}>signup</button>
-        <button onClick={() => link(`/pwinquiry`)}>pwinquiry</button>
+        <button onClick={() => link(`/signin`)}>Signin</button>
+        <button onClick={() => link(`/signup`)}>Signup</button>
+        <button onClick={() => link(`/idinquiry`)}>Idinquiry</button>
+        <button onClick={() => link(`/pwinquiry`)}>Pwinquiry</button>
+      </p>
+      <p className="read-the-docs">
+        <button onClick={() => link(`/pwreset`)}>PwReset</button>
+        <button onClick={() => link(`/admin/signup`)}>AdminSignUp</button>
       </p>
     </>
   );

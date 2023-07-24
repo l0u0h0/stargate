@@ -3,7 +3,7 @@ import SignInComponent from '../../components/organisms/SignInComponent';
 
 const signIn = () => {
   return (
-    <div>
+    <div className="bg-slate-400">
       <SignInComponent />
     </div>
   );

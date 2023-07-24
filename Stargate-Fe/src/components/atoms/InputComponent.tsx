@@ -5,20 +5,26 @@ import React from "react";
  * @param type => 인풋 태그 타입 설정 변수
  * @param text => 라벨과 플레이스 홀더에 들어갈 인풋 이름 변수
  * @param notice => 있다면 하단에 띄울 공지? 경고 문구
- * @returns
+ * @param state => 경고 문구의 상태 값, (색상 값을 전달 ex: green, red)
  */
 
-// interface 따로 빼두는 파일 있어야할까요? type.ts
 interface InputProps {
   type: string;
   text: string;
   notice: string | null;
+  state: string | null;
 }
 
-const InputComponent: React.FC<InputProps> = ({ type, text, notice }) => {
+const InputComponent: React.FC<InputProps> = ({ type, text, notice, state }) => {
+  if (state == "red") {
+    state = "input-warning";
+  } else {
+    state = `font-suit text-16 font-medium text-${state}`
+  }
+
   return (
-    <div className="p-1 m-2">
-      <p className="font-semibold text-left text-slate-50">{text}</p>
+    <div className="p-1 m-2 w-full text-start">
+      <p className="h4r text-white text-left">{text}</p>
       {type == "password" ? (
         <div>
           <input
@@ -38,7 +44,7 @@ const InputComponent: React.FC<InputProps> = ({ type, text, notice }) => {
       )}
 
       {notice != null ? (
-        <p className="text-red-500 text-xs text-left ml-3 mt-3">{notice}</p>
+        <p className={`mt-1 ${state}`}>{notice}</p>
       ) : (
         <p className="ml-3 mt-3"></p>
       )}

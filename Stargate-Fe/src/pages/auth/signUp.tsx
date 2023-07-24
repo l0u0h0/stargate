@@ -3,7 +3,7 @@ import SignUpComponent from '../../components/organisms/SignUpComponent';
 
 const signup = () => {
     return (
-      <div>
+      <div className="bg-slate-400">
         <SignUpComponent />
       </div>
     );
