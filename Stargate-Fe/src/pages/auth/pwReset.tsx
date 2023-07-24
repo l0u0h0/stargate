@@ -3,7 +3,7 @@ import PwresetComponent from '../../components/organisms/PwresetComponent';
 
 const pwreset = () => {
     return (
-        <div className="bg-slate-600">
+        <div>
             <PwresetComponent />
         </div>
     );

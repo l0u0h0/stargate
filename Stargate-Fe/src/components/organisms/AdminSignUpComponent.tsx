@@ -4,6 +4,11 @@ import PasswordFormComponent from './PasswordFormComponent';
 
 const AdminSignUpComponent = () => {
   const [emailState, setEmailState] = useState('red');
+
+  const AdminSignUp = () => {
+    console.log("AdminSignUp 요청");
+  }
+
   return (
     <div className="m-5">
       <p className="form-title">회원가입</p>
@@ -14,7 +19,7 @@ const AdminSignUpComponent = () => {
           notice="사용 불가한 이메일입니다."
           state={emailState}
         />
-        <button className="medium-white p3r w-full h-10 rounded-lg">이메일 확인</button>
+        <button className="medium-white p3r min-w-max w-full h-10 rounded-lg">이메일 확인</button>
       </div>
       <div className="flex">
         <InputComponent text="회사명" type="text" notice={null} state={null} />
@@ -28,7 +33,7 @@ const AdminSignUpComponent = () => {
       <div className="flex">
         <InputComponent text="비밀번호 확인" type="password" notice={null} state={null} />
       </div>
-      <button className="medium-white">회원가입</button>
+      <button className="medium-white" onClick={AdminSignUp}>회원가입</button>
     </div>
   )
 }

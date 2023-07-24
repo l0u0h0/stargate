@@ -80,6 +80,7 @@ export default {
 
         red: '#DC2626',
         admingray: '#DADADA',
+        endbg: '#E7F1FF',
       },
       fontFamily: {
         suit: ['SUIT', 'sans-serif'],

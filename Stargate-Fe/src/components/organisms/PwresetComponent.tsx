@@ -6,8 +6,8 @@ const PwresetComponent = () => {
   const [pwState, setPwState] = useState("red");
 
   return (
-    <div className="text-white p-5">
-      <h1 className="m-7 form-title">비밀번호 재설정</h1>
+    <div className="max-w-sm w-screen text-white p-5">
+      <h1 className="m-10 form-title">비밀번호 재설정</h1>
       <div className="m-5">
         <InputComponent text="새 비밀번호" type="password" notice={null} state={null} />
         <InputComponent text="새 비밀번호 확인" type="password" notice={pwText} state={pwState} />

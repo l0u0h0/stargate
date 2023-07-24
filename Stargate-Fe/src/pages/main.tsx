@@ -20,7 +20,8 @@ function MainLending() {
   };
 
   return (
-    <>
+    // <div className="bg-gradient-to-t from-endbg to-mainblue">
+    <div>
       <div className="flex justify-center">
         <p className="text-20">Testing Page</p>
         <p>atoms</p>
@@ -55,7 +56,7 @@ function MainLending() {
             TextButtonComponent
             <TextButtonComponent text="버튼" />
           </div>
-          <div className="m-1 card text-16 items-center bg-slate-300">
+          <div className="m-1 card text-16 items-center bg-slate-300 h-100">
             ToolTipComponent
             <ToolTipComponent />
           </div>
@@ -71,7 +72,7 @@ function MainLending() {
         <button onClick={() => link(`/pwreset`)}>PwReset</button>
         <button onClick={() => link(`/admin/signup`)}>AdminSignUp</button>
       </p>
-    </>
+    </div>
   );
 }
 

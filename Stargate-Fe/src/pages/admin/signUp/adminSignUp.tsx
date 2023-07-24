@@ -3,7 +3,7 @@ import AdminSignUpComponent from "../../../components/organisms/AdminSignUpCompo
 
 const adminSignUp = () => {
   return (
-    <div className="bg-slate-500">
+    <div>
       <AdminSignUpComponent />
     </div>
   );
