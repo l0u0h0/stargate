@@ -1,5 +1,5 @@
 import React from 'react';
-import InputComponent from '@/atoms/InputComponent';
+import InputComponent from '../atoms/InputComponent';
 import AuthNumberComponent from './AuthNumberComponent';
 
 const PwinquiryComponent = () => {

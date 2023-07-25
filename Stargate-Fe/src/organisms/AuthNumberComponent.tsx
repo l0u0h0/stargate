@@ -1,5 +1,5 @@
 import React from "react";
-import AuthNumInputComponent from "@/atoms/AuthNumInputComponent";
+import AuthNumInputComponent from "../atoms/AuthNumInputComponent";
 
 const AuthNumberComponent = () => {
   return (

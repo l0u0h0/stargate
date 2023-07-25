@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import ModalPlusButton from '@/atoms/ModalPlusButton';
-import ModalBox from '@/atoms/ModalBox';
+import ModalPlusButton from '../atoms/ModalPlusButton';
+import ModalBox from '../atoms/ModalBox';
 
 const AdminManagementModal = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

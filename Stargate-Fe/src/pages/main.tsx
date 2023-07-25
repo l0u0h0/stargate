@@ -5,7 +5,7 @@ import PWHidden from "../components/atoms/PWHidden";
 import AuthNumInputComponent from "../components/atoms/AuthNumInputComponent";
 import TimeLeftComponent from "../components/atoms/TimeLeftComponent";
 import TextButtonComponent from "../components/atoms/TextButtonComponent";
-import ToolTipComponent from "../components/atoms/ToolTipComponent";
+import ToolTipComponent from "../../atoms/ToolTipComponent";
 import { useNavigate } from "react-router-dom";
 
 function MainLending() {

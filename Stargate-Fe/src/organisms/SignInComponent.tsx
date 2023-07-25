@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import InputComponent from "@/atoms/InputComponent";
-import TextButtonComponent from "@/atoms/TextButtonComponent";
+import InputComponent from "../atoms/InputComponent";
+import TextButtonComponent from "../atoms/TextButtonComponent";
 
 const SignInComponent = () => {
   const [pwState, setPwState] = useState('red');

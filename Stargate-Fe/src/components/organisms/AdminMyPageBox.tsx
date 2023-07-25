@@ -1,5 +1,5 @@
 import React from 'react';
-import InputComponent from '../atoms/InputComponent';
+import InputComponent from '@/atoms/InputComponent';
 
 const AdminMyPageBox = () => {
   return <div className='bg-black w-1/2 flex flex-col justify-center items-center'>

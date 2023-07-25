@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import InputComponent from '@/atoms/InputComponent';
+import InputComponent from '../atoms/InputComponent';
 
 const PwresetComponent = () => {
   const [pwText, setPwText] = useState('비밀번호가 일치하지 않습니다');

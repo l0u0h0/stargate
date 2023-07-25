@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import InputComponent from '@/atoms/InputComponent';
+import InputComponent from '../atoms/InputComponent';
 import PasswordFormComponent from './PasswordFormComponent';
 
 const AdminSignUpComponent = () => {
