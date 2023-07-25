@@ -22,6 +22,7 @@ const ModalBox = ({ isOpen, onClose }: ModalBoxProps) => {
         onClick={handleOutsideClick}
       >
         <div ref={modalRef} className="w-96 h-96 bg-white rounded-lg p-4">
+        
         </div>
       </div>
     )}
