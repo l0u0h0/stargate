@@ -5,16 +5,16 @@ import BtnBlue from "@/atoms/BtnBlue";
 import { useNavigate } from "react-router-dom";
 
 const SignUpComponent = () => {
-  const [emailText, setEmailText] = useState('사용 불가한 이메일입니다.');
-  const [emailState, setEmailState] = useState('red');
-  const [user, setUser] = useState({
-    email: '',
-    name: '',
-    nickname: '',
-    pw: '',
-    pwCheck: '',
-    phone: '',
-    birth: ''
+  const [emailText, setEmailText] = useState("사용 불가한 이메일입니다.");
+  const [emailState, setEmailState] = useState("red");
+  const [user, setUser] = useState<object>({
+    email: "",
+    name: "",
+    nickname: "",
+    pw: "",
+    pwCheck: "",
+    phone: "",
+    birth: "",
   });
 
   const navigate = useNavigate();
@@ -34,8 +34,8 @@ const SignUpComponent = () => {
     // 회원가입 요청 하기 전에 유효성 검사가 이루어져야할까요
     // 얼마나 이루어져야 할까요?
     console.log("회원가입 요청");
-    navigate('/');
-  }
+    navigate("/");
+  };
 
   return (
     <div className="m-5">
@@ -46,27 +46,64 @@ const SignUpComponent = () => {
           type="email"
           notice={emailText}
           state={emailState}
-          setter={() => setUser}
+          keyName="email"
+          getter={user}
+          setter={setUser}
         />
-        <button className="medium-white p3b w-full h-10 rounded-lg" onClick={verify}>이메일 확인</button>
+        <button
+          className="medium-white p3b w-full h-10 rounded-lg"
+          onClick={verify}
+        >
+          이메일 확인
+        </button>
       </div>
       <div className="flex">
-        <InputComponent text="이름" type="text" setter={() => setUser} />
+        <InputComponent
+          text="이름"
+          type="text"
+          keyName="name"
+          getter={user}
+          setter={setUser}
+        />
       </div>
       <div className="flex">
-        <InputComponent text="닉네임" type="text" setter={() => setUser} />
+        <InputComponent
+          text="닉네임"
+          type="text"
+          keyName="nickname"
+          getter={user}
+          setter={setUser}
+        />
       </div>
       <div className="flex">
         <PasswordFormComponent text="비밀번호" />
       </div>
       <div className="flex">
-        <InputComponent text="비밀번호 확인" type="password" setter={() => setUser} />
+        <InputComponent
+          text="비밀번호 확인"
+          type="password"
+          keyName="pwCheck"
+          getter={user}
+          setter={setUser}
+        />
       </div>
       <div className="flex">
-        <InputComponent text="전화번호" type="text" setter={() => setUser} />
+        <InputComponent
+          text="전화번호"
+          type="text"
+          keyName="phone"
+          getter={user}
+          setter={setUser}
+        />
       </div>
       <div className="flex">
-        <InputComponent text="생년월일" type="text" setter={() => setUser} />
+        <InputComponent
+          text="생년월일"
+          type="text"
+          keyName="birth"
+          getter={user}
+          setter={setUser}
+        />
       </div>
       <BtnBlue text="회원가입" onClick={signUp} />
     </div>

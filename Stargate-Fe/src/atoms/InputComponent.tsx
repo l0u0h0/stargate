@@ -7,7 +7,9 @@ import React from "react";
  * @param text => 라벨과 플레이스 홀더에 들어갈 인풋 이름 변수
  * @param notice => 있다면 하단에 띄울 공지? 경고 문구
  * @param state => 경고 문구의 상태 값, (색상 값을 전달 ex: green, red)
- * @param setter => 인풋 태그의 값 가져올 setter
+ * @param keyName => 유저 객체에 저장할 키 네임
+ * @param user => 기존 유저 값
+ * @param setter => 인풋 태그의 값 세팅할 setter
  */
 
 interface InputProps {
@@ -15,7 +17,9 @@ interface InputProps {
   text: string;
   notice?: string;
   state?: string;
-  setter: (props: string) => void;
+  keyName: string;
+  getter: object;
+  setter: React.Dispatch<React.SetStateAction<object>>;
 }
 
 const InputComponent: React.FC<InputProps> = ({
@@ -23,6 +27,8 @@ const InputComponent: React.FC<InputProps> = ({
   text,
   notice,
   state,
+  keyName,
+  getter,
   setter,
 }) => {
   if (state == "red") {
@@ -31,10 +37,13 @@ const InputComponent: React.FC<InputProps> = ({
     state = `font-suit text-16 font-medium text-${state}`;
   }
 
-  const onChange = (e?: React.ChangeEvent<HTMLInputElement>) => {
-    e != undefined && 
-    console.log(e.target.name + " : " + e.target.value);
-  }
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setter({
+      ...getter,
+      [name]: value,
+    });
+  };
 
   return (
     <div className="p-1 m-2 w-full text-start">
@@ -42,6 +51,7 @@ const InputComponent: React.FC<InputProps> = ({
       {type == "password" ? (
         <div>
           <input
+            name={keyName}
             onChange={(e) => onChange(e)}
             className="min-w-full text-slate-50 bg-transparent border-b-2 border-slate-50 mt-2 placeholder:text-slate-50"
             type={type}
@@ -51,6 +61,7 @@ const InputComponent: React.FC<InputProps> = ({
       ) : (
         <div>
           <input
+            name={keyName}
             onChange={(e) => onChange(e)}
             className="min-w-full text-slate-50 bg-transparent border-b-2 border-slate-50 mt-2 placeholder:text-slate-50"
             type={type}
