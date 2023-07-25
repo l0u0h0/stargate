@@ -16,11 +16,16 @@ interface InputProps {
   state?: string;
 }
 
-const InputComponent: React.FC<InputProps> = ({ type, text, notice, state }) => {
+const InputComponent: React.FC<InputProps> = ({
+  type,
+  text,
+  notice,
+  state,
+}) => {
   if (state == "red") {
     state = "input-warning";
   } else {
-    state = `font-suit text-16 font-medium text-${state}`
+    state = `font-suit text-16 font-medium text-${state}`;
   }
 
   return (

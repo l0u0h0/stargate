@@ -4,7 +4,9 @@ import TextButtonComponent from "@/atoms/TextButtonComponent";
 
 const SignInComponent = () => {
   const [pwState, setPwState] = useState('red');
-
+  const test = () => {
+    console.log("test");
+  }
   /**
    * Login 결과에 따라 pwState 바꿔주면 되려나??
    * 아니면 입력할때마다 검사를 돌려줘야하려나??
@@ -29,13 +31,13 @@ const SignInComponent = () => {
       </button>
       <div className="flex text-slate-50 p2r mt-2 w-full justify-center">
         <div className="flex">
-          <TextButtonComponent text="아이디" />
+          <TextButtonComponent text="아이디" method={test} />
           <div className="text-slate-50 p3r">
             <p>또는</p>
           </div>
-          <TextButtonComponent text="비밀번호 찾기" />
-          &nbsp;/&nbsp;
-          <TextButtonComponent text="회원가입" />
+          <TextButtonComponent text="비밀번호 찾기" method={() => {console.log("비밀번호찾기")}} />
+           &nbsp;/&nbsp;
+          <TextButtonComponent text="회원가입" method={() => {console.log("회원가입")}} />
         </div>
       </div>
     </div>

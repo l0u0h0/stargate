@@ -6,12 +6,13 @@ import React from "react";
 
 interface TextButtonProps {
   text: string;
+  method: () => void;
 }
 
-const TextButtonComponent: React.FC<TextButtonProps> = ({ text }) => {
+const TextButtonComponent: React.FC<TextButtonProps> = ({ text, method }) => {
   return (
     <div className="m-2 mt-0">
-      <a className="text-slate-50 duration-100">{text}</a>
+      <a className="text-slate-50 duration-100" onClick={method}>{text}</a>
     </div>
   );
 };
