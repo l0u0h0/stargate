@@ -8,7 +8,7 @@ import React from "react";
  * @param notice => 있다면 하단에 띄울 공지? 경고 문구
  * @param state => 경고 문구의 상태 값, (색상 값을 전달 ex: green, red)
  * @param keyName => 유저 객체에 저장할 키 네임
- * @param user => 기존 유저 값
+ * @param getter => 기존 유저 값
  * @param setter => 인풋 태그의 값 세팅할 setter
  */
 

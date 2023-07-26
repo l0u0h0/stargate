@@ -2,7 +2,7 @@ import React from "react";
 
 /**
  * @param text => 버튼에 담길 텍스트 변수
- * @param method() => 버튼에 담길 이벤트 함수
+ * @param link => 버튼에 담길 링크 주소
  */
 
 interface TextButtonProps {

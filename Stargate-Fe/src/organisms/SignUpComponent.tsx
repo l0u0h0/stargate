@@ -34,6 +34,7 @@ const SignUpComponent = () => {
     // 회원가입 요청 하기 전에 유효성 검사가 이루어져야할까요
     // 얼마나 이루어져야 할까요?
     console.log("회원가입 요청");
+    console.log(user);
     navigate("/");
   };
 
@@ -76,7 +77,7 @@ const SignUpComponent = () => {
         />
       </div>
       <div className="flex">
-        <PasswordFormComponent text="비밀번호" />
+        <PasswordFormComponent text="비밀번호" getter={user} setter={setUser} />
       </div>
       <div className="flex">
         <InputComponent
