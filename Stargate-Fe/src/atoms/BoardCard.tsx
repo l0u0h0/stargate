@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
 
+/**
+ * InputComponent
+ * @param imageSrc => 이미지 api 주소
+ * @param title => Card flip시 보여줄 사인회 제목, BoardCardBox에서는 필요 X
+ * @param date => Card flip시 보여줄 사인회 날짜, BoardCardBox에서는 필요 X
+ * @param time => Card flip시 보여줄 남은 시간, BoardCardBox에서는 필요 X
+ */
+
 interface BoardCardProps {
   imageSrc: string;
   title?: string;

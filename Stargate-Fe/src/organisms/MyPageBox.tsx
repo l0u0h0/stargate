@@ -1,29 +1,86 @@
-import React, { useState } from 'react';
+import React from 'react';
 import InputComponent from '../atoms/InputComponent';
+import PasswordFormComponent from './PasswordFormComponent';
+import TextButtonComponent from '@/atoms/TextButtonComponent';
 
-const MyPageBox = () => {
-  const [user, setUser] = useState<object>({
-    email: '',
-    name: '',
-    nickname: '',
-    pw: '',
-    newPw: '',
-    newPwCheck: '',
-    phone: '',
-    birth: ''
-  })
+/**
+ * InputComponent
+ * @param isAdmin => admin 여부가 들어갈 boolean 변수, 값에 따라 다른 항목이 랜더링 됨
+ */
 
-  return <div className='bg-black w-1/2 flex flex-col justify-center items-center'>
-    <p className='text-white self-start'>마이페이지</p>
-    <InputComponent type="text" text="이메일" keyName="email" getter={user} setter={setUser} />
-    <InputComponent type="text" text="이름" keyName="name" getter={user} setter={setUser} />
-    <InputComponent type="text" text="닉네임" keyName="nickname" getter={user} setter={setUser} />
-    <InputComponent type="text" text="비밀번호" keyName="pw" getter={user} setter={setUser} />
-    <InputComponent type="text" text="변경할 비밀번호" keyName="newPw" getter={user} setter={setUser} />
-    <InputComponent type="text" text="변경할 비밀번호 확인" keyName="newPwCheck" getter={user} setter={setUser} />
-    <InputComponent type="text" text="전화번호" keyName="phone" getter={user} setter={setUser} />
-    <InputComponent type="text" text="생년월일" keyName="birth" getter={user} setter={setUser} />
-  </div>
+interface MyPageBoxProps {
+  isAdmin: boolean;
+  email: string;
+  name?: string;
+  nickName?: string;
+  phone?: string;
+  birth?: string;
+  companyName?: string;
+  companyNum?: number;
+}
+
+const MyPageBox = (props: MyPageBoxProps) => {
+  const {
+    email,
+    name,
+    nickName,
+    phone,
+    birth,
+    companyName,
+    companyNum,
+    isAdmin,
+  } = props;
+
+  return (
+    <div className='my-5 flex flex-col h-screen'>
+      <p className='form-title text-white'>마이페이지</p>
+      <div className='flex items-center'>
+        <InputComponent text='이메일' type='email' value={email} />
+      </div>
+      {isAdmin ? (
+        <>
+          <div className='flex'>
+            <InputComponent text='회사명' type='text' value={companyName} />
+          </div>
+          <div className='flex'>
+            <InputComponent
+              text='사업자 등록번호'
+              type='text'
+              value={companyNum?.toString()}
+            />
+          </div>
+        </>
+      ) : (
+        <>
+          <div className='flex'>
+            <InputComponent text='이름' type='text' value={name} />
+          </div>
+          <div className='flex'>
+            <InputComponent text='닉네임' type='text' value={nickName} />
+          </div>
+          <div className='flex'>
+            <InputComponent text='전화번호' type='text' value={phone} />
+          </div>
+          <div className='flex'>
+            <InputComponent text='생년월일' type='text' value={birth} />
+          </div>
+        </>
+      )}
+      <div className='flex'>
+        <PasswordFormComponent text='비밀번호' />
+      </div>
+      <div className='flex'>
+        <PasswordFormComponent text='새로운 비밀번호' />
+      </div>
+      <div className='flex'>
+        <InputComponent text='새로운 비밀번호 확인' type='password' />
+      </div>
+      <button className='self-center medium-white mb-5'>수정하기</button>
+      <div className='self-center text-black'>
+        <TextButtonComponent text={'탈퇴하기'} black={true} />
+      </div>
+    </div>
+  );
 };
 
 export default MyPageBox;

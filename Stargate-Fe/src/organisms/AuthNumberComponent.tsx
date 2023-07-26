@@ -1,7 +1,7 @@
-import React, { useRef, MouseEvent } from "react";
-import AuthNumInputComponent from "../atoms/AuthNumInputComponent";
-import BtnWhite from "@/atoms/BtnWhite";
-import { useNavigate } from "react-router-dom";
+import React, { useRef, MouseEvent } from 'react';
+import AuthNumInputComponent from '../atoms/AuthNumInputComponent';
+import BtnWhite from '@/atoms/BtnWhite';
+import { useNavigate } from 'react-router-dom';
 
 interface ModalBoxProps {
   isOpen: boolean;
@@ -18,8 +18,8 @@ const AuthNumberComponent = ({ isOpen, onClose }: ModalBoxProps) => {
   const navigate = useNavigate();
 
   const AuthNumCheck = () => {
-    console.log("인증번호 유효검사");
-    navigate("/pwreset");
+    console.log('인증번호 유효검사');
+    navigate('/pwreset');
   };
 
   const modalRef = useRef<HTMLDivElement>(null);

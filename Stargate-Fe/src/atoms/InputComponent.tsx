@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
-import React from "react";
+import React from 'react';
 
 /**
  * InputComponent
@@ -9,7 +9,8 @@ import React from "react";
  * @param state => 경고 문구의 상태 값, (색상 값을 전달 ex: green, red)
  * @param keyName => 유저 객체에 저장할 키 네임
  * @param getter => 기존 유저 값
- * @param setter => 인풋 태그의 값 세팅할 setter
+ * @param setter() => 인풋 태그의 값 세팅할 setter
+ * @param value => 마이페이지에서 기본적으로 들어가 있을 값
  */
 
 interface InputProps {
@@ -20,6 +21,7 @@ interface InputProps {
   keyName: string;
   getter: object;
   setter: React.Dispatch<React.SetStateAction<object>>;
+  value?: string;
 }
 
 const InputComponent: React.FC<InputProps> = ({
@@ -30,13 +32,17 @@ const InputComponent: React.FC<InputProps> = ({
   keyName,
   getter,
   setter,
+  value,
 }) => {
-  if (state == "red") {
-    state = "input-warning";
+  // state 값 class 지정 분기
+  if (state == 'red') {
+    state = 'input-warning';
   } else {
     state = `font-suit text-16 font-medium text-${state}`;
   }
 
+  // Input onChange 시 setter 호출해 state 값 변경해주기
+  // 더 좋은 방법 없을까? 고민해보기
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setter({
@@ -48,7 +54,7 @@ const InputComponent: React.FC<InputProps> = ({
   return (
     <div className="p-1 m-2 w-full text-start">
       <p className="h4r text-white text-left">{text}</p>
-      {type == "password" ? (
+      {type == 'password' ? (
         <div>
           <input
             name={keyName}
@@ -56,6 +62,7 @@ const InputComponent: React.FC<InputProps> = ({
             className="min-w-full text-slate-50 bg-transparent border-b-2 border-slate-50 mt-2 placeholder:text-slate-50"
             type={type}
             placeholder={text}
+            value={value}
           />
         </div>
       ) : (
@@ -66,6 +73,7 @@ const InputComponent: React.FC<InputProps> = ({
             className="min-w-full text-slate-50 bg-transparent border-b-2 border-slate-50 mt-2 placeholder:text-slate-50"
             type={type}
             placeholder={text}
+            value={value}
           />
         </div>
       )}

@@ -11,7 +11,21 @@ export default {
   ],
   theme: {
     extend: {
+      width: {
+        'm': '50vw',
+        'l': '70vw',
+        'xl': '98vw',
+        62: '241px',
+        300: '300px',
+        350: '350px',
+        400: '400px',
+        500: '500px',
+        550: '550px',
+        600: '600px',
+      },
       height: {
+        300: '300px',
+        350: '350px',
         400: '400px',
         500: '500px',
         550: '550px',
@@ -129,7 +143,7 @@ export default {
         md: '8px',
         lg: '16px',
         xl: '32px',
-      }
+      },
     },
   },
   plugins: [

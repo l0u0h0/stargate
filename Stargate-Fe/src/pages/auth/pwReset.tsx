@@ -3,7 +3,7 @@ import PwResetComponent from '@/organisms/PwResetComponent';
 
 const PwReset = () => {
   return (
-    <div>
+    <div className="w-screen">
       <PwResetComponent />
     </div>
   );

@@ -43,7 +43,7 @@
   }
   
   button:disabled {
-   @apply cursor-not-allowed;
+    @apply cursor-not-allowed;
   }
 
   abbr[title] {
@@ -74,6 +74,10 @@
 
   .modal-title {
     @apply font-suit text-16 font-medium text-white
+  }
+
+  .csv-btn {
+    @apply w-32 h-8 ml-1 text-12 font-medium bg-admingray text-black rounded-sm flex items-center justify-center cursor-pointer opacity-0
   }
 
   .t1b {

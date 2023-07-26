@@ -1,20 +1,20 @@
-import React, { useState } from "react";
-import InputComponent from "../atoms/InputComponent";
-import PasswordFormComponent from "./PasswordFormComponent";
-import BtnBlue from "@/atoms/BtnBlue";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from 'react';
+import InputComponent from '../atoms/InputComponent';
+import PasswordFormComponent from './PasswordFormComponent';
+import BtnBlue from '@/atoms/BtnBlue';
+import { useNavigate } from 'react-router-dom';
 
 const SignUpComponent = () => {
-  const [emailText, setEmailText] = useState("사용 불가한 이메일입니다.");
-  const [emailState, setEmailState] = useState("red");
+  const [emailText, setEmailText] = useState('사용 불가한 이메일입니다.');
+  const [emailState, setEmailState] = useState('red');
   const [user, setUser] = useState<object>({
-    email: "",
-    name: "",
-    nickname: "",
-    pw: "",
-    pwCheck: "",
-    phone: "",
-    birth: "",
+    email: '',
+    name: '',
+    nickname: '',
+    pw: '',
+    pwCheck: '',
+    phone: '',
+    birth: '',
   });
 
   const navigate = useNavigate();
@@ -27,19 +27,19 @@ const SignUpComponent = () => {
    * 따로 컴포넌트로 빼둔거라 함수 매개변수로 가져가는게 나으려나?
    */
   const verify = () => {
-    console.log("api 요청");
+    console.log('api 요청');
   };
 
   const signUp = () => {
     // 회원가입 요청 하기 전에 유효성 검사가 이루어져야할까요
     // 얼마나 이루어져야 할까요?
-    console.log("회원가입 요청");
+    console.log('회원가입 요청');
     console.log(user);
-    navigate("/");
+    navigate('/');
   };
 
   return (
-    <div className="m-5">
+    <div className="m-5 max-w-sm ml-auto mr-auto text-center">
       <p className="form-title">회원가입</p>
       <div className="flex items-center">
         <InputComponent
@@ -52,7 +52,7 @@ const SignUpComponent = () => {
           setter={setUser}
         />
         <button
-          className="medium-white p3b w-full h-10 rounded-lg"
+          className="medium-white captionb w-1/3 h-10 rounded-lg"
           onClick={verify}
         >
           이메일 확인
@@ -100,7 +100,7 @@ const SignUpComponent = () => {
       <div className="flex">
         <InputComponent
           text="생년월일"
-          type="text"
+          type="date"
           keyName="birth"
           getter={user}
           setter={setUser}
