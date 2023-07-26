@@ -19,11 +19,11 @@ const PwinquiryComponent = () => {
     // 이런!
     // const code = response.code.split("");
     const code = [3, 5, 1, 7, 6, 9];
-    if(code.length > 5) {
+    if (code.length > 5) {
       setAuthNum(code);
       setIsOpen(true);
-    } 
-  }
+    }
+  };
 
   return (
     <div className="max-w-sm text-center m-5 ml-auto mr-auto">
@@ -38,7 +38,11 @@ const PwinquiryComponent = () => {
         />
         <BtnBlue text="인증번호 받기" onClick={verifyEmail} />
       </div>
-      <AuthNumberComponent authNum={authNum} isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <AuthNumberComponent
+        authNum={authNum}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
     </div>
   );
 };

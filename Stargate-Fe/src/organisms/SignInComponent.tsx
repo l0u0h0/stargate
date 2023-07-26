@@ -16,18 +16,20 @@ const SignInComponent = () => {
     pw: '',
   });
 
-
-
   // 패스워드 유효성 검사 부분
   useEffect(() => {
-    const pw = (user as userType).pw;
+    const password = (user as userType).pw;
 
     // Password 유효성에 어떤 부분들이 더 들어가야할까?
     // 8자 이상에 영문 숫자 특문 1개씩 이상 포함??
-    if (pw.length >= 8) {
-      setPwState("green");
-      setPwText("올바른 비밀번호 형식입니다");
+    if (password.length >= 8) {
+      setPwState('green');
+      setPwText('올바른 비밀번호 형식입니다.');
+    } else {
+      setPwState('red');
+      setPwText('일치하지 않는 형식입니다.');
     }
+    console.log(user);
   }, [user]);
 
   const Login = () => {

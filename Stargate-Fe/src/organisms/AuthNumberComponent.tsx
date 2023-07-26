@@ -46,8 +46,8 @@ const AuthNumberComponent = ({ authNum, isOpen, onClose }: AuthNumberProps) => {
                 이메일로 전송된 인증번호 6자리를 입력해주세요
               </p>
               <div className="flex m-3">
-                {authNum.map((num) => (
-                  <AuthNumInputComponent num={num} />
+                {authNum.map((num, i) => (
+                  <AuthNumInputComponent key={i} num={num} />
                 ))}
               </div>
               <BtnWhite text="확인" onClick={AuthNumCheck} />

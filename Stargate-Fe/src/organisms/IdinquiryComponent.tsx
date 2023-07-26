@@ -14,6 +14,7 @@ const IdinquiryComponent = () => {
   });
 
   const findId = () => {
+    // 
     const formData = new FormData();
     formData.append('name', (user as userType).name);
     formData.append('phone', (user as userType).phone);
@@ -28,7 +29,7 @@ const IdinquiryComponent = () => {
         type="text"
         text="이름"
         notice="본명을 입력해주세요"
-        state="gray"
+        state="green"
         keyName="name"
         getter={user}
         setter={setUser}

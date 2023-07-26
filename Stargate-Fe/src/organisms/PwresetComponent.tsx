@@ -9,7 +9,7 @@ interface pwCheckType {
 }
 
 const PwResetComponent = () => {
-  const [pwText, setPwText] = useState('비밀번호가 일치하지 않습니다');
+  const [pwText, setPwText] = useState('비밀번호가 일치하지 않습니다.');
   const [pwState, setPwState] = useState('red');
   const [pwCheck, setPwCheck] = useState<object>({
     newPw: '',
@@ -21,7 +21,7 @@ const PwResetComponent = () => {
   useEffect(() => {
     const newPw = (pwCheck as pwCheckType).newPw;
     const newPwCheck = (pwCheck as pwCheckType).newPwCheck;
-    if (newPw != newPwCheck) {
+    if (newPw != newPwCheck || newPw.length == 0) {
       setPwText('비밀번호가 일치하지 않습니다.');
       setPwState('red');
     } else {
@@ -42,6 +42,10 @@ const PwResetComponent = () => {
     console.log('비밀번호 재설정');
     // api 요청 json 형식으루
     // email, password 필요
+
+    // 비밀번호가 일치하지 않는 경우
+    // if (pwText.length >= 16) {}
+
     navigate('/');
   };
 
