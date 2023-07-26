@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import InputComponent from '../atoms/InputComponent';
 import BtnBlue from '@/atoms/BtnBlue';
 
+interface userType {
+  name: string;
+  phone: string;
+}
+
 const IdinquiryComponent = () => {
   const [user, setUser] = useState<object>({
     name: '',
@@ -9,7 +14,11 @@ const IdinquiryComponent = () => {
   });
 
   const findId = () => {
-    console.log(user);
+    const formData = new FormData();
+    formData.append('name', (user as userType).name);
+    formData.append('phone', (user as userType).phone);
+
+    console.log(formData);
   };
 
   return (
@@ -19,7 +28,7 @@ const IdinquiryComponent = () => {
         type="text"
         text="이름"
         notice="본명을 입력해주세요"
-        state="gray-100"
+        state="gray"
         keyName="name"
         getter={user}
         setter={setUser}

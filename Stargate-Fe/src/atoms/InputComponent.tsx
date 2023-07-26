@@ -37,8 +37,8 @@ const InputComponent: React.FC<InputProps> = ({
   // state 값 class 지정 분기
   if (state == 'red') {
     state = 'input-warning';
-  } else {
-    state = `font-suit text-16 font-medium text-${state}`;
+  } else if (state != undefined) {
+    state = `font-suit text-12 font-medium text-${state}-400`;
   }
 
   // Input onChange 시 setter 호출해 state 값 변경해주기

@@ -4,6 +4,15 @@ import PasswordFormComponent from './PasswordFormComponent';
 import BtnBlue from '@/atoms/BtnBlue';
 import { useNavigate } from 'react-router-dom';
 
+interface userType {
+  email: string;
+  name: string;
+  nickname: string;
+  pw: string;
+  phone: string;
+  birth: string;
+}
+
 const SignUpComponent = () => {
   const [emailText, setEmailText] = useState('사용 불가한 이메일입니다.');
   const [emailState, setEmailState] = useState('red');
@@ -29,12 +38,27 @@ const SignUpComponent = () => {
   const verify = () => {
     console.log('api 요청');
   };
+  const submit = () => {
+    console.log('회원가입 요청');
 
+    const formData = new FormData();
+
+    formData.append('email', (user as userType).email);
+    formData.append('name', (user as userType).name);
+    formData.append('nickname', (user as userType).nickname);
+    formData.append('password', (user as userType).pw);
+    formData.append('phone', (user as userType).phone);
+    formData.append('birthday', (user as userType).birth);
+
+    // 객체 폼데이터로 변환
+    console.log(formData);
+  };
   const signUp = () => {
     // 회원가입 요청 하기 전에 유효성 검사가 이루어져야할까요
     // 얼마나 이루어져야 할까요?
-    console.log('회원가입 요청');
-    console.log(user);
+
+    submit();
+    
     navigate('/');
   };
 

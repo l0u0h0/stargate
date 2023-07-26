@@ -3,6 +3,11 @@ import InputComponent from '../atoms/InputComponent';
 import TextButtonComponent from '../atoms/TextButtonComponent';
 import BtnBlue from '@/atoms/BtnBlue';
 
+interface userType {
+  email: string;
+  pw: string;
+}
+
 const SignInComponent = () => {
   const [pwText, setPwText] = useState('일치하지 않는 형식입니다.');
   const [pwState, setPwState] = useState('red');
@@ -11,27 +16,36 @@ const SignInComponent = () => {
     pw: '',
   });
 
-  // 패스워드 유효성 검사 부분
-  // useEffect(() => {
-  //   if (user.pw.length >= 8) {
-  //     setPwState("green");
-  //     setPwText("올바른 비밀번호 형식입니다");
-  //   }
-  // }, [user]);
 
-  /**
-   * Login 결과에 따라 pwState 바꿔주면 되려나??
-   * 아니면 입력할때마다 검사를 돌려줘야하려나??
-   * 뭐가 나ㅡㅇ려나???
-   */
+
+  // 패스워드 유효성 검사 부분
+  useEffect(() => {
+    const pw = (user as userType).pw;
+
+    // Password 유효성에 어떤 부분들이 더 들어가야할까?
+    // 8자 이상에 영문 숫자 특문 1개씩 이상 포함??
+    if (pw.length >= 8) {
+      setPwState("green");
+      setPwText("올바른 비밀번호 형식입니다");
+    }
+  }, [user]);
+
   const Login = () => {
-    console.log(user);
     // 로그인 요청 부분
     // if ()
 
+    // User 객체 FormData로 변환
+    const formData = new FormData();
+
+    formData.append('email', (user as userType).email);
+    formData.append('password', (user as userType).pw);
+
+    console.log(formData);
+
     // 로그인 요청 하고 난 뒤 성공 시에
     // 로그인 유지 체크 박스 값 체크 되었는지 검사한 후
-    // 체크 되어 있으면 유지 로직 실행?
+    // 체크 되어 있으면 로컬 스토리지에 토큰 저장해주기
+    // 그 후 어드민과 일반 유저 구분하여 대쉬보드로 네비게이트!
   };
 
   return (

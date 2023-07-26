@@ -3,6 +3,13 @@ import InputComponent from '../atoms/InputComponent';
 import PasswordFormComponent from './PasswordFormComponent';
 import { useNavigate } from 'react-router-dom';
 
+interface adminType {
+  email: string;
+  company: string;
+  bizNum: string;
+  pw: string;
+}
+
 const AdminSignUpComponent = () => {
   const [emailText, setEmailText] = useState('사용 불가한 이메일입니다.');
   const [emailState, setEmailState] = useState('red');
@@ -25,17 +32,27 @@ const AdminSignUpComponent = () => {
    */
   const verify = () => {
     console.log('AdminSignup AUth api 요청');
+    // get으로 보내달라 함 쿼리스트링으루
+    // 리턴으론 불리언
   };
 
   const signUp = () => {
     // 회원가입 요청 하기 전에 유효성 검사가 이루어져야할까요
     // 얼마나 이루어져야 할까요?
-    console.log('관리자 회원가입 요청');
+
+    const formData = new FormData();
+    formData.append('email', (admin as adminType).email);
+    formData.append('name', (admin as adminType).company);
+    formData.append('code', (admin as adminType).bizNum);
+    formData.append('password', (admin as adminType).pw);
+
+    console.log(formData);
+
     navigate('/');
   };
 
   return (
-    <div className="m-5">
+    <div className="max-w-sm ml-auto mr-auto text-center">
       <p className="form-title">관리자 회원가입</p>
       <div className="flex items-center">
         <InputComponent
@@ -48,7 +65,7 @@ const AdminSignUpComponent = () => {
           setter={setAdmin}
         />
         <button
-          className="medium-white p3b min-w-max w-full h-10 rounded-lg"
+          className="medium-white captionb w-1/3 h-10 rounded-lg"
           onClick={verify}
         >
           이메일 확인
