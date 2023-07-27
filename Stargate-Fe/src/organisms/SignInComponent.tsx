@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import InputComponent from '../atoms/InputComponent';
 import TextButtonComponent from '../atoms/TextButtonComponent';
 import BtnBlue from '@/atoms/BtnBlue';
+import axios, { AxiosResponse } from 'axios';
 
 interface userType {
   email: string;
@@ -32,6 +33,8 @@ const SignInComponent = () => {
     console.log(user);
   }, [user]);
 
+  
+
   const Login = () => {
     // 로그인 요청 부분
     // if ()
@@ -48,6 +51,11 @@ const SignInComponent = () => {
     // 로그인 유지 체크 박스 값 체크 되었는지 검사한 후
     // 체크 되어 있으면 로컬 스토리지에 토큰 저장해주기
     // 그 후 어드민과 일반 유저 구분하여 대쉬보드로 네비게이트!
+    
+    
+
+    console.log(api(formData));
+
   };
 
   return (
@@ -75,10 +83,10 @@ const SignInComponent = () => {
       <div className="flex justify-center">
         <BtnBlue text="로그인" onClick={Login} />
       </div>
-      <div className="flex text-slate-50 p2r mt-2 w-full justify-center">
+      <div className="flex text-white p2r mt-2 w-full justify-center">
         <div className="flex">
           <TextButtonComponent text="아이디" link="/idinquiry" />
-          <div className="text-slate-50 p3r">
+          <div className="text-white p3r">
             <p>또는</p>
           </div>
           <TextButtonComponent text="비밀번호 찾기" link="/pwinquiry" />
