@@ -29,7 +29,7 @@ const IdinquiryComponent = () => {
         type="text"
         text="이름"
         notice="본명을 입력해주세요"
-        state="green"
+        state="red"
         keyName="name"
         getter={user}
         setter={setUser}
