@@ -47,11 +47,9 @@ const SignUpComponent = () => {
   const signUp = () => {
     // email Checking
     // eslint-disable-next-line no-useless-escape, no-control-regex
-    const regex = new RegExp("([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\"\(\[\]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\[[\t -Z^-~]*])");
+    const regexEmail = new RegExp("([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\"\(\[\]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\[[\t -Z^-~]*])");
     const email = (user as userType).email;
-    console.log(regex.test(email));
-    console.log(email.length);
-    if (email.length == 0 || !regex.test(email)) {
+    if (email.length == 0 || !regexEmail.test(email)) {
       alert('이메일 형식이 올바르지 않습니다.');
       window.location.reload();
       return 0;
@@ -60,9 +58,15 @@ const SignUpComponent = () => {
     // pw Checking
     const pw = (user as userType).pw;
     const pwCheck = (user as userType).pwCheck;
+    const regexPw = new RegExp(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/);
     // 일치하지 않는 경우
     if (pw != pwCheck || pw.length == 0) {
       alert('비밀번호가 일치하지 않습니다.');
+      window.location.reload();
+      return 0;
+    }
+    if (!regexPw.test(pw)) {
+      alert('비밀번호 형식을 다시 확인해주세요.');
       window.location.reload();
       return 0;
     }
@@ -70,8 +74,9 @@ const SignUpComponent = () => {
     // phoneNumber formatting & Checking
     const phone = (user as userType).phone;
     const numArr = phone.split('');
+    const regexPhone = new RegExp(/^\d{3}-\d{3,4}-\d{4}$/);
 
-    if (numArr[0] != '0' || numArr[1] != '1' || numArr.length != 11) {
+    if (numArr[0] != '0' || numArr[1] != '1' || numArr.length != 11 || regexPhone.test(phone)) {
       alert('잘못된 전화번호 형식입니다.');
       window.location.reload();
       return 0;
@@ -83,6 +88,19 @@ const SignUpComponent = () => {
       if (i == 3 || i == 7) newPhone += '-';
       newPhone += num;
     });
+
+    // name Checking
+    const name = (user as userType).name;
+    const regexName = new RegExp(/^[ㄱ-ㅎ가-힣_]{1,20}$/);
+
+    if (!regexName.test(name)) {
+      alert("이름에는 한글만 들어갈 수 있습니다.");
+      window.location.reload();
+      return 0;
+    }
+
+    // nickName Checking
+    const nickName = (user as userType).nickname;
 
     const formData = new FormData();
 
