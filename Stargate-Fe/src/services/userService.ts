@@ -29,14 +29,23 @@ const onNewAccessToken = (response: AxiosResponse<newTokenType>) => {
   const { accessToken } = response.data;
   console.log(response.status);
   axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-
+  console.log('AccessToken 재발급');
 };
 
 const loginApi = async (formData: FormData) => {
+  // 유저 로그인 요청
+  // fullfiled 로그인 성공, 토큰들 반환
+  // rejected 에러 발생, status 401
+  let response = 'SUCCESS';
   await api
     .post('/fusers/login', formData)
     .then(onSuccessLogin)
-    .catch((error) => console.error(error));
+    .catch((error) => {
+      console.log(error);
+      response = 'FAIL';
+    });
+  
+  return response;
 };
 
 const signUpApi = async (formData: FormData) => {

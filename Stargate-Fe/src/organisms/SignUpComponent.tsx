@@ -45,6 +45,18 @@ const SignUpComponent = () => {
   };
 
   const signUp = () => {
+    // email Checking
+    // eslint-disable-next-line no-useless-escape, no-control-regex
+    const regex = new RegExp("([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\"\(\[\]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\[[\t -Z^-~]*])");
+    const email = (user as userType).email;
+    console.log(regex.test(email));
+    console.log(email.length);
+    if (email.length == 0 || !regex.test(email)) {
+      alert('이메일 형식이 올바르지 않습니다.');
+      window.location.reload();
+      return 0;
+    }
+
     // pw Checking
     const pw = (user as userType).pw;
     const pwCheck = (user as userType).pwCheck;
@@ -74,10 +86,10 @@ const SignUpComponent = () => {
 
     const formData = new FormData();
 
-    formData.append('email', (user as userType).email);
+    formData.append('email', email);
     formData.append('name', (user as userType).name);
     formData.append('nickname', (user as userType).nickname);
-    formData.append('password', (user as userType).pw);
+    formData.append('password', pw);
     formData.append('phone', newPhone);
     formData.append('birthday', `${(user as userType).birth}T00:00:00.000`);
 
