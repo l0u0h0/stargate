@@ -3,6 +3,7 @@ import InputComponent from '../atoms/InputComponent';
 import TextButtonComponent from '../atoms/TextButtonComponent';
 import BtnBlue from '@/atoms/BtnBlue';
 import axios, { AxiosResponse } from 'axios';
+import { loginApi } from '@/services/userService';
 
 interface userType {
   email: string;
@@ -54,7 +55,7 @@ const SignInComponent = () => {
     
     
 
-    console.log(api(formData));
+    console.log(loginApi(formData));
 
   };
 
