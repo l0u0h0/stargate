@@ -45,6 +45,8 @@ const SignUpComponent = () => {
       setEmailText('사용 불가한 이메일입니다.');
       setEmailState('red');
     }
+    console.log(Date.now() / 1000);
+    console.log();
   };
 
   const signUp = () => {
