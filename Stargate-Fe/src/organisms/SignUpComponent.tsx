@@ -3,7 +3,7 @@ import InputComponent from '../atoms/InputComponent';
 import PasswordFormComponent from './PasswordFormComponent';
 import BtnBlue from '@/atoms/BtnBlue';
 import { redirect, useFormAction, useNavigate } from 'react-router-dom';
-import { signUpApi } from '@/services/userService';
+import { signUpApi, verifyEmail } from '@/services/userService';
 
 interface userType {
   email: string;
@@ -34,20 +34,25 @@ const SignUpComponent = () => {
     console.log('api 요청');
     // get으로 보내달라 함 쿼리스트링으루
     // 리턴으론 불리언
-    // const response = email 중복 검사 요청 api 호출
-    // if (response가 true라면 ) {
-    //   setEmailText('사용 가능한 이메일입니다.');
-    //   setEmailState('green');
-    // } else {
-    //   setEmailText('사용 불가한 이메일입니다.');
-    //   setEmailState('red');
-    // }
+    const email = (user as userType).email;
+
+    const response = verifyEmail(email);
+
+    if (response) {
+      setEmailText('사용 가능한 이메일입니다.');
+      setEmailState('green');
+    } else {
+      setEmailText('사용 불가한 이메일입니다.');
+      setEmailState('red');
+    }
   };
 
   const signUp = () => {
     // email Checking
-    // eslint-disable-next-line no-useless-escape, no-control-regex
-    const regexEmail = new RegExp("([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\"\(\[\]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(\.[!#-'*+/-9=?A-Z^-~-]+)*|\[[\t -Z^-~]*])");
+    const regexEmail = new RegExp(
+      // eslint-disable-next-line no-control-regex
+      "([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|\"([]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|[[\t -Z^-~]*])"
+    );
     const email = (user as userType).email;
     if (email.length == 0 || !regexEmail.test(email)) {
       alert('이메일 형식이 올바르지 않습니다.');
@@ -58,7 +63,9 @@ const SignUpComponent = () => {
     // pw Checking
     const pw = (user as userType).pw;
     const pwCheck = (user as userType).pwCheck;
-    const regexPw = new RegExp(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/);
+    const regexPw = new RegExp(
+      /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/
+    );
     // 일치하지 않는 경우
     if (pw != pwCheck || pw.length == 0) {
       alert('비밀번호가 일치하지 않습니다.');
@@ -76,7 +83,12 @@ const SignUpComponent = () => {
     const numArr = phone.split('');
     const regexPhone = new RegExp(/^\d{3}-\d{3,4}-\d{4}$/);
 
-    if (numArr[0] != '0' || numArr[1] != '1' || numArr.length != 11 || regexPhone.test(phone)) {
+    if (
+      numArr[0] != '0' ||
+      numArr[1] != '1' ||
+      numArr.length != 11 ||
+      regexPhone.test(phone)
+    ) {
       alert('잘못된 전화번호 형식입니다.');
       window.location.reload();
       return 0;
@@ -94,13 +106,23 @@ const SignUpComponent = () => {
     const regexName = new RegExp(/^[ㄱ-ㅎ가-힣_]{1,20}$/);
 
     if (!regexName.test(name)) {
-      alert("이름에는 한글만 들어갈 수 있습니다.");
+      alert('이름에는 한글만 들어갈 수 있습니다.');
       window.location.reload();
       return 0;
     }
 
     // nickName Checking
     const nickName = (user as userType).nickname;
+    const regexNick = new RegExp(/[^a-zA-Z0-9ㄱ-힣]/g);
+
+    if (
+      regexNick.test(nickName) ||
+      !(nickName.length >= 3 && nickName.length <= 20)
+    ) {
+      alert('닉네임에는 특수문자가 포함될 수 없습니다.');
+      window.location.reload();
+      return 0;
+    }
 
     const formData = new FormData();
 

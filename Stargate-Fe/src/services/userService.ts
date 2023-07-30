@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { Axios, AxiosResponse } from 'axios';
 
 interface tokenType {
   accessToken: string;
@@ -7,6 +7,10 @@ interface tokenType {
 
 interface newTokenType {
   accessToken: string;
+}
+
+interface checkEmailType {
+  exist: string;
 }
 
 const api = axios.create({
@@ -44,7 +48,7 @@ const loginApi = async (formData: FormData) => {
       console.log(error);
       response = 'FAIL';
     });
-  
+
   return response;
 };
 
@@ -64,6 +68,25 @@ const reAccessApi = async () => {
     .post('/jwt/new-access-token', refreshToken)
     .then(onNewAccessToken)
     .catch((error) => console.log(error));
-}
+};
 
-export { onSuccessLogin, loginApi, reAccessApi, signUpApi };
+const onCheckedResponse = (response: AxiosResponse<checkEmailType>) => {
+  const { exist } = response.data;
+  if (exist == 'true') {
+    return true;
+  } else return false;
+};
+
+const verifyEmail = (email: string) => {
+  let result = true;
+  api
+    .get(`/fusers/check-email?email=${email}`)
+    .then((response: AxiosResponse<checkEmailType>) => {
+      result = onCheckedResponse(response);
+    })
+    .catch((error) => console.log(error));
+
+  return !result;
+};
+
+export { onSuccessLogin, loginApi, reAccessApi, signUpApi, verifyEmail };
