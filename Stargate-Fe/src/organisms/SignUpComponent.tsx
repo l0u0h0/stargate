@@ -129,8 +129,8 @@ const SignUpComponent = () => {
     const formData = new FormData();
 
     formData.append('email', email);
-    formData.append('name', (user as userType).name);
-    formData.append('nickname', (user as userType).nickname);
+    formData.append('name', name);
+    formData.append('nickname', nickName);
     formData.append('password', pw);
     formData.append('phone', newPhone);
     formData.append('birthday', `${(user as userType).birth}T00:00:00.000`);
