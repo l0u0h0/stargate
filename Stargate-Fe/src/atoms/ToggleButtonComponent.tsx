@@ -1,14 +1,27 @@
 import React from 'react';
 
-const ToggleButtonComponent = () => {
+interface ToggleProps {
+  getter: object;
+  setter: React.Dispatch<React.SetStateAction<object>>;
+}
+
+const ToggleButtonComponent: React.FC<ToggleProps> = ({ getter, setter }) => {
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setter({
+      ...getter,
+      ['type']: value,
+    });
+  };
+
   return (
     <>
-      <input type="checkbox" id="toggle" hidden />
       <label
-        htmlFor="toggle"
-        className="block bg-white relative rounded-md shadow-sm w-100 h-5"
+        htmlFor="check"
+        className="bg-gray-100 relative w-11 h-5 rounded-full"
       >
-        <span className="w-40 h-40 absolute "></span>
+        <input type="checkbox" id="check" onChange={e => onChange(e)} className="sr-only peer" />
+        <span className="w-2/5 h-4/5 bg-b4 absolute rounded-full left-1 top-0.5 peer-checked:bg-mainblue peer-checked:left-6 transition-all duration-300"></span>
       </label>
     </>
   );

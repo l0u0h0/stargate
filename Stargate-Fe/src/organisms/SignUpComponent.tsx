@@ -4,6 +4,7 @@ import PasswordFormComponent from './PasswordFormComponent';
 import BtnBlue from '@/atoms/BtnBlue';
 import { useNavigate } from 'react-router-dom';
 import { signUpApi, verifyEmail } from '@/services/userService';
+import { userValidationCheck } from '@/hooks/useValidation';
 
 interface userType {
   email: string;
@@ -45,86 +46,29 @@ const SignUpComponent = () => {
       setEmailText('사용 불가한 이메일입니다.');
       setEmailState('red');
     }
-    console.log(Date.now() / 1000);
-    console.log();
   };
 
   const signUp = () => {
-    // email Checking
-    const regexEmail = new RegExp(
-      // eslint-disable-next-line no-control-regex
-      "([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|\"([]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|[[\t -Z^-~]*])"
-    );
     const email = (user as userType).email;
-    if (email.length == 0 || !regexEmail.test(email)) {
-      alert('이메일 형식이 올바르지 않습니다.');
-      window.location.reload();
-      return 0;
-    }
-
-    // pw Checking
     const pw = (user as userType).pw;
-    const pwCheck = (user as userType).pwCheck;
-    const regexPw = new RegExp(
-      /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/
-    );
-    // 일치하지 않는 경우
-    if (pw != pwCheck || pw.length == 0) {
-      alert('비밀번호가 일치하지 않습니다.');
-      window.location.reload();
-      return 0;
-    }
-    if (!regexPw.test(pw)) {
-      alert('비밀번호 형식을 다시 확인해주세요.');
-      window.location.reload();
-      return 0;
-    }
-
-    // phoneNumber formatting & Checking
     const phone = (user as userType).phone;
-    const numArr = phone.split('');
-    const regexPhone = new RegExp(/^\d{3}-\d{3,4}-\d{4}$/);
-
-    if (
-      numArr[0] != '0' ||
-      numArr[1] != '1' ||
-      numArr.length != 11 ||
-      regexPhone.test(phone)
-    ) {
-      alert('잘못된 전화번호 형식입니다.');
+    const name = (user as userType).name;
+    const nickName = (user as userType).nickname;
+    
+    const validation = userValidationCheck((user as userType));
+    if (validation != 'SUCCESS') {
+      alert(validation);
       window.location.reload();
       return 0;
     }
 
+    const numArr = phone.split('');
     let newPhone = '0';
     numArr.map((num, i) => {
       if (i == 0) return;
       if (i == 3 || i == 7) newPhone += '-';
       newPhone += num;
     });
-
-    // name Checking
-    const name = (user as userType).name;
-    const regexName = new RegExp(/^[ㄱ-ㅎ가-힣_]{1,20}$/);
-
-    if (!regexName.test(name)) {
-      alert('이름에는 한글만 들어갈 수 있습니다.');
-      window.location.reload();
-      return 0;
-    }
-
-    // nickName Checking
-    const nickName = (user as userType).nickname;
-    const regexNick = new RegExp(/[^a-zA-Z0-9ㄱ-힣]/g);
-
-    if (
-      regexNick.test(nickName) ||
-      !(nickName.length >= 3 && nickName.length <= 20)
-    ) {
-      alert('닉네임에는 특수문자가 포함될 수 없습니다.');
-      window.location.reload();
-      return 0;
-    }
 
     const formData = new FormData();
 
@@ -137,8 +81,16 @@ const SignUpComponent = () => {
 
     const response = signUpApi(formData);
 
-    console.log(response);
-    navigate('/');
+    response
+      .then((response) => {
+        console.log(response);
+        navigate('/');
+      })
+      .catch((error) => {
+        console.log(error);
+        alert("회원가입에 문제가 발생했습니다.");
+        window.location.reload();
+      });
   };
 
   return (

@@ -16,6 +16,7 @@ interface checkEmailType {
 const api = axios.create({
   baseURL: 'http://i9a406.p.ssafy.io:8080',
 });
+axios.defaults.withCredentials = true;
 
 // common => 토큰 만료시간 체크 메서드
 // Back으로 넘어가는 API 호출 최대한 줄이게
@@ -37,7 +38,7 @@ const onSuccessLogin = (response: AxiosResponse<tokenType>) => {
   console.log(response.status);
   axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
-  localStorage.setItem('refrestToken', refreshToken);
+  localStorage.setItem('refreshToken', refreshToken);
   localStorage.setItem('tokenExpTime', `${Date.now() / 1000 + 59 * 60 * 24}`);
 
   console.log(
@@ -57,6 +58,9 @@ const loginApi = async (formData: FormData) => {
   // 유저 로그인 요청
   // fullfiled 로그인 성공, 토큰들 반환
   // rejected 에러 발생, status 401
+  if (checkTokenExpTime() == 'SUCCESS') {
+    return 'alreadyToken';
+  }
   let response = 'SUCCESS';
   await api
     .post('/fusers/login', formData)
@@ -80,6 +84,9 @@ const logoutApi = async () => {
 };
 
 const signUpApi = async (formData: FormData) => {
+  if (checkTokenExpTime() == 'SUCCESS') {
+    return 'alreadyToken';
+  }
   const response = await api
     .post('/fusers/register', formData)
     .then()
@@ -99,21 +106,72 @@ const reAccessApi = async () => {
 
 const onCheckedResponse = (response: AxiosResponse<checkEmailType>) => {
   const { exist } = response.data;
+  console.log(exist);
   if (exist == 'true') {
     return true;
   } else return false;
 };
 
 const verifyEmail = (email: string) => {
+  axios.defaults.headers.common['Authorization'] = ``;
+  let result = true;
+  const data = { email };
+  api
+    .post('/fusers/check-email', JSON.stringify(data), {
+      headers: {
+        'Access-Controll-Allow-Origin':"*",
+        'Content-Type': 'application/json',
+      },
+    })
+    .then((response: AxiosResponse<checkEmailType>) => {
+      // const { exist } = response;
+      console.log(response);
+      // result = exist == 'true' ? true : false;
+    })
+    .catch((error) => console.log(error));
+  return !result;
+};
+
+const adminVerifyEmail = (email: string) => {
   let result = true;
   api
-    .get(`/fusers/check-email?email=${email}`)
+    .post('/pusers/check-email', { email })
     .then((response: AxiosResponse<checkEmailType>) => {
       result = onCheckedResponse(response);
     })
     .catch((error) => console.log(error));
-
   return !result;
+};
+
+const adminLoginApi = async (formData: FormData) => {
+  // 관리자 로그인 요청
+  // fullfiled 로그인 성공, 토큰들 반환
+  // rejected 에러 발생, status 401
+  if (checkTokenExpTime() == 'SUCCESS') {
+    return 'alreadyToken';
+  }
+  let response = 'SUCCESS';
+  await api
+    .post('/pusers/login', formData)
+    .then(onSuccessLogin)
+    .catch((error) => {
+      console.log(error);
+      response = 'FAIL';
+    });
+
+  return response;
+};
+
+const adminSignUpApi = async (formData: FormData) => {
+  if (checkTokenExpTime() == 'SUCCESS') {
+    return 'alreadyToken';
+  }
+  const response = await api
+    .post('/pusers/register', formData)
+    .then()
+    .catch((error) => console.log(error));
+
+  return response;
 };
 
 export {
@@ -123,4 +181,8 @@ export {
   reAccessApi,
   signUpApi,
   verifyEmail,
+  adminVerifyEmail,
+  adminLoginApi,
+  adminSignUpApi,
+  checkTokenExpTime,
 };
