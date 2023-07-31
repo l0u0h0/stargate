@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import InputComponent from '../atoms/InputComponent';
 import PasswordFormComponent from './PasswordFormComponent';
 import BtnBlue from '@/atoms/BtnBlue';
-import { redirect, useFormAction, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { signUpApi, verifyEmail } from '@/services/userService';
 
 interface userType {
