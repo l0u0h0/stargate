@@ -16,6 +16,18 @@ interface adminType {
   pwCheck: string;
 }
 
+const emailVaildationCheck = (email: string) => {
+  // email Checking
+  const regexEmail = new RegExp(
+    // eslint-disable-next-line no-control-regex
+    "([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|\"([]!#-[^-~ \t]|(\\[\t -~]))+\")@([!#-'*+/-9=?A-Z^-~-]+(.[!#-'*+/-9=?A-Z^-~-]+)*|[[\t -Z^-~]*])"
+  );
+  if (email.length == 0 || !regexEmail.test(email)) {
+    return '이메일 형식이 올바르지 않습니다.';
+  }
+  return 'SUCCESS';
+}
+
 const userValidationCheck = (user: userType) => {
   // email Checking
   const regexEmail = new RegExp(
@@ -116,4 +128,4 @@ const adminValidationCheck = (admin: adminType) => {
   return 'SUCCESS';
 }
 
-export { userValidationCheck, adminValidationCheck };
+export { emailVaildationCheck, userValidationCheck, adminValidationCheck };

@@ -67,7 +67,7 @@ const SignInComponent = () => {
         } else if (res == 'FAIL') {
           alert('로그인에 문제가 발생했습니다.');
           window.location.reload();
-        } else navigate('/board');
+        } else navigate('/admin/board');
       })
       .catch((error) => console.log(error));
     } else {

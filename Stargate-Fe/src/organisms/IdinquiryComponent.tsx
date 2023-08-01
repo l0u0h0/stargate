@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import InputComponent from '../atoms/InputComponent';
 import BtnBlue from '@/atoms/BtnBlue';
+import { idInquiryApi } from '@/services/userService';
 
 interface userType {
   name: string;
@@ -13,13 +14,24 @@ const IdinquiryComponent = () => {
     phone: '',
   });
 
+  // USER ID 찾기 메서드
   const findId = () => {
-    // 
+    // 폼데이터로 변환
     const formData = new FormData();
+    const phone = (user as userType).phone;
+    const numArr = phone.split('');
+    let newPhone = '0';
+    numArr.map((num, i) => {
+      if (i == 0) return;
+      if (i == 3 || i == 7) newPhone += '-';
+      newPhone += num;
+    });
     formData.append('name', (user as userType).name);
-    formData.append('phone', (user as userType).phone);
-
-    console.log(formData);
+    formData.append('phone', newPhone);
+    
+    idInquiryApi(formData).then(res => {
+      alert(res.email);
+    }).catch(error => console.log(error));
   };
 
   return (

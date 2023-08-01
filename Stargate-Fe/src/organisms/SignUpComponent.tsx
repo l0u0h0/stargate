@@ -4,7 +4,10 @@ import PasswordFormComponent from './PasswordFormComponent';
 import BtnBlue from '@/atoms/BtnBlue';
 import { useNavigate } from 'react-router-dom';
 import { signUpApi, verifyEmail } from '@/services/userService';
-import { userValidationCheck } from '@/hooks/useValidation';
+import {
+  emailVaildationCheck,
+  userValidationCheck,
+} from '@/hooks/useValidation';
 
 interface userType {
   email: string;
@@ -31,15 +34,17 @@ const SignUpComponent = () => {
 
   const navigate = useNavigate();
 
-  const verify = () => {
-    console.log('api 요청');
+  const verify = async () => {
     // get으로 보내달라 함 쿼리스트링으루
     // 리턴으론 불리언
     const email = (user as userType).email;
-
-    const response = verifyEmail(email);
-
-    if (response) {
+    const check = emailVaildationCheck(email);
+    if (check != 'SUCCESS') {
+      alert(check);
+      return 0;
+    }
+    const result = await verifyEmail(email);
+    if (result) {
       setEmailText('사용 가능한 이메일입니다.');
       setEmailState('green');
     } else {
@@ -49,13 +54,17 @@ const SignUpComponent = () => {
   };
 
   const signUp = () => {
+    if (emailState == 'red') {
+      alert('이메일 확인을 해주세요.');
+      return 0;
+    }
     const email = (user as userType).email;
     const pw = (user as userType).pw;
     const phone = (user as userType).phone;
     const name = (user as userType).name;
     const nickName = (user as userType).nickname;
-    
-    const validation = userValidationCheck((user as userType));
+
+    const validation = userValidationCheck(user as userType);
     if (validation != 'SUCCESS') {
       alert(validation);
       window.location.reload();
@@ -83,12 +92,16 @@ const SignUpComponent = () => {
 
     response
       .then((response) => {
-        console.log(response);
+        if (response == 'alreadyToken') {
+          alert('로그인 상태로는 회원가입을 할 수 없습니다.');
+          window.location.reload();
+        }
+        console.log('SignUp SUCCESS');
         navigate('/');
       })
       .catch((error) => {
         console.log(error);
-        alert("회원가입에 문제가 발생했습니다.");
+        alert('회원가입에 문제가 발생했습니다.');
         window.location.reload();
       });
   };
@@ -108,7 +121,11 @@ const SignUpComponent = () => {
         />
         <button
           className="medium-white captionb w-1/3 h-10 rounded-lg"
-          onClick={verify}
+          onClick={() => {
+            verify()
+              .then()
+              .catch((error) => console.log(error));
+          }}
         >
           이메일 확인
         </button>
