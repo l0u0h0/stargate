@@ -19,6 +19,11 @@ interface idInquiryType {
   phone: string;
 }
 
+interface pwInquiryType {
+  email: string;
+  code: string;
+}
+
 const api = axios.create({
   baseURL: 'http://i9a406.p.ssafy.io:8080',
 });
@@ -147,6 +152,28 @@ const idInquiryApi = async (formData: FormData) => {
   return result;
 };
 
+// 유저 비밀번호 찾기 => Request 값 이메일 하나
+// 1. 인증번호 발송 => 백에서 인증번호 생성해서 유저 이메일로 하나 Response로 하나 보내기
+const pwInquiryApi = async (email: string) => {
+  let result = {
+    email: '',
+    code: '',
+  };
+  console.log(email+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+  await api
+    .post('/fusers/get-code', JSON.stringify({ email }), {
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    .then((response: AxiosResponse<pwInquiryType>) => {
+      console.log(response);
+      result = { ...response.data };
+    })
+    .catch((error) => console.log(error));
+  return result;
+};
+
 /**
  * @ADMINAREA
  */
@@ -209,6 +236,7 @@ export {
   signUpApi,
   verifyEmail,
   idInquiryApi,
+  pwInquiryApi,
   adminVerifyEmail,
   adminLoginApi,
   adminSignUpApi,

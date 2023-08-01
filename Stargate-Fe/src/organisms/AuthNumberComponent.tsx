@@ -1,4 +1,4 @@
-import React, { useRef, MouseEvent } from 'react';
+import React, { useRef, MouseEvent, useState } from 'react';
 import AuthNumInputComponent from '../atoms/AuthNumInputComponent';
 import BtnWhite from '@/atoms/BtnWhite';
 import { useNavigate } from 'react-router-dom';
@@ -16,12 +16,25 @@ interface AuthNumberProps {
  */
 
 const AuthNumberComponent = ({ authNum, isOpen, onClose }: AuthNumberProps) => {
+  const [numArr, setNumArr] = useState<number[]>([]);
+
   const navigate = useNavigate();
 
   const AuthNumCheck = () => {
     console.log('인증번호 유효검사');
     // 인증번호가 유저에겐 못넘어간다네요!
-    navigate('/pwreset');
+    // 넘어간다네요!!
+    console.log(authNum);
+    let check = true;
+    numArr.forEach((e, i) => {
+      if (e != authNum[i]) check = false;
+    })
+    if (check) {
+      navigate('/pwreset');
+    } else {
+      alert('인증번호가 올바르지 않습니다.');
+      return 0;
+    }
   };
 
   const modalRef = useRef<HTMLDivElement>(null);
@@ -47,7 +60,7 @@ const AuthNumberComponent = ({ authNum, isOpen, onClose }: AuthNumberProps) => {
               </p>
               <div className="flex m-3">
                 {authNum.map((num, i) => (
-                  <AuthNumInputComponent key={i} num={num} />
+                  <AuthNumInputComponent key={i} index={i} num={num} numArr={numArr} setNumArr={setNumArr} />
                 ))}
               </div>
               <BtnWhite text="확인" onClick={AuthNumCheck} />
