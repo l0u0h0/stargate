@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import InputComponent from '../atoms/InputComponent';
 import BtnBlue from '@/atoms/BtnBlue';
 import { idInquiryApi } from '@/services/userService';
+import IdResultModal from './IdResultModal';
 
 interface userType {
   name: string;
@@ -9,6 +10,8 @@ interface userType {
 }
 
 const IdinquiryComponent = () => {
+  const [email, setEmail] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState<object>({
     name: '',
     phone: '',
@@ -30,7 +33,8 @@ const IdinquiryComponent = () => {
     formData.append('phone', newPhone);
     
     idInquiryApi(formData).then(res => {
-      alert(res.email);
+      setEmail(res.email);
+      setIsOpen(true);
     }).catch(error => console.log(error));
   };
 
@@ -54,6 +58,7 @@ const IdinquiryComponent = () => {
         setter={setUser}
       />
       <BtnBlue text="확인" onClick={findId} />
+      <IdResultModal email={email} isOpen={isOpen} onClose={() => setIsOpen(false)} />
     </div>
   );
 };

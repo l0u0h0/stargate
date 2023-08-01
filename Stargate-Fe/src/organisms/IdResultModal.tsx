@@ -2,7 +2,8 @@ import React, { useRef, MouseEvent } from 'react';
 import AuthNumInputComponent from '../atoms/AuthNumInputComponent';
 import BtnWhite from '@/atoms/BtnWhite';
 
-interface AuthNumberProps {
+interface IdResultModal {
+  email: string;
   isOpen: boolean;
   onClose: () => void;
 }
@@ -12,7 +13,7 @@ interface AuthNumberProps {
  * @param onClose() => 모달창 닫아지는 이벤트 담긴 함수
  */
 
-const AuthNumberComponent = ({ isOpen, onClose }: AuthNumberProps) => {
+const IdResultModal = ({ email, isOpen, onClose }: IdResultModal) => {
   const modalRef = useRef<HTMLDivElement>(null);
 
   const handleOutsideClick = (e: MouseEvent) => {
@@ -30,11 +31,12 @@ const AuthNumberComponent = ({ isOpen, onClose }: AuthNumberProps) => {
         >
           <div ref={modalRef} className="w-fit h-fit bg-white rounded-lg p-4">
             <div className="text-black backdrop:card bg-white p-5 rounded-lg m-5">
-              <p className="mt-4 form-title text-black">인증번호 입력</p>
+              <p className="mt-4 form-title text-black">아이디 찾기</p>
               <p className="mt-4 modal-title text-black">
-                이메일로 전송된 인증번호 6자리를 입력해주세요
+                조회된 아이디
               </p>
-              <div className="flex m-3">
+              <div className="flex m-3 justify-center">
+                <p className="">ID: {email}</p>
               </div>
               <BtnWhite text="확인" onClick={onClose} />
             </div>
@@ -45,4 +47,4 @@ const AuthNumberComponent = ({ isOpen, onClose }: AuthNumberProps) => {
   );
 };
 
-export default AuthNumberComponent;
+export default IdResultModal;
