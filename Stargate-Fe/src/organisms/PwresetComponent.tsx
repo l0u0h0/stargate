@@ -16,8 +16,6 @@ const PwResetComponent = () => {
     newPwCheck: '',
   });
 
-  // useEffect 써서 newPw 바뀔때마다
-  // 비빌먼호 일치 여부 체크 해줘도 괜찮을까?
   useEffect(() => {
     const newPw = (pwCheck as pwCheckType).newPw;
     const newPwCheck = (pwCheck as pwCheckType).newPwCheck;

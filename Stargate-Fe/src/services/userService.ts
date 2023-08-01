@@ -50,11 +50,11 @@ const checkTokenExpTime = () => {
 // 로그인 요청 성공 시 엑세스 토큰 헤더에 넣고 리프레쉬 토큰 로컬 스토리지에 저장
 const onSuccessLogin = (response: AxiosResponse<tokenType>) => {
   const { accessToken, refreshToken } = response.data;
-  console.log(response.status);
   axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-
+  
   localStorage.setItem('refreshToken', refreshToken);
   localStorage.setItem('tokenExpTime', `${Date.now() / 1000 + 59 * 60 * 24}`);
+  return accessToken;
 };
 
 // AccessToken이 없을 때,(만료됐을 때 재발급)
@@ -74,7 +74,9 @@ const loginApi = async (formData: FormData) => {
   let response = 'SUCCESS';
   await api
     .post('/fusers/login', formData)
-    .then(onSuccessLogin)
+    .then((res: AxiosResponse<tokenType>) => {
+      response = onSuccessLogin(res)
+    })
     .catch((error) => {
       console.log(error);
       response = 'FAIL';
