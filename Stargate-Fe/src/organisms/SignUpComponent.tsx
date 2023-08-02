@@ -99,9 +99,9 @@ const SignUpComponent = () => {
         console.log('SignUp SUCCESS');
         navigate('/');
       })
-      .catch((error) => {
+      .catch((error: string) => {
         console.log(error);
-        alert('회원가입에 문제가 발생했습니다.');
+        alert(error);
         window.location.reload();
       });
   };

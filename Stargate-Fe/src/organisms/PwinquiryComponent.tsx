@@ -4,7 +4,6 @@ import AuthNumberComponent from './AuthNumberComponent';
 import BtnBlue from '@/atoms/BtnBlue';
 import { pwInquiryApi } from '@/services/userService';
 import { emailVaildationCheck } from '@/hooks/useValidation';
-import { AxiosResponse } from 'axios';
 
 interface emailType {
   email: string;
@@ -23,8 +22,6 @@ const PwinquiryComponent = () => {
    */
   const verifyEmail = () => {
     // 이메일 정보 서버에 보내구!
-    // 현재 SMTP 를 싸피에서 막아놔서 이메일 인증 구현 어렵다는 전망!
-    // 이런!
     const check = emailVaildationCheck((email as emailType).email);
     if (check != 'SUCCESS') {
       alert(check);
@@ -34,8 +31,13 @@ const PwinquiryComponent = () => {
     pwInquiryApi((email as emailType).email)
       .then((response: emailType) => {
         console.log(response);
-        const arr = response.code.split("");
-        setAuthNum(arr.map(e => parseInt(e)));
+        if (response.email == 'NoData') {
+          alert('이메일 검색 결과가 없습니다.');
+          window.location.reload();
+          return 0;
+        }
+        const arr = response.code.split('');
+        setAuthNum(arr.map((e) => parseInt(e)));
         setIsOpen(true);
       })
       .catch((error) => console.log(error));
@@ -55,6 +57,7 @@ const PwinquiryComponent = () => {
         <BtnBlue text="인증번호 받기" onClick={verifyEmail} />
       </div>
       <AuthNumberComponent
+        email={(email as emailType).email}
         authNum={authNum}
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}

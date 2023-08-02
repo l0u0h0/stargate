@@ -51,7 +51,7 @@ const checkTokenExpTime = () => {
 const onSuccessLogin = (response: AxiosResponse<tokenType>) => {
   const { accessToken, refreshToken } = response.data;
   axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-  
+
   localStorage.setItem('refreshToken', refreshToken);
   localStorage.setItem('tokenExpTime', `${Date.now() / 1000 + 59 * 60 * 24}`);
   return accessToken;
@@ -75,7 +75,7 @@ const loginApi = async (formData: FormData) => {
   await api
     .post('/fusers/login', formData)
     .then((res: AxiosResponse<tokenType>) => {
-      response = onSuccessLogin(res)
+      response = onSuccessLogin(res);
     })
     .catch((error) => {
       console.log(error);
@@ -103,8 +103,11 @@ const signUpApi = async (formData: FormData) => {
   }
   const response = await api
     .post('/fusers/register', formData)
-    .then()
-    .catch((error) => console.log(error));
+    .then((response) => console.log(response.status))
+    .catch((error) => {
+      console.log(error);
+      throw new Error('회원가입에 문제가 발생했습니다.');
+    });
 
   return response;
 };
@@ -158,15 +161,14 @@ const idInquiryApi = async (formData: FormData) => {
 // 1. 인증번호 발송 => 백에서 인증번호 생성해서 유저 이메일로 하나 Response로 하나 보내기
 const pwInquiryApi = async (email: string) => {
   let result = {
-    email: '',
+    email: 'NoData',
     code: '',
   };
-  console.log(email+"!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
   await api
     .post('/fusers/get-code', JSON.stringify({ email }), {
       headers: {
-        'Content-Type': 'application/json'
-      }
+        'Content-Type': 'application/json',
+      },
     })
     .then((response: AxiosResponse<pwInquiryType>) => {
       console.log(response);
@@ -174,6 +176,37 @@ const pwInquiryApi = async (email: string) => {
     })
     .catch((error) => console.log(error));
   return result;
+};
+// 2. 인증번호 입력한거랑 DB에 저장된 인증번호랑 같은 지 검사
+const checkAuthNumApi = (email: string, code: string) => {
+  let result = 'SUCCESS';
+
+  api
+    .post('/fusers/check-code', JSON.stringify({ email, code }), {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
+    .then()
+    .catch((error) => {
+      console.log(error);
+      result = 'FAIL';
+    });
+    
+  return result;
+};
+
+// 유저 비밀번호 재설정 API
+// => JSON 타입으로 이멜, 비밀번호로 요청
+const pwResetApi = async (email: string, password: string) => {
+  let status = 0;
+  await api
+    .post('/fusers/new-pw', JSON.stringify({ email, password }))
+    .then((res) => {
+      status = res.status;
+    })
+    .catch((err) => console.log(err));
+  return status.toString();
 };
 
 /**
@@ -239,6 +272,8 @@ export {
   verifyEmail,
   idInquiryApi,
   pwInquiryApi,
+  checkAuthNumApi,
+  pwResetApi,
   adminVerifyEmail,
   adminLoginApi,
   adminSignUpApi,
