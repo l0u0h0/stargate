@@ -69,7 +69,6 @@ const SignUpComponent = () => {
     
     if (validation != 'SUCCESS') {
       alert(validation);
-      window.location.reload();
       return 0;
     }
 
