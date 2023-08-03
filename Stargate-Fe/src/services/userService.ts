@@ -76,6 +76,12 @@ const onSuccessLogin = (response: AxiosResponse<tokenType>, type: boolean) => {
 };
 
 // AccessToken이 없을 때,(만료됐을 때 재발급)
+/**
+ * @TODO 
+ * 401 ERROR 발생 시 인증 오류 발생이므로 토큰 재확인? 토큰 재발급 처리
+ * 인터셉터 활용해서 이걸 요청 가기 전에 처리해줄지 응답 오고 나서 처리해줄 지
+ * 고민해보기!!!!!!!!!!!!!
+ */
 const onNewAccessToken = (response: AxiosResponse<newTokenType>) => {
   const { accessToken } = response.data;
   api.defaults.headers['Authorization'] = `Bearer ${accessToken}`;
