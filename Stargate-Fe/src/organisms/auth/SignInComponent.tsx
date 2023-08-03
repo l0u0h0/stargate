@@ -69,6 +69,8 @@ const SignInComponent = () => {
           alert('로그인에 문제가 발생했습니다.');
           window.location.reload();
         } else {
+          // 원래 로그인 유지 아닐 때 세션이 아니라 스토어에 토큰 값 넣으려 했는데
+          // 스토어는 리로드만 되도 값이 날라가기에 세션으로 변경
           // setLogin({ token: res, email: (user as userType).email });
           navigate('/admin/board');
         }
