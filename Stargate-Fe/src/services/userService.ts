@@ -111,14 +111,20 @@ const loginApi = async (formData: FormData, type: boolean) => {
 
 // 로그아웃 요청, 헤더의 Authorization과 로컬 스토리지 비우기
 const logoutApi = async () => {
+  let result = '';
   await api
     .post('/fusers/logout')
     .then(() => {
       axios.defaults.headers.common['Authorization'] = '';
       localStorage.clear();
       sessionStorage.clear();
+      result = 'SUCCESS';
     })
-    .catch((error) => console.log(error));
+    .catch((error) => {
+      console.log(error);
+      result = 'FAIL';
+    });
+  return result;
 };
 
 // 회원가입 API
