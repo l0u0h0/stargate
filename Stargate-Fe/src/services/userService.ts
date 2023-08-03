@@ -31,6 +31,7 @@ const api = axios.create({
   baseURL: SERVER_URL,
 });
 
+
 /**
  * @COMMONAREA
  */
@@ -59,7 +60,7 @@ const onSuccessLogin = (response: AxiosResponse<tokenType>) => {
 
   localStorage.setItem('refreshToken', refreshToken);
   localStorage.setItem('tokenExpTime', `${expTime}`);
-
+  
   return accessToken;
 };
 
@@ -72,8 +73,6 @@ const onNewAccessToken = (response: AxiosResponse<newTokenType>) => {
 
 const loginApi = async (formData: FormData) => {
   // 유저 로그인 요청
-  // fullfiled 로그인 성공, 토큰들 반환
-  // rejected 에러 발생, status 401
   if (await checkTokenExpTime() == 'SUCCESS') {
     return 'alreadyToken';
   }
@@ -200,7 +199,7 @@ const checkAuthNumApi = (email: string, code: string) => {
       console.log(error);
       result = 'FAIL';
     });
-
+    
   return result;
 };
 
@@ -240,8 +239,6 @@ const adminVerifyEmail = async (email: string) => {
 
 const adminLoginApi = async (formData: FormData) => {
   // 관리자 로그인 요청
-  // fullfiled 로그인 성공, 토큰들 반환
-  // rejected 에러 발생, status 401
   if (await checkTokenExpTime() == 'SUCCESS') {
     return 'alreadyToken';
   }

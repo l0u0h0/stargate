@@ -1,66 +1,142 @@
 import React from 'react';
-import AdminBoardHeaderNav from '../../../atoms/AdminBoardHeaderNav';
-import AdminManagementModal from '@/organisms/AdminManagementModal';
-
-const dummy = {
-  유한스: {
-    member1: '이유한',
-    member2: '김수환',
-    member3: '로그인',
-    member4: '회원가입',
-  },
-  수환없는수환팀: {
-    member1: '프론트',
-    member2: '제7의멤버',
-    member3: '야랩몬스터',
-  },
-  의찬스: {
-    member1: '코틀린',
-    member2: '이의찬',
-    member3: '김도현',
-    member4: '편의점갔다올까',
-  },
-  RN: {
-    member1: '안드로이드스튜디오',
-    member2: '이의찬',
-    member3: '플러터',
-  },
-  코틀린: {
-    member1: '이유한',
-    member2: '딸기타임',
-    member3: '플러터',
-  },
-  도시락vs설렁탕: {
-    member1: '설렁탕',
-    member2: '도시락',
-    member3: '배고파',
-  },
-  트와이스: {
-    member1: '설렁탕',
-    member2: '도시락',
-    member3: '배고파',
-  },
-};
+import AdminBoardHeaderNav from '../../../atoms/board/AdminBoardHeaderNav';
+import AdminManagementModal from '@/organisms/board/AdminManagementModal';
 
 /**
- * 	{
-		groupNo: 20, // [long] 그룹번호
-		name : "406s", // [String] 그룹명
-		members: [
-			{
-				memberNo : 29,    // [long]   멤버번호
-				name : "이유한",  // [String]  멤버이름
-			},
-			{
-				memberNo : 30,      // [long]  멤버번호
-				name : "이름이름",  // [String] 멤버이름
-			},
-				...
-		]
-	},
-	...
- * 더미 형식 추후 변경 예정
+ * Todos
+ * Modal 클릭시 이름 출력 수정
  */
+
+const dummy = [
+  {
+    groupNo: 1,
+    name: '406s',
+    members: [
+      {
+        memberNo: 1,
+        name: '정예륜',
+      },
+      {
+        memberNo: 2,
+        name: '김도현',
+      },
+      {
+        memberNo: 2,
+        name: '박찬호처럼체인지업',
+      },
+      {
+        memberNo: 3,
+        name: '이의찬',
+      },
+    ],
+  },
+  {
+    groupNo: 2,
+    name: '유한스',
+    members: [
+      {
+        memberNo: 4,
+        name: '이유한',
+      },
+      {
+        memberNo: 5,
+        name: '현실누나',
+      },
+      {
+        memberNo: 6,
+        name: '김수환',
+      },
+    ],
+  },
+  {
+    groupNo: 3,
+    name: '수환없는수환팀',
+    members: [
+      {
+        memberNo: 7,
+        name: '프론트',
+      },
+      {
+        memberNo: 8,
+        name: '제7의멤버',
+      },
+      {
+        memberNo: 9,
+        name: '야랩몬스터',
+      },
+    ],
+  },
+  {
+    groupNo: 4,
+    name: '프론트',
+    members: [
+      {
+        memberNo: 10,
+        name: '플러터',
+      },
+      {
+        memberNo: 11,
+        name: '코틀린',
+      },
+    ],
+  },
+  {
+    groupNo: 5,
+    name: '모바일',
+    members: [
+      {
+        memberNo: 12,
+        name: '두산베어스',
+      },
+    ],
+  },
+  {
+    groupNo: 6,
+    name: '어쩌구',
+    members: [
+      {
+        memberNo: 13,
+        name: '프론트1',
+      },
+      {
+        memberNo: 14,
+        name: '프론트2',
+      },
+      {
+        memberNo: 15,
+        name: '프론트3',
+      },
+      {
+        memberNo: 16,
+        name: '프론트4',
+      },
+      {
+        memberNo: 17,
+        name: '프론트5',
+      },
+      {
+        memberNo: 18,
+        name: '프론트6',
+      },
+      {
+        memberNo: 19,
+        name: '프론트7',
+      },
+      {
+        memberNo: 20,
+        name: '프론트8',
+      },
+      {
+        memberNo: 21,
+        name: '프론트9',
+      },
+      {
+        memberNo: 22,
+        name: '프론트10',
+      },
+    ],
+  },
+];
 
 const AdminManagement = () => {
   return (
