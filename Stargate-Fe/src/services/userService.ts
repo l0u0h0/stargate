@@ -1,5 +1,8 @@
 import axios, { AxiosResponse } from 'axios';
 
+// 서버 URL 상수
+const SERVER_URL = 'http://i9a406.p.ssafy.io:8080';
+
 interface tokenType {
   accessToken: string;
   refreshToken: string;
@@ -25,7 +28,7 @@ interface pwInquiryType {
 }
 
 const api = axios.create({
-  baseURL: 'http://i9a406.p.ssafy.io:8080',
+  baseURL: SERVER_URL,
 });
 
 /**
@@ -33,13 +36,13 @@ const api = axios.create({
  */
 // 토큰 만료시간 체크 메서드
 // Back으로 넘어가는 API 호출 최대한 줄이게 API 호출 전에 만료여부 체크
-const checkTokenExpTime = () => {
+const checkTokenExpTime = async () => {
   if (!localStorage.getItem('refreshToken')) return 'NoToken';
   const expTime = parseFloat(
     JSON.stringify(localStorage.getItem('tokenExpTime'))
   );
   if (expTime < Date.now() / 1000) {
-    reAccessApi;
+    await reAccessApi();
   }
   return 'SUCCESS';
 };
@@ -52,8 +55,11 @@ const onSuccessLogin = (response: AxiosResponse<tokenType>) => {
   const { accessToken, refreshToken } = response.data;
   axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
+  const expTime = Date.now() / 1000 + 59 * 60 * 24;
+
   localStorage.setItem('refreshToken', refreshToken);
-  localStorage.setItem('tokenExpTime', `${Date.now() / 1000 + 59 * 60 * 24}`);
+  localStorage.setItem('tokenExpTime', `${expTime}`);
+
   return accessToken;
 };
 
@@ -68,7 +74,7 @@ const loginApi = async (formData: FormData) => {
   // 유저 로그인 요청
   // fullfiled 로그인 성공, 토큰들 반환
   // rejected 에러 발생, status 401
-  if (checkTokenExpTime() == 'SUCCESS') {
+  if (await checkTokenExpTime() == 'SUCCESS') {
     return 'alreadyToken';
   }
   let response = 'SUCCESS';
@@ -89,16 +95,16 @@ const loginApi = async (formData: FormData) => {
 const logoutApi = async () => {
   await api
     .post('/fusers/logout')
-    .then()
+    .then(() => {
+      axios.defaults.headers.common['Authorization'] = '';
+      localStorage.clear();
+    })
     .catch((error) => console.log(error));
-
-  axios.defaults.headers.common['Authorization'] = '';
-  localStorage.clear();
 };
 
 // 회원가입 API
 const signUpApi = async (formData: FormData) => {
-  if (checkTokenExpTime() == 'SUCCESS') {
+  if (await checkTokenExpTime() == 'SUCCESS') {
     return 'alreadyToken';
   }
   const response = await api
@@ -124,7 +130,6 @@ const reAccessApi = async () => {
 
 // 유저 이메일 중복검사
 const verifyEmail = async (email: string) => {
-  axios.defaults.headers.common['Authorization'] = ``;
   let result = true;
   await api
     .post('/fusers/check-email', JSON.stringify({ email }), {
@@ -153,7 +158,10 @@ const idInquiryApi = async (formData: FormData) => {
     .then((response: AxiosResponse<idInquiryType>) => {
       result = { ...response.data };
     })
-    .catch((error) => console.log(error));
+    .catch((error) => {
+      console.log(error);
+      result = { ...result, email: 'NoData' };
+    });
   return result;
 };
 
@@ -192,7 +200,7 @@ const checkAuthNumApi = (email: string, code: string) => {
       console.log(error);
       result = 'FAIL';
     });
-    
+
   return result;
 };
 
@@ -214,7 +222,6 @@ const pwResetApi = async (email: string, password: string) => {
  */
 // 관리자 이메일 중복검사
 const adminVerifyEmail = async (email: string) => {
-  axios.defaults.headers.common['Authorization'] = ``;
   let result = true;
   await api
     .post('/fusers/check-email', JSON.stringify({ email }), {
@@ -235,7 +242,7 @@ const adminLoginApi = async (formData: FormData) => {
   // 관리자 로그인 요청
   // fullfiled 로그인 성공, 토큰들 반환
   // rejected 에러 발생, status 401
-  if (checkTokenExpTime() == 'SUCCESS') {
+  if (await checkTokenExpTime() == 'SUCCESS') {
     return 'alreadyToken';
   }
   let response = 'SUCCESS';
@@ -252,7 +259,7 @@ const adminLoginApi = async (formData: FormData) => {
 
 // 관리자 회원가입 요청
 const adminSignUpApi = async (formData: FormData) => {
-  if (checkTokenExpTime() == 'SUCCESS') {
+  if (await checkTokenExpTime() == 'SUCCESS') {
     return 'alreadyToken';
   }
   const response = await api

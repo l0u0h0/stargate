@@ -33,7 +33,7 @@ const IdinquiryComponent = () => {
     formData.append('phone', newPhone);
     
     idInquiryApi(formData).then(res => {
-      if (res.email.length > 0) {
+      if (res.email.length > 0 || res.email != 'NoData') {
         setEmail(res.email);
       } else {
         setEmail('등록된 이메일 정보를 찾지 못했습니다.');

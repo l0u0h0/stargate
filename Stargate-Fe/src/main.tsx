@@ -23,6 +23,7 @@ import AdminEventCreate from './pages/admin/event/AdminEventCreate.tsx';
 import AdminEventDetail from './pages/admin/event/AdminEventDetail.tsx';
 import AdminMonitoring from './pages/admin/event/AdminMonitoring.tsx';
 import './index.css'; // CSS 파일을 import
+import { RecoilRoot } from 'recoil';
 
 const router = createBrowserRouter([
   { path: '/', element: <SignIn /> },
@@ -48,7 +49,9 @@ const router = createBrowserRouter([
 ]);
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
+  <RecoilRoot>
+    <React.StrictMode>
+      <RouterProvider router={router} />
+    </React.StrictMode>
+  </RecoilRoot>
 );
