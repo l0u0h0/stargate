@@ -93,7 +93,7 @@ const loginApi = async (formData: FormData, type: boolean) => {
   let response = 'SUCCESS';
   await api
     .post('/fusers/login', formData, {
-      withCredentials: false
+      withCredentials: false,
     })
     .then((res: AxiosResponse<tokenType>) => {
       response = res.status == 200 ? onSuccessLogin(res, type) : 'FAIL';
@@ -114,7 +114,9 @@ const logoutApi = async () => {
   try {
     let result;
     if (api.defaults.headers['Authorization'] != null) {
-      const tokenDecode = api.defaults.headers['Authorization']?.toString().split('.')[1];
+      const tokenDecode = api.defaults.headers['Authorization']
+        ?.toString()
+        .split('.')[1];
       const payload = atob(tokenDecode);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       result = JSON.parse(payload.toString());
@@ -139,7 +141,9 @@ const signUpApi = async (formData: FormData) => {
     return 'alreadyToken';
   }
   const response = await api
-    .post('/fusers/register', formData, { withCredentials: false })
+    .post('/fusers/register', formData, {
+      withCredentials: false,
+    })
     .then((response) => console.log(response.status))
     .catch((error) => {
       console.log(error);
@@ -172,7 +176,7 @@ const verifyEmail = async (email: string) => {
         'Access-Controll-Allow-Origin': '*',
         'Content-Type': 'application/json',
       },
-      withCredentials: false
+      withCredentials: false,
     })
     .then((response: AxiosResponse<checkEmailType>) => {
       const { exist } = response.data;
@@ -213,7 +217,7 @@ const pwInquiryApi = async (email: string) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      withCredentials: false
+      withCredentials: false,
     })
     .then((response: AxiosResponse<pwInquiryType>) => {
       console.log(response);
@@ -231,9 +235,9 @@ const checkAuthNumApi = (email: string, code: string) => {
       headers: {
         'Content-Type': 'application/json',
       },
-      withCredentials: false
+      withCredentials: false,
     })
-    .then(res => console.log(res))
+    .then((res) => console.log(res))
     .catch((error) => {
       console.log(error);
       result = 'FAIL';
@@ -285,7 +289,7 @@ const adminLoginApi = async (formData: FormData, type: boolean) => {
   let response = 'SUCCESS';
   await api
     .post('/pusers/login', formData, {
-      withCredentials: false
+      withCredentials: false,
     })
     .then((res: AxiosResponse<tokenType>) => {
       response = res.status == 200 ? onSuccessLogin(res, type) : 'FAIL';
@@ -305,7 +309,7 @@ const adminSignUpApi = async (formData: FormData) => {
   }
   const response = await api
     .post('/pusers/register', formData, {
-      withCredentials: false
+      withCredentials: false,
     })
     .then()
     .catch((error) => console.log(error));

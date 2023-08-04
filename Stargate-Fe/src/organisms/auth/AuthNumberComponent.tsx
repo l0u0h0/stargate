@@ -75,11 +75,11 @@ const AuthNumberComponent = ({ email, authNum, isOpen, onClose }: AuthNumberProp
         >
           <div ref={modalRef} className="w-fit h-fit bg-white rounded-lg p-4">
             <div className="text-black backdrop:card bg-white p-5 rounded-lg m-5">
-              <p className="mt-4 form-title text-black">인증번호 입력</p>
-              <p className="mt-4 modal-title text-black">
+              <p className="mt-4 modal-title text-black">인증번호 입력</p>
+              <p className="mt-4 form-title text-black">
                 이메일로 전송된 인증번호 6자리를 입력해주세요
               </p>
-              <div className="flex m-3">
+              <div className="flex m-3 justify-center">
                 {authNum.map((_, i) => (
                   <AuthNumInputComponent key={i} index={i} numArr={numArr} setNumArr={setNumArr} setCurIdx={setCurIdx} />
                 ))}
