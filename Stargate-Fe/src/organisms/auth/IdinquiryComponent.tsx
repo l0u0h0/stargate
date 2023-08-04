@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import InputComponent from '@/atoms/common/InputComponent';
 import BtnBlue from '@/atoms/common/BtnBlue';
-import { idInquiryApi } from '@/services/userService';
+import { idInquiryApi } from '@/services/authService';
 import IdResultModal from './IdResultModal';
 
 interface userType {
@@ -63,8 +63,9 @@ const IdinquiryComponent = () => {
         getter={user}
         setter={setUser}
       />
-      <BtnBlue text="확인" onClick={findId} />
-      <IdResultModal
+      <div className='content-center'>
+        <BtnBlue text="확인" onClick={findId} />
+      </div><IdResultModal
         email={email}
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}

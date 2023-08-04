@@ -1,8 +1,5 @@
-import React from 'react';
 import SignInComponent from '@/organisms/auth/SignInComponent';
 import ToolTipComponent from '@/atoms/auth/ToolTipComponent';
-import CheckButtonComponent from '@/atoms/common/CheckButtonComponent';
-import { logoutApi } from '@/services/userService';
 
 /**
  * @todo
@@ -25,8 +22,6 @@ const SignIn = () => {
         </div> */}
         <h1 className="t2b text-white m-5 text-center">S T A R G A T E</h1>
         <SignInComponent />
-        <CheckButtonComponent />
-        <button onClick={() => console.log(logoutApi())}>록앙ㅅ</button>
         <div className="text-right mr-20 mt-20">
           <ToolTipComponent />
         </div>

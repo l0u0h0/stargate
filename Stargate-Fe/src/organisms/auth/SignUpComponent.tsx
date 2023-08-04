@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import InputComponent from '@/atoms/common/InputComponent';
 import PasswordFormComponent from './PasswordFormComponent';
 import BtnBlue from '@/atoms/common/BtnBlue';
 import { useNavigate } from 'react-router-dom';
-import { signUpApi, verifyEmail } from '@/services/userService';
+import { signUpApi, verifyEmail } from '@/services/authService';
 import {
   emailVaildationCheck,
   userValidationCheck,
@@ -96,7 +96,7 @@ const SignUpComponent = () => {
       .then((response) => {
         if (response == 'alreadyToken') {
           alert('로그인 상태로는 회원가입을 할 수 없습니다.');
-          window.location.reload();
+          navigate('/');
         }
         console.log('SignUp SUCCESS');
         navigate('/');
@@ -104,7 +104,7 @@ const SignUpComponent = () => {
       .catch((error: string) => {
         console.log(error);
         alert(error);
-        window.location.reload();
+        return 0;
       });
   };
 
