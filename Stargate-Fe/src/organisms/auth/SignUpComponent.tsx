@@ -180,7 +180,9 @@ const SignUpComponent = () => {
           setter={setUser}
         />
       </div>
-      <BtnBlue text="회원가입" onClick={signUp} />
+      <p className='w-fit mr-auto ml-auto'>
+        <BtnBlue text="회원가입" onClick={signUp} />
+      </p>
     </div>
   );
 };

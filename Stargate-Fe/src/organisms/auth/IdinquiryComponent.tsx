@@ -63,9 +63,10 @@ const IdinquiryComponent = () => {
         getter={user}
         setter={setUser}
       />
-      <div className='content-center'>
+      <p className='w-fit mr-auto ml-auto'>
         <BtnBlue text="확인" onClick={findId} />
-      </div><IdResultModal
+      </p>
+      <IdResultModal
         email={email}
         isOpen={isOpen}
         onClose={() => setIsOpen(false)}

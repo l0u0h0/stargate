@@ -42,7 +42,9 @@ const AuthNumberComponent = ({ email, authNum, isOpen, onClose }: AuthNumberProp
       code += e;
     })
 
-    if (check && checkAuthNumApi(email, code) == 'SUCCESS') {
+    const result = checkAuthNumApi(email,code);
+    if (check && result == 'SUCCESS') {
+      console.log(result);
       /**
        * @TODO 
        * Store에 (Recoil State)

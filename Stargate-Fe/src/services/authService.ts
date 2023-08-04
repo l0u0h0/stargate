@@ -116,8 +116,10 @@ const logoutApi = async () => {
     if (api.defaults.headers['Authorization'] != null) {
       const tokenDecode = api.defaults.headers['Authorization']?.toString().split('.')[1];
       const payload = atob(tokenDecode);
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
       result = JSON.parse(payload.toString());
     }
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if (result.auth == 'USER') {
       await api.post('/fusers/logout', {}, { withCredentials: false });
     }
@@ -231,7 +233,7 @@ const checkAuthNumApi = (email: string, code: string) => {
       },
       withCredentials: false
     })
-    .then()
+    .then(res => console.log(res))
     .catch((error) => {
       console.log(error);
       result = 'FAIL';
