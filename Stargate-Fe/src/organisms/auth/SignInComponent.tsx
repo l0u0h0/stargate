@@ -69,7 +69,6 @@ const SignInComponent = () => {
           alert('로그인에 문제가 발생했습니다.');
           window.location.reload();
         } else {
-          // setLogin({ token: res, email: (user as userType).email });
           navigate('/admin/board');
         }
 
@@ -85,7 +84,6 @@ const SignInComponent = () => {
           alert('로그인에 문제가 발생했습니다.');
           window.location.reload();
         } else {
-          // setLogin({ token: res, email: (user as userType).email });
           navigate('/board');
         }
       })

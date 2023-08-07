@@ -231,7 +231,7 @@ const checkAuthNumApi = (email: string, code: string) => {
   let result = 'SUCCESS';
 
   api
-    .post('/fusers/check-code', JSON.stringify({ email, code }), {
+    .post('/fusers/check-code', JSON.stringify({ email, code }), { 
       headers: {
         'Content-Type': 'application/json',
       },
