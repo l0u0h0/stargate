@@ -19,6 +19,8 @@ const PwResetComponent = () => {
     newPw: '',
     newPwCheck: '',
   });
+  // store에서 이메일 가져오기
+  const email = useRecoilValue(emailState);
 
   useEffect(() => {
     const newPw = (pwCheck as pwCheckType).newPw;
@@ -47,9 +49,6 @@ const PwResetComponent = () => {
 
     const pw = (pwCheck as pwCheckType).newPw;
     const pwc = (pwCheck as pwCheckType).newPwCheck;
-    // store에서 이메일 가져오기
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const email = useRecoilValue(emailState);
 
     const validation = pwValidationCheck(pw, pwc);
 
@@ -59,6 +58,8 @@ const PwResetComponent = () => {
       window.location.reload();
       return 0;
     }
+
+    console.log("component "+email, pw);
 
     // 비밀번호 재설정 API 호출
     pwResetApi(email, pw)

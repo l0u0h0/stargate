@@ -54,7 +54,7 @@ const checkTokenExpTime = async () => {
 const onSuccessLogin = (response: AxiosResponse<tokenType>, type: boolean) => {
   const { accessToken, refreshToken } = response.data;
   console.log(accessToken);
-  api.defaults.headers['Authorization'] = `Bearer ${accessToken}`;
+  api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
   const expTime = Date.now() / 1000 + 59 * 60 * 24;
 
@@ -72,7 +72,7 @@ const onSuccessLogin = (response: AxiosResponse<tokenType>, type: boolean) => {
 // AccessToken이 없을 때,(만료됐을 때 재발급)
 const onNewAccessToken = (response: AxiosResponse<newTokenType>) => {
   const { accessToken } = response.data;
-  api.defaults.headers['Authorization'] = `Bearer ${accessToken}`;
+  api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
   console.log('AccessToken 재발급');
 
   const expTime = Date.now() / 1000 + 59 * 60 * 24;
@@ -113,8 +113,8 @@ const loginApi = async (formData: FormData, type: boolean) => {
 const logoutApi = async () => {
   try {
     let result;
-    if (api.defaults.headers['Authorization'] != null) {
-      const tokenDecode = api.defaults.headers['Authorization']
+    if (api.defaults.headers.common['Authorization'] != null) {
+      const tokenDecode = api.defaults.headers.common['Authorization']
         ?.toString()
         .split('.')[1];
       const payload = atob(tokenDecode);
@@ -125,7 +125,7 @@ const logoutApi = async () => {
     if (result.auth && result.auth == 'USER') {
       await api.post('/fusers/logout', {}, { withCredentials: true });
     }
-    api.defaults.headers['Authorization'] = '';
+    api.defaults.headers.common['Authorization'] = '';
     localStorage.clear();
     sessionStorage.clear();
     return 'SUCCESS';
@@ -250,8 +250,14 @@ const checkAuthNumApi = (email: string, code: string) => {
 // => JSON 타입으로 이멜, 비밀번호로 재설정 요청
 const pwResetApi = async (email: string, password: string) => {
   let status = 0;
+  console.log("service "+email, password);
   await api
-    .post('/fusers/new-pw', JSON.stringify({ email, password }))
+    .post('/fusers/new-pw', JSON.stringify({ email, password }), {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: false,
+    })
     .then((res) => {
       status = res.status;
     })
