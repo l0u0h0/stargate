@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import InputComponent from '@/atoms/common/InputComponent';
 import TextButtonComponent from '@/atoms/common/TextButtonComponent';
 import BtnBlue from '@/atoms/common/BtnBlue';

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import InputComponent from '@/atoms/common/InputComponent';
 import BtnBlue from '@/atoms/common/BtnBlue';
 import { useNavigate } from 'react-router-dom';
@@ -65,7 +65,7 @@ const PwResetComponent = () => {
       .then((res) => {
         console.log(res);
         if (res != '200') {
-          alert('서버에 문제가 발생했습니다.');
+          alert('비밀번호 재설정에 문제가 발생했습니다.');
           window.location.reload();
           return 0;
         }

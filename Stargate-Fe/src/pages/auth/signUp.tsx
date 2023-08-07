@@ -1,3 +1,4 @@
+import React from 'react';
 import SignUpComponent from '@/organisms/auth/SignUpComponent';
 
 const SignUp = () => {

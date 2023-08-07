@@ -1,3 +1,4 @@
+import React from 'react';
 import IdinquiryComponent from '@/organisms/auth/IdinquiryComponent';
 
 const Idinquiry = () => {

@@ -1,4 +1,5 @@
 import PwinquiryComponent from '@/organisms/auth/PwinquiryComponent';
+import React from 'react';
 
 /**
  * @todo

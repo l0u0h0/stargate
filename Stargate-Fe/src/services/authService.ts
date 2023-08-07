@@ -122,8 +122,8 @@ const logoutApi = async () => {
       result = JSON.parse(payload.toString());
     }
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    if (result.auth == 'USER') {
-      await api.post('/fusers/logout', {}, { withCredentials: false });
+    if (result.auth && result.auth == 'USER') {
+      await api.post('/fusers/logout', {}, { withCredentials: true });
     }
     api.defaults.headers['Authorization'] = '';
     localStorage.clear();
@@ -247,7 +247,7 @@ const checkAuthNumApi = (email: string, code: string) => {
 };
 
 // 유저 비밀번호 재설정 API
-// => JSON 타입으로 이멜, 비밀번호로 요청
+// => JSON 타입으로 이멜, 비밀번호로 재설정 요청
 const pwResetApi = async (email: string, password: string) => {
   let status = 0;
   await api
@@ -265,11 +265,12 @@ const pwResetApi = async (email: string, password: string) => {
 // 관리자 이메일 중복검사
 const adminVerifyEmail = async (email: string) => {
   let result = true;
+  const formData = new FormData();
+  formData.append('email', email);
   await api
-    .post('/pusers/check-email', JSON.stringify({ email }), {
+    .post('/pusers/check-email', formData, {
       headers: {
         'Access-Controll-Allow-Origin': '*',
-        'Content-Type': 'application/json',
       },
       withCredentials: false,
     })

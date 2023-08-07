@@ -1,8 +1,10 @@
-import { useRef, MouseEvent, useEffect, useState } from 'react';
+import React, { useRef, MouseEvent, useEffect, useState } from 'react';
 import AuthNumInputComponent from '@/atoms/auth/AuthNumInputComponent';
 import BtnWhite from '@/atoms/common/BtnWhite';
 import { useNavigate } from 'react-router-dom';
 import { checkAuthNumApi } from '@/services/authService';
+import { useSetRecoilState } from 'recoil';
+import { emailState } from '@/recoil/userState';
 
 interface AuthNumberProps {
   email: string;
@@ -20,6 +22,7 @@ interface AuthNumberProps {
 const AuthNumberComponent = ({ email, authNum, isOpen, onClose }: AuthNumberProps) => {
   const [numArr, setNumArr] = useState<number[]>([]);
   const [curIdx, setCurIdx] = useState<number>(0);
+  const setEmail = useSetRecoilState(emailState);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -51,6 +54,7 @@ const AuthNumberComponent = ({ email, authNum, isOpen, onClose }: AuthNumberProp
        * 해당 유저의 이메일 저장하는 상태 만들어 저장해주기. 
        * Props로 넘기는거보다 나을듯??
        */
+      setEmail(email);
       navigate('/pwreset');
     } else {
       alert('인증번호가 올바르지 않습니다.');
