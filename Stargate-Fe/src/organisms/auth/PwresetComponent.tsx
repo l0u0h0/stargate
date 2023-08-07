@@ -36,17 +36,9 @@ const PwResetComponent = () => {
 
   const navigate = useNavigate();
 
-  /**
-   * @TODO
-   * 비밀번호 업데이트하는 API 요청 보내기!
-   * ?? =>> 이전 모달에서 리스폰스로 받은 비번 찾기 진행중인 유저의
-   * 이메일은 스토어에 넣어다니는게 나을까 아님 프로퍼티로 넘겨 받는게 나을까?
-   */
   const resetPw = () => {
-    console.log('비밀번호 재설정');
     // api 요청 json 형식으루
     // email, password 필요
-
     const pw = (pwCheck as pwCheckType).newPw;
     const pwc = (pwCheck as pwCheckType).newPwCheck;
 
@@ -58,8 +50,6 @@ const PwResetComponent = () => {
       window.location.reload();
       return 0;
     }
-
-    console.log("component "+email, pw);
 
     // 비밀번호 재설정 API 호출
     pwResetApi(email, pw)

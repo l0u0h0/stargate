@@ -47,13 +47,6 @@ const AuthNumberComponent = ({ email, authNum, isOpen, onClose }: AuthNumberProp
 
     const result = checkAuthNumApi(email,code);
     if (check && result == 'SUCCESS') {
-      console.log(result);
-      /**
-       * @TODO 
-       * Store에 (Recoil State)
-       * 해당 유저의 이메일 저장하는 상태 만들어 저장해주기. 
-       * Props로 넘기는거보다 나을듯??
-       */
       setEmail(email);
       navigate('/pwreset');
     } else {

@@ -37,7 +37,9 @@ const AdminSignUpComponent = () => {
       alert(check);
       return 0;
     }
-    const result = await adminVerifyEmail(email).catch((error) =>
+    const formData = new FormData();
+    formData.append('email', email);
+    const result = await adminVerifyEmail(formData).catch((error) =>
       console.log(error)
     );
 
