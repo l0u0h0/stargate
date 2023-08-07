@@ -96,7 +96,7 @@ const loginApi = async (formData: FormData, type: boolean) => {
   let response = 'SUCCESS';
   await api
     .post('/fusers/login', formData, {
-      withCredentials: false,
+      withCredentials: false
     })
     .then((res: AxiosResponse<tokenType>) => {
       response = res.status == 200 ? onSuccessLogin(res, type) : 'FAIL';
@@ -132,11 +132,18 @@ const logoutApi = async () => {
         const payload = atob(tokenDecode[1]);
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         result = JSON.parse(payload.toString());
+        console.log(result);
       }
     }
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if (result.auth && result.auth == 'USER') {
-      await api.post('/fusers/logout');
+      await api.post('/fusers/logout', {}, {
+        headers: {
+          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+        },
+        withCredentials: false
+      });
     }
     api.defaults.headers.common['Authorization'] = '';
     localStorage.clear();
@@ -175,7 +182,7 @@ const reAccessApi = async () => {
   );
 
   await api
-    .post('/jwt/new-access-token', refreshToken, { withCredentials: false })
+    .post('/jwt/new-access-token', refreshToken)
     .then(onNewAccessToken)
     .catch((error) => console.log(error));
 };
@@ -207,7 +214,7 @@ const idInquiryApi = async (formData: FormData) => {
     phone: '',
   };
   await api
-    .post('/fusers/find-id', formData, { withCredentials: false })
+    .post('/fusers/find-id', formData)
     .then((response: AxiosResponse<idInquiryType>) => {
       result = { ...response.data };
     })
