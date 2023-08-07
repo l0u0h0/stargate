@@ -58,6 +58,8 @@ const onSuccessLogin = (response: AxiosResponse<tokenType>, type: boolean) => {
 
   const expTime = Date.now() / 1000 + 59 * 60 * 24;
 
+  localStorage.setItem('accessToken', accessToken);
+
   if (type) {
     localStorage.setItem('refreshToken', refreshToken);
     localStorage.setItem('tokenExpTime', `${expTime}`);
@@ -73,6 +75,7 @@ const onSuccessLogin = (response: AxiosResponse<tokenType>, type: boolean) => {
 const onNewAccessToken = (response: AxiosResponse<newTokenType>) => {
   const { accessToken } = response.data;
   api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
+
   console.log('AccessToken 재발급');
 
   const expTime = Date.now() / 1000 + 59 * 60 * 24;
@@ -113,17 +116,27 @@ const loginApi = async (formData: FormData, type: boolean) => {
 const logoutApi = async () => {
   try {
     let result;
-    if (api.defaults.headers.common['Authorization'] != null) {
-      const tokenDecode = api.defaults.headers.common['Authorization']
+    // if (api.defaults.headers.common['Authorization'] != null) {
+    //   const tokenDecode = api.defaults.headers.common['Authorization']
+    //     ?.toString()
+    //     .split('.')[1];
+    //   const payload = atob(tokenDecode);
+    //   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+    //   result = JSON.parse(payload.toString());
+    // }
+    if (localStorage.getItem('accessToken') != null) {
+      const tokenDecode = localStorage.getItem('accessToken')
         ?.toString()
-        .split('.')[1];
-      const payload = atob(tokenDecode);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      result = JSON.parse(payload.toString());
+        .split('.');
+      if (tokenDecode != undefined && tokenDecode.length > 0) {
+        const payload = atob(tokenDecode[1]);
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        result = JSON.parse(payload.toString());
+      }
     }
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if (result.auth && result.auth == 'USER') {
-      await api.post('/fusers/logout', {}, { withCredentials: true });
+      await api.post('/fusers/logout');
     }
     api.defaults.headers.common['Authorization'] = '';
     localStorage.clear();
@@ -142,7 +155,7 @@ const signUpApi = async (formData: FormData) => {
   }
   const response = await api
     .post('/fusers/register', formData, {
-      withCredentials: false,
+      // withCredentials: false,
     })
     .then((response) => console.log(response.status))
     .catch((error) => {
@@ -176,7 +189,7 @@ const verifyEmail = async (email: string) => {
         'Access-Controll-Allow-Origin': '*',
         'Content-Type': 'application/json',
       },
-      withCredentials: false,
+      // withCredentials: false,
     })
     .then((response: AxiosResponse<checkEmailType>) => {
       const { exist } = response.data;
