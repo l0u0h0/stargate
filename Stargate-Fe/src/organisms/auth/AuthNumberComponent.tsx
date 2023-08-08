@@ -91,15 +91,15 @@ const AuthNumberComponent = ({
                   회원님의 이메일로 번호를 전송중입니다.
                 </p>
                 <div className="animate-pulse flex space-x-4">
-                  <div className="rounded-full bg-slate-700 h-24 w-24"></div>
+                  <div className="rounded-full bg-slate-700 h-24 w-24 m-2"></div>
                   <div className="flex-1 space-y-6 py-1">
-                    <div className="h-5 bg-slate-700 rounded"></div>
+                    <div className="h-5 bg-slate-700 rounded m-2"></div>
                     <div className="space-y-3">
                       <div className="grid grid-cols-3 gap-4">
-                        <div className="h-5 bg-slate-700 rounded col-span-2"></div>
-                        <div className="h-5 bg-slate-700 rounded col-span-1"></div>
+                        <div className="h-5 bg-slate-700 rounded col-span-2 m-2"></div>
+                        <div className="h-5 bg-slate-700 rounded col-span-1 m-2"></div>
                       </div>
-                      <div className="h-5 bg-slate-700 rounded"></div>
+                      <div className="h-5 bg-slate-700 rounded m-2"></div>
                     </div>
                   </div>
                 </div>

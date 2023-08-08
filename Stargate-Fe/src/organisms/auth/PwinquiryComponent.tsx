@@ -4,8 +4,8 @@ import AuthNumberComponent from './AuthNumberComponent';
 import BtnBlue from '@/atoms/common/BtnBlue';
 import { pwInquiryApi } from '@/services/authService';
 import { emailVaildationCheck } from '@/hooks/useValidation';
-import { useSetRecoilState } from 'recoil';
-import { emailState } from '@/recoil/userState';
+// import { useSetRecoilState } from 'recoil';
+// import { emailState } from '@/recoil/userState';
 
 interface emailType {
   email: string;
@@ -16,10 +16,9 @@ const PwinquiryComponent = () => {
   const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState<object>({ email: '' });
-  const SetEmailProp = useSetRecoilState(emailState);
+  // const SetEmailProp = useSetRecoilState(emailState);
+  const SetEmailProp = (value: string) => sessionStorage.setItem('emailStore', value)
   const [authNum, setAuthNum] = useState<number[]>([]);
-
-  console.log(loading);
 
   /**
    * @RESPONSE
@@ -48,8 +47,6 @@ const PwinquiryComponent = () => {
         setAuthNum(arr.map((e) => parseInt(e)));
       })
       .catch((error) => console.log(error));
-
-    console.log('in', loading);
 
     setLoading(false);
   };
