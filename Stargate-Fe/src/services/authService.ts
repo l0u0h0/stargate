@@ -1,4 +1,4 @@
-import { AxiosResponse } from 'axios';
+import axios, { AxiosResponse } from 'axios';
 import { api } from './api';
 
 interface tokenType {
@@ -41,7 +41,14 @@ const checkTokenExpTime = async () => {
         : localStorage.getItem('tokenExpTime')
     )
   );
-  if (expTime < Date.now() / 1000) {
+  // Header나 LocalStorage에 AccessToken이 있다면 True, 없다면 False;
+  const flag =
+    axios.defaults.headers.common['Authorization'] ||
+    localStorage.getItem('accessToken')
+      ? true
+      : false;
+  // 만료시간이 지나지 않았거나 AccessToken이 없다면 재발급 메서드 호출
+  if (expTime < Date.now() / 1000 && !flag) {
     await reAccessApi();
   }
   return 'SUCCESS';
@@ -96,7 +103,7 @@ const loginApi = async (formData: FormData, type: boolean) => {
   let response = 'SUCCESS';
   await api
     .post('/fusers/login', formData, {
-      withCredentials: false
+      withCredentials: false,
     })
     .then((res: AxiosResponse<tokenType>) => {
       response = res.status == 200 ? onSuccessLogin(res, type) : 'FAIL';
@@ -114,6 +121,7 @@ const loginApi = async (formData: FormData, type: boolean) => {
 // auth 값이 유저가 아닌 경우 (관리자인 경우)
 // api 요청 보내지 않기.!
 const logoutApi = async () => {
+  await checkTokenExpTime();
   try {
     let result;
     // if (api.defaults.headers.common['Authorization'] != null) {
@@ -125,7 +133,8 @@ const logoutApi = async () => {
     //   result = JSON.parse(payload.toString());
     // }
     if (localStorage.getItem('accessToken') != null) {
-      const tokenDecode = localStorage.getItem('accessToken')
+      const tokenDecode = localStorage
+        .getItem('accessToken')
         ?.toString()
         .split('.');
       if (tokenDecode != undefined && tokenDecode.length > 0) {
@@ -137,13 +146,17 @@ const logoutApi = async () => {
     }
     // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
     if (result.auth && result.auth == 'USER') {
-      await api.post('/fusers/logout', {}, {
-        headers: {
-          // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`
-        },
-        withCredentials: false
-      });
+      await api.post(
+        '/fusers/logout',
+        {},
+        {
+          headers: {
+            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          },
+          withCredentials: false,
+        }
+      );
     }
     api.defaults.headers.common['Authorization'] = '';
     localStorage.clear();
@@ -181,7 +194,8 @@ const reAccessApi = async () => {
       : localStorage.getItem('refreshToken')
   );
 
-  await api
+  // await api
+  await axios
     .post('/jwt/new-access-token', refreshToken)
     .then(onNewAccessToken)
     .catch((error) => console.log(error));
@@ -251,7 +265,7 @@ const checkAuthNumApi = (email: string, code: string) => {
   let result = 'SUCCESS';
 
   api
-    .post('/fusers/check-code', JSON.stringify({ email, code }), { 
+    .post('/fusers/check-code', JSON.stringify({ email, code }), {
       headers: {
         'Content-Type': 'application/json',
       },
@@ -270,7 +284,7 @@ const checkAuthNumApi = (email: string, code: string) => {
 // => JSON 타입으로 이멜, 비밀번호로 재설정 요청
 const pwResetApi = async (email: string, password: string) => {
   let status = 0;
-  console.log("service "+email, password);
+  console.log('service ' + email, password);
   await api
     .post('/fusers/new-pw', JSON.stringify({ email, password }), {
       headers: {

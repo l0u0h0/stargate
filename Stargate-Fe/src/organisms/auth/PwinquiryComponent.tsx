@@ -13,25 +13,29 @@ interface emailType {
 }
 
 const PwinquiryComponent = () => {
+  const [loading, setLoading] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState<object>({ email: '' });
   const SetEmailProp = useSetRecoilState(emailState);
   const [authNum, setAuthNum] = useState<number[]>([]);
+
+  console.log(loading);
 
   /**
    * @RESPONSE
    * "email": 요청 보낸 이메일 주소 그대로 돌아옴
    * "code": 인증번호(6자리) 값
    */
-  const verifyEmail = () => {
+  const verifyEmail = async () => {
     // 이메일 정보 서버에 보내구!
     const check = emailVaildationCheck((email as emailType).email);
     if (check != 'SUCCESS') {
       alert(check);
       return 0;
     }
-
-    pwInquiryApi((email as emailType).email)
+    setLoading(true);
+    setIsOpen(true);
+    await pwInquiryApi((email as emailType).email)
       .then((response: emailType) => {
         console.log(response);
         if (response.email == 'NoData') {
@@ -42,9 +46,12 @@ const PwinquiryComponent = () => {
         SetEmailProp((email as emailType).email);
         const arr = response.code.split('');
         setAuthNum(arr.map((e) => parseInt(e)));
-        setIsOpen(true);
       })
       .catch((error) => console.log(error));
+
+    console.log('in', loading);
+
+    setLoading(false);
   };
 
   return (
@@ -58,11 +65,12 @@ const PwinquiryComponent = () => {
           getter={email}
           setter={setEmail}
         />
-        <p className='w-fit mr-auto ml-auto'>
+        <p className="w-fit mr-auto ml-auto">
           <BtnBlue text="인증번호 받기" onClick={verifyEmail} />
         </p>
       </div>
       <AuthNumberComponent
+        load={loading}
         email={(email as emailType).email}
         authNum={authNum}
         isOpen={isOpen}
