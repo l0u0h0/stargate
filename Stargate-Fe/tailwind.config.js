@@ -147,6 +147,9 @@ export default {
         lg: '16px',
         xl: '32px',
       },
+      dropShadow: {
+        nobg: '0 0 0px 1000px #fff inset',
+      }
     },
   },
   plugins: [
