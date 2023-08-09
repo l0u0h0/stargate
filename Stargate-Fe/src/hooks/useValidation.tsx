@@ -94,11 +94,12 @@ const userValidationCheck = (user: userType) => {
   const nickName = user.nickname;
   const regexNick = new RegExp(/[^a-zA-Z0-9ㄱ-힣]/g);
 
-  if (
-    regexNick.test(nickName) ||
-    !(nickName.length >= 3 && nickName.length <= 20)
-  ) {
-    return '닉네임에는 특수문자가 포함될 수 없습니다.';
+  if (!regexNick.test(nickName)) {
+    return '닉네임은 특수문자가 포함될 수 없습니다.';
+  }
+
+  if (!(nickName.length >= 3 && nickName.length <= 20)) {
+    return '닉네임은 3자 이상, 20자 이하로 설정해주세요.';
   }
 
   // birth Checking

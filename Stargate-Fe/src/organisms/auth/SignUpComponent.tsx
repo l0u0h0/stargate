@@ -181,6 +181,7 @@ const SignUpComponent = () => {
       <div className="flex">
         <InputComponent
           text="전화번호"
+          placehoder="숫자만 입력해주세요."
           type="text"
           keyName="phone"
           getter={user}
