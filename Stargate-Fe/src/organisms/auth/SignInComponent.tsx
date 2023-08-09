@@ -56,6 +56,11 @@ const SignInComponent = () => {
 
     console.log(formData);
 
+    if (pwState == 'red') {
+      alert('잘못된 비밀번호입니다.');
+      return;
+    }
+
     // 로그인 요청 하고 난 뒤 성공 시에
     // 로그인 유지 체크 박스 값 체크 되었는지 검사한 후
     // 체크 되어 있으면 로컬 스토리지에 토큰 저장해주기
@@ -66,8 +71,10 @@ const SignInComponent = () => {
         if (res == 'alreadyToken') {
           alert('이미 로그인 된 상태입니다.');
           navigate('/admin/board');
-        } else if (res == 'FAIL') {
-          alert('로그인에 문제가 발생했습니다.');
+        } else if (res != 'SUCCESS') {
+          if (res == '팬 로그인 실패') {
+            alert('잘못된 비밀번호 입니다.');
+          } else alert(res);
         } else {
           navigate('/admin/board');
         }
@@ -81,8 +88,10 @@ const SignInComponent = () => {
         if (res == 'alreadyToken') {
           alert('이미 로그인 된 상태입니다.');
           navigate('/board');
-        } else if (res == 'FAIL') {
-          alert('로그인에 문제가 발생했습니다.');
+        } else if (res != 'SUCCESS') {
+          if (res == '팬 로그인 실패') {
+            alert('잘못된 비밀번호 입니다.');
+          } else alert(res);
         } else {
           navigate('/board');
         }
