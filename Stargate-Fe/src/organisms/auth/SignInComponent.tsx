@@ -5,6 +5,8 @@ import BtnBlue from '@/atoms/common/BtnBlue';
 import { adminLoginApi, loginApi } from '@/services/authService';
 import { useNavigate } from 'react-router-dom';
 import ToggleButtonComponent from '@/atoms/auth/ToggleButtonComponent';
+import EndCallButton from '@/atoms/video/EndCallButton';
+import NotepadComponent from '@/atoms/video/NotepadComponent';
 
 interface userType {
   type: string;
@@ -142,6 +144,8 @@ const SignInComponent = () => {
           <TextButtonComponent text="회원가입" link="/signup" />
         </div>
       </div>
+      <EndCallButton />
+      <NotepadComponent />
     </div>
   );
 };
