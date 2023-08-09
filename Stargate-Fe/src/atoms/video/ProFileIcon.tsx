@@ -1,7 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const ProFileIcon = () => {
-  return <span className="material-symbols-outlined">account_box</span>;
+  const navigate = useNavigate();
+  return <span onClick={() => navigate('/mypage')} className="material-symbols-outlined">account_box</span>;
 };
 
 export default ProFileIcon;
