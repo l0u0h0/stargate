@@ -69,36 +69,34 @@ const SignInComponent = () => {
     if ((user as userType).type == 'on') {
       console.log('adminLogin');
       adminLoginApi(formData, checked)
-      .then((res) => {
-        if (res == 'alreadyToken') {
-          alert('이미 로그인 된 상태입니다.');
-          navigate('/admin/board');
-        } else if (res != 'SUCCESS') {
-          if (res == '팬 로그인 실패') {
+        .then((res) => {
+          console.log(res);
+          if (res == 'alreadyToken') {
+            alert('이미 로그인 된 상태입니다.');
+            navigate('/admin/board');
+          } else if (res == '401') {
             alert('잘못된 비밀번호 입니다.');
-          } else alert(res);
-        } else {
-          navigate('/admin/board');
-        }
-
-      })
-      .catch((error) => console.log(error));
+          } else {
+            alert('로그인에 성공하셨습니다.')
+            navigate('/admin/board');
+          }
+        })
+        .catch((error) => console.log(error));
     } else {
       console.log('userLogin');
       loginApi(formData, checked)
-      .then((res) => {
-        if (res == 'alreadyToken') {
-          alert('이미 로그인 된 상태입니다.');
-          navigate('/board');
-        } else if (res != 'SUCCESS') {
-          if (res == '팬 로그인 실패') {
+        .then((res) => {
+          if (res == 'alreadyToken') {
+            alert('이미 로그인 된 상태입니다.');
+            navigate('/board');
+          } else if (res == '401') {
             alert('잘못된 비밀번호 입니다.');
-          } else alert(res);
-        } else {
-          navigate('/board');
-        }
-      })
-      .catch((error) => console.log(error));
+          } else {
+            alert('로그인에 성공하셨습니다.')
+            navigate('/board');
+          }
+        })
+        .catch((error) => console.log(error));
     }
   };
 
@@ -122,7 +120,13 @@ const SignInComponent = () => {
       />
       <div className="flex text-white m-5 p2r">
         <div className="w-1/2">
-          <input type="checkbox" id="loginStatus" checked={checked} onChange={() => setChecked(!checked)} className="ml-2 mr-2" />
+          <input
+            type="checkbox"
+            id="loginStatus"
+            checked={checked}
+            onChange={() => setChecked(!checked)}
+            className="ml-2 mr-2"
+          />
           로그인 유지
         </div>
         <div className="flex w-1/2">
