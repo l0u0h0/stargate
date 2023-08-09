@@ -92,7 +92,7 @@ const SignInComponent = () => {
   };
 
   return (
-    <div className="max-w-sm ml-auto mr-auto items-center">
+    <div className="max-w-sm mt-20 ml-auto mr-auto items-center">
       <InputComponent
         type="text"
         text="이메일"
@@ -109,17 +109,17 @@ const SignInComponent = () => {
         getter={user}
         setter={setUser}
       />
-      <div className="flex text-white m-2 p2r">
+      <div className="flex text-white m-5 p2r">
         <div className="w-1/2">
           <input type="checkbox" id="loginStatus" checked={checked} onChange={() => setChecked(!checked)} className="ml-2 mr-2" />
           로그인 유지
         </div>
-        <div className="flex">
+        <div className="flex w-1/2">
           <ToggleButtonComponent getter={user} setter={setUser} />
-          <p className="ml-2 mr-2">관리자 로그인</p>
+          <p className="ml-2">관리자 로그인</p>
         </div>
       </div>
-      <div className="flex justify-center">
+      <div className="flex justify-center m-5">
         <BtnBlue text="로그인" onClick={Login} />
       </div>
       <div className="flex text-white p2r mt-2 w-full justify-center">
