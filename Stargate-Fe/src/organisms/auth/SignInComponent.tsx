@@ -149,7 +149,7 @@ const SignInComponent = () => {
         </div>
       </div>
       <EndCallButton />
-      {/* <NotepadComponent /> */}
+      <NotepadComponent />
     </div>
   );
 };
