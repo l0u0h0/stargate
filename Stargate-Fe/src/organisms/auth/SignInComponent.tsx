@@ -72,11 +72,11 @@ const SignInComponent = () => {
           if (res == 'alreadyToken') {
             alert('이미 로그인 된 상태입니다.');
             navigate('/admin/board');
-          } else if (res == '401') {
-            alert('잘못된 비밀번호 입니다.');
-          } else {
-            alert('로그인에 성공하셨습니다.')
+          } else if (res == 'SUCCESS') {
+            alert('로그인에 성공하셨습니다.');
             navigate('/admin/board');
+          } else {
+            alert('관리자 로그인 실패');
           }
         })
         .catch((error) => console.log(error));
@@ -87,11 +87,15 @@ const SignInComponent = () => {
           if (res == 'alreadyToken') {
             alert('이미 로그인 된 상태입니다.');
             navigate('/board');
-          } else if (res == '401') {
-            alert('잘못된 비밀번호 입니다.');
-          } else {
-            alert('로그인에 성공하셨습니다.')
+          } else if (res == 'SUCCESS') {
+            alert('로그인에 성공하셨습니다.');
             navigate('/board');
+          } else {
+            if (res === '팬 로그인 실패') {
+              alert('비밀번호를 다시 확인해주십시오.');
+            } else {
+              alert(res);
+            }
           }
         })
         .catch((error) => console.log(error));

@@ -75,7 +75,7 @@ const onSuccessLogin = (response: AxiosResponse<tokenType>, type: boolean) => {
   sessionStorage.setItem('refreshToken', refreshToken);
   sessionStorage.setItem('tokenExpTime', `${expTime}`);
 
-  return accessToken;
+  return 'SUCCESS';
 };
 
 // AccessToken이 없을 때,(만료됐을 때 재발급)
@@ -111,7 +111,7 @@ const loginApi = async (formData: FormData, type: boolean) => {
     .catch((error) => {
       console.log(error);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
-      response = error['response'].status.toString();
+      response = error['response'].data
     });
 
   return response;
@@ -158,6 +158,8 @@ const logoutApi = async () => {
           }
         );
       }
+    } else {
+      return '로그인 정보가 존재하지 않습니다.';
     }
 
     api.defaults.headers.common['Authorization'] = '';
@@ -166,7 +168,7 @@ const logoutApi = async () => {
     return 'SUCCESS';
   } catch (error) {
     console.log(error);
-    return 'FAIL';
+    return '로그인 실패';
   }
 };
 
@@ -337,8 +339,8 @@ const adminLoginApi = async (formData: FormData, type: boolean) => {
     })
     .catch((error) => {
       console.log(error);
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
-      response = error['response'].status.toString();
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
+      response = error['response'].data;
     });
 
   return response;
