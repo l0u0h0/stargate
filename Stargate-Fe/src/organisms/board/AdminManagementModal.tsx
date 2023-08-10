@@ -1,7 +1,15 @@
-import React, { useState } from 'react';
-import PlusButton from '../../atoms/board/PlusButton';
+import { useState } from 'react';
+import PlusMinusButton from '../../atoms/board/PlusMinusButton';
 import AdminManagementModalBox from './AdminManagementModalBox';
 import BtnBlue from '@/atoms/common/BtnBlue';
+import { deleteGroup } from '@/services/adminBoardService';
+import { useRecoilState } from 'recoil';
+import { selectedGroupNoState } from '@/recoil/adminManagementState';
+/**
+ * AdminManagementModal
+ * group의 이름들을 가져와서 버튼으로 출력, 만약 5의 배수가 아니라면 비어있는 <div>를 이용해 공간을 채워줌
+ * 버튼을 click하면, setSelectedGroup에 group을 state로 넣어줌
+ */
 
 interface MemberData {
   memberNo: number;
@@ -12,25 +20,31 @@ interface GroupData {
   name: string;
   members: MemberData[];
 }
-/**
- * AdminManagementModalProps
- * @param group => AdminManagement에서 props로 넘겨받은 그룹과 멤버 정보가 있는 배열
- */
 interface AdminManagementModalProps {
   group: GroupData[];
 }
 
-/**
- * AdminManagementModal
- * group의 이름들을 가져와서 버튼으로 출력, 만약 5의 배수가 아니라면 비어있는 <div>를 이용해 공간을 채워줌
- * 버튼을 click하면, setSelectedGroup에 group을 state로 넣어줌
- */
-
 const AdminManagementModal = ({ group }: AdminManagementModalProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedGroup, setSelectedGroup] = useState<number | null>(null);
+  const [deleteGroupNo, setDeleteGroupNo] = useState<number | null>(null);
+  const [selectedGroup, setSelectedGroup] =
+    useRecoilState(selectedGroupNoState);
   const groupNames = group.map((data) => data.name);
   const totalButtons = Math.ceil(groupNames.length / 5) * 5;
+
+  const groupDeleteHandle = async () => {
+    if (deleteGroupNo !== null) {
+      try {
+        await deleteGroup(deleteGroupNo);
+        setDeleteGroupNo(null);
+        console.log('그룹 삭제:', deleteGroupNo);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      console.log('deleteGroupNo 없음');
+    }
+  };
 
   /**
    * handleCircleClick
@@ -50,7 +64,6 @@ const AdminManagementModal = ({ group }: AdminManagementModalProps) => {
     setSelectedGroup(null);
     setIsModalOpen(false);
   };
-
   return (
     <div>
       <div className="w-l h-500 flex flex-col justify-between">
@@ -76,8 +89,9 @@ const AdminManagementModal = ({ group }: AdminManagementModalProps) => {
             }
           })}
         </div>
-        <div className="self-end">
-          <PlusButton onClick={() => handleCircleClick('')} />
+        <div className="self-end flex">
+          <PlusMinusButton onClick={() => handleCircleClick('')} />
+          <PlusMinusButton isPlus = {false} onClick={() => handleCircleClick('')} />
         </div>
         <AdminManagementModalBox
           isOpen={isModalOpen}

@@ -112,9 +112,9 @@ const NotepadComponent = () => {
   };
 
   return (
-    <div className="absolute container w-300 h-300 z-50" ref={containerRef}>
+    <div className="absolute container w-96 h-96 z-50" ref={containerRef}>
       <div
-        className="relative drag-component w-10 h-10 bg-slate-400"
+        className="relative drag-component bg-none w-fit h-fit"
         ref={dragComponentRef}
         draggable
         onDrag={(e) => dragHandler(e)}
@@ -122,8 +122,8 @@ const NotepadComponent = () => {
         onDragOver={(e) => dragOverHandler(e)}
         onDragEnd={(e) => dragEndHandler(e)}
         style={{ left: pos.left, top: pos.top }}
-      >
-        <textarea className="bg-yellow-200 resize">hi</textarea>
+      > 
+        <textarea className="bg-postityellow resize p-3 rounded-sm drop-shadow-lg border-none outline-none">hi</textarea>
       </div>
     </div>
   );

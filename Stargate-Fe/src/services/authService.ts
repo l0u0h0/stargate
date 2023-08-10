@@ -144,21 +144,22 @@ const logoutApi = async () => {
         result = JSON.parse(payload.toString());
         console.log(result);
       }
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+      if (result.auth && result.auth == 'USER') {
+        await api.post(
+          '/fusers/logout',
+          {},
+          {
+            headers: {
+              // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+              Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+            },
+            withCredentials: false,
+          }
+        );
+      }
     }
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-    if (result.auth && result.auth == 'USER') {
-      await api.post(
-        '/fusers/logout',
-        {},
-        {
-          headers: {
-            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-            Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-          },
-          withCredentials: false,
-        }
-      );
-    }
+
     api.defaults.headers.common['Authorization'] = '';
     localStorage.clear();
     sessionStorage.clear();

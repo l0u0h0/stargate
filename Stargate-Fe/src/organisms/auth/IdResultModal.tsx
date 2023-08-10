@@ -26,8 +26,8 @@ const IdResultModal = ({ email, isOpen, onClose }: IdResultModal) => {
   const closeIdModal = () => {
     onClose();
     navigate('/');
-  }
-  
+  };
+
   return (
     <>
       {isOpen && (
@@ -38,7 +38,9 @@ const IdResultModal = ({ email, isOpen, onClose }: IdResultModal) => {
           {email == 'NoData' ? (
             <div ref={modalRef} className="w-fit h-fit bg-white rounded-lg p-4">
               <div className="text-black backdrop:card bg-white p-5 rounded-lg m-5">
-                <p className="mt-4 mb-8 form-title text-black">조회된 아이디가 없습니다람쥐.</p>
+                <p className="mt-4 mb-8 form-title text-black">
+                  조회된 아이디가 없습니다람쥐.
+                </p>
                 <BtnWhite text="확인" onClick={onClose} />
               </div>
             </div>
