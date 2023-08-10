@@ -7,6 +7,7 @@ const NotepadComponent = () => {
   const [current, setCurrent] = useState({ x: 0, y: 0 });
   const [pos, setPos] = useState({ left: 0, top: 0 });
 
+  // 드래그가 유효한 영역 안에서 이루어지는지 검사
   const isInsideDragArea = (e: React.DragEvent<HTMLElement>) => {
     const left = e.target instanceof HTMLElement ? e.target.offsetLeft : 0;
     const top = e.target instanceof HTMLElement ? e.target.offsetTop : 0;
@@ -15,15 +16,39 @@ const NotepadComponent = () => {
     const right =
       e.target instanceof HTMLElement ? left + e.target.offsetWidth : left;
 
-    const isValid = (num: number) => {
-      if (num >= 300 || num <= 0) return false;
-      return true;
-    }
+    // number: offset Value, type: width인지 height 인지 구분,
+    // type=true -> width, type=false -> height
+    const isValid = (num: number, type: boolean) => {
+      if (type) {
+        if (
+          (containerRef.current?.offsetWidth != undefined &&
+            num >= containerRef.current?.offsetWidth) ||
+          num <= 0
+        )
+          return false;
+      } else {
+        if (
+          (containerRef.current?.offsetHeight != undefined &&
+            num >= containerRef.current?.offsetHeight) ||
+          num <= 0
+        )
+          return false;
+      }
 
-    if (isValid(left) && isValid(top) && isValid(bottom) && isValid(right)) return true;
+      return true;
+    };
+
+    if (
+      isValid(left, true) &&
+      isValid(top, false) &&
+      isValid(bottom, false) &&
+      isValid(right, true)
+    )
+      return true;
     return false;
   };
 
+  // 드래그 이벤트 발생 시 호출
   const dragHandler = (e: React.DragEvent<HTMLElement>) => {
     const posTemp = { ...pos };
     posTemp['left'] =
@@ -44,6 +69,7 @@ const NotepadComponent = () => {
     setCurrent(currentPosTemp);
   };
 
+  // 드래그가 시작될 때 호출
   const dragStartHandler = (e: React.DragEvent<HTMLDivElement>) => {
     const blankCanvas = document.createElement('canvas');
     blankCanvas.classList.add('canvas');
@@ -63,10 +89,12 @@ const NotepadComponent = () => {
     setCurrent(currentPosTemp);
   };
 
+  // 드래그 되는 동안 호출
   const dragOverHandler = (e: React.DragEvent<HTMLElement>) => {
     e.preventDefault();
   };
 
+  // 드래그가 끝난 뒤 호출
   const dragEndHandler = (e: React.DragEvent<HTMLElement>) => {
     if (!isInsideDragArea(e)) {
       const posTemp = { ...pos };
@@ -84,20 +112,20 @@ const NotepadComponent = () => {
   };
 
   return (
-      <div className="absolute container w-300 h-300 z-50" ref={containerRef}>
-        <div
-          className="relative drag-component w-10 h-10 bg-slate-400"
-          ref={dragComponentRef}
-          draggable
-          onDrag={(e) => dragHandler(e)}
-          onDragStart={(e) => dragStartHandler(e)}
-          onDragOver={(e) => dragOverHandler(e)}
-          onDragEnd={(e) => dragEndHandler(e)}
-          style={{ left: pos.left, top: pos.top }}
-        >
-          <textarea className="bg-yellow-200 resize">hi</textarea>
-        </div>
+    <div className="absolute container w-300 h-300 z-50" ref={containerRef}>
+      <div
+        className="relative drag-component w-10 h-10 bg-slate-400"
+        ref={dragComponentRef}
+        draggable
+        onDrag={(e) => dragHandler(e)}
+        onDragStart={(e) => dragStartHandler(e)}
+        onDragOver={(e) => dragOverHandler(e)}
+        onDragEnd={(e) => dragEndHandler(e)}
+        style={{ left: pos.left, top: pos.top }}
+      >
+        <textarea className="bg-yellow-200 resize">hi</textarea>
       </div>
+    </div>
   );
 };
 
