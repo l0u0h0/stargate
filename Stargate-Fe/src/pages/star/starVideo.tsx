@@ -4,6 +4,7 @@ import peerService from '@/peer/peer';
 import NotepadComponent from '@/atoms/video/NotepadComponent';
 import VideoHeaderComponent from '@/organisms/video/VideoHeaderComponent';
 import { getStarMeetingDataApi } from '@/services/videoService';
+import useInterval from '@/hooks/useInterval';
 
 interface starMeetingDataType {
   waitingTime: number;
@@ -166,6 +167,8 @@ const StarVideo = () => {
    */
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   const [roomNum, setRoomNum] = useState(13);
+  const [totalTime, setTotalTime] = useState(0);
+  const [time, setTime] = useState({ min: 0, sec: 0 });
   const [meetingData, setMeetingData] = useState<starMeetingDataType>({
     waitingTime: 0,
     meetingTime: 0,
@@ -194,9 +197,28 @@ const StarVideo = () => {
     }
   };
 
-  const getCounting = useCallback(() => {
-    
+  const sumTime = (
+    meetingTime: number,
+    waitingTime: number,
+    photoNum: number
+  ) => {
+    const time = meetingTime + waitingTime + photoNum * 10;
+    return time;
+  };
 
+  useInterval(() => {
+    setTime({ min: totalTime / 60, sec: totalTime % 60 });
+  }, 1000);
+
+  // User Data가 들어오면 meetingTime 계산해서 카운트 훅 시작
+  const getCounting = useCallback(async () => {
+    setTotalTime(
+      sumTime(
+        meetingData.meetingTime,
+        meetingData.waitingTime,
+        meetingData.photoNum
+      )
+    );
   }, [meetingData]);
 
   return (
