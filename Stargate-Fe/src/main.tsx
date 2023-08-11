@@ -4,7 +4,6 @@ import './index.css';
 import './App.css';
 import ReactDOM from 'react-dom/client';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import './index.css';
 import SignIn from './pages/auth/SignIn.tsx';
 import SignUp from './pages/auth/SignUp.tsx';
 import IdInquiry from './pages/auth/Idinquiry.tsx';
@@ -23,7 +22,7 @@ import AdminMyPage from './pages/admin/board/AdminMyPage.tsx';
 import AdminEventCreate from './pages/admin/event/AdminEventCreate.tsx';
 import AdminEventDetail from './pages/admin/event/AdminEventDetail.tsx';
 import AdminMonitoring from './pages/admin/event/AdminMonitoring.tsx';
-import './index.css'; // CSS 파일을 import
+import UserVideoo from './pages/user/video/UserVideoo.tsx';
 // import { SocketProvider } from '@/context/SocketProvider.tsx';
 
 const router = createBrowserRouter([
@@ -37,6 +36,7 @@ const router = createBrowserRouter([
   { path: '/remind', element: <Remind /> },
   { path: '/ready', element: <Ready /> },
   { path: '/video', element: <Video /> },
+  { path: '/test/video', element: <UserVideoo /> },
 
   { path: '/admin/signup', element: <AdminSignUp /> },
   { path: '/admin/board', element: <AdminBoard /> },
