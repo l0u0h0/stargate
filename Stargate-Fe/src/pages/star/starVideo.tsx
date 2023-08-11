@@ -160,7 +160,7 @@ const StarVideo = () => {
       };
     };
   }, []);
-  
+
   /**
    * @author UHAN
    */
@@ -193,6 +193,11 @@ const StarVideo = () => {
       console.log(meetingData);
     }
   };
+
+  const getCounting = useCallback(() => {
+    
+
+  }, [meetingData]);
 
   return (
     <div className="w-screen h-screen">
