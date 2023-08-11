@@ -1,24 +1,40 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import peerService from '@/peer/peer';
+import NotepadComponent from '@/atoms/video/NotepadComponent';
+import VideoHeaderComponent from '@/organisms/video/VideoHeaderComponent';
+import { getStarMeetingDataApi } from '@/services/videoService';
+
+interface starMeetingDataType {
+  waitingTime: number;
+  meetingTime: number;
+  photoNum: number;
+  memberNo: number;
+  meetingUser: [
+    {
+      email: string;
+      name: string;
+      nickname: string;
+      birthday: string;
+      isPolaroidEnable: boolean;
+      postitContents: string;
+      totalMeetingCnt: number;
+    },
+  ];
+}
 
 const StarVideo = () => {
   const [myStream, setMyStream] = useState<MediaStream | null>(null);
   const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
-  const myVideoRef = useRef<HTMLVideoElement | null>(null);
-  const remoteVideoRef = useRef<HTMLVideoElement | null>(null);
-  // const [socket, setSocket] = useState<WebSocket | null>(
-  //   new WebSocket('ws://i9a406.p.ssafy.io:8080/rtc/asdf.12')
-  // );
   const socketRef = useRef<WebSocket | null>(
-    new WebSocket('ws://i9a406.p.ssafy.io:8080/rtc/asdf.12')
+    new WebSocket('ws://i9a406.p.ssafy.io:8080/api/rtc/asdf.13')
   );
   const socket = socketRef.current;
 
   // 연결상태 변경시 콘솔에 출력
   peerService.peer.onconnectionstatechange = () => {
     console.log('state changed');
-    console.log(peerService.peer.connectionState);
+    console.log(peerService.peer.connecticonState);
   };
 
   // 상대 피어에 대한 ICE candidate 이벤트 핸들러 설정
@@ -39,20 +55,12 @@ const StarVideo = () => {
   // ontrack 이벤트 핸들러를 등록하여 스트림 정보를 받을 때 사용자 목록을 업데이트
   peerService.peer.ontrack = (e) => {
     console.log('ontrack success');
-    // console.log(e.stream);
-    // setRemoteStream(e.stream);
-    // console.log(remoteStream);
     // 로컬 미디어 스트림 확인
     console.log('Local media stream:', peerService.peer.getLocalStreams());
 
     // 원격 미디어 스트림 확인
     console.log('Remote media stream:', peerService.peer.getRemoteStreams());
     setRemoteStream(peerService.peer.getRemoteStreams()[0]);
-    // 원격 미디어 스트림이 있을 경우, 원격 비디오를 표시하기 위해 remoteStream을 연결합니다.
-    // if (remoteVideoRef.current) {
-    //   console.log('&&&&&&&&&&&&&&&&&&&&&&&상대 미디어 등록');
-    //   remoteVideoRef.current.srcObject = peerService.peer.getRemoteStreams()[0];
-    // }
   };
 
   // 팬이 전화에 들어왔을때 실행되는 함수
@@ -72,9 +80,6 @@ const StarVideo = () => {
         });
         setMyStream(stream);
         console.log(peerService.peer);
-        console.log(myVideoRef);
-        console.log(myVideoRef.current);
-        // myVideoRef.current.srcObject = myStream;
         console.log('1-1. 팬한테 내 미디어 연결');
         // 로컬 미디어 스트림 확인
         console.log('Local media stream:', peerService.peer.getLocalStreams());
@@ -101,7 +106,6 @@ const StarVideo = () => {
       console.log('1-2. 팬한테 오퍼 전송');
       console.log(offer);
     } catch (error) {
-      // await peerService.setLocalDescription(new RTCSessionDescription(offer));
       console.error('Error setting up call:', error);
     }
   }, []);
@@ -110,13 +114,6 @@ const StarVideo = () => {
     console.log('컴포넌트 실행');
 
     // 웹소켓 서버 URL 설정
-    // const socketUrl = 'ws://i9a406.p.ssafy.io:8080/rtc/asdf.12';
-    const socketUrl = 'ws://i9a406.p.ssafy.io:8080/rtc/asdf.12';
-
-    // 웹소켓 객체를 생성하고 서버와 연결합니다.
-    // let socket = new WebSocket(socketUrl);
-    // setSocket(socket);
-
     const socket = socketRef.current;
 
     socket.onopen = async () => {
@@ -150,25 +147,6 @@ const StarVideo = () => {
             .addIceCandidate(candidateObject)
             .then(() => {
               console.log('ICE 후보자 추가 성공');
-              // // 로컬 미디어 스트림 확인
-              // console.log(
-              //   'Local media stream:',
-              //   peerService.peer.getLocalStreams()
-              // );
-
-              // // 원격 미디어 스트림 확인
-              // console.log(
-              //   'Remote media stream:',
-              //   peerService.peer.getRemoteStreams()
-              // );
-              // setRemoteStream(peerService.peer.getRemoteStreams());
-              // if (remoteVideoRef.current) {
-              //   console.log(
-              //     '&&&&&&&&&&&&&&&&&&&&&&&ICE 후보자 추가 성공후 상대 미디어 등록'
-              //   );
-              //   remoteVideoRef.current.srcObject =
-              //     peerService.peer.getRemoteStreams()[0];
-              // }
             })
             .catch((error) => {
               console.error('ICE 후보자 추가 실패:', error);
@@ -182,50 +160,70 @@ const StarVideo = () => {
       };
     };
   }, []);
+  
+  /**
+   * @author UHAN
+   */
+  ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  const [roomNum, setRoomNum] = useState(13);
+  const [meetingData, setMeetingData] = useState<starMeetingDataType>({
+    waitingTime: 0,
+    meetingTime: 0,
+    photoNum: 0,
+    memberNo: 0,
+    meetingUser: [
+      {
+        email: '',
+        name: '',
+        nickname: '',
+        birthday: '',
+        isPolaroidEnable: false,
+        postitContents: '',
+        totalMeetingCnt: 0,
+      },
+    ],
+  });
+
+  const getMeetingData = async () => {
+    const response = await getStarMeetingDataApi(
+      `location.search.${roomNum}`
+    ).catch((error) => console.log(error));
+    if (response != null) {
+      setMeetingData(response);
+      console.log(meetingData);
+    }
+  };
 
   return (
-    <div>
-      <h1>Room Page</h1>
-      {myStream && (
-        <>
-          <h1>내 영상</h1>
-          <ReactPlayer
-            playing
-            muted
-            height="200px"
-            width="300px"
-            url={myStream}
-          />
-          {/* <video
-            ref={myVideoRef}
-            id="myFace"
-            autoPlay
-            playsInline
-            width={200}
-            height={200}
-          ></video> */}
-        </>
-      )}
-      {remoteStream && (
-        <>
-          <h1>팬 영상</h1>
-          <ReactPlayer
-            playing
-            muted
-            height="400px"
-            width="600px"
-            url={remoteStream}
-          />
-          {/* <video
-            ref={remoteVideoRef}
-            id="remoteFace"
-            autoPlay
-            playsInline
-            width={200}
-            height={200}
-          ></video> */}
-        </>
-      )}
+    <div className="w-screen h-screen">
+      <VideoHeaderComponent />
+      <div className="flex flex-row w-screen h-full">
+        <NotepadComponent />
+        {myStream && (
+          <div className="basis-1/2">
+            <p>연옌</p>
+            <ReactPlayer
+              playing
+              muted
+              height="full"
+              width="full"
+              url={myStream}
+            />
+          </div>
+        )}
+        {remoteStream && (
+          <div className="basis-1/2">
+            <p>팬</p>
+            <ReactPlayer
+              playing
+              muted
+              height="full"
+              width="full"
+              url={remoteStream}
+            />
+          </div>
+        )}
+      </div>
     </div>
   );
 };
