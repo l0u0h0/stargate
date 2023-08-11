@@ -12,9 +12,7 @@ const SignIn = () => {
       <div className="ml-auto mr-auto text-center">
         <h1 className="m-5 text-center text-white t2b">S T A R G A T E</h1>
         <SignInComponent />
-        
-        <ToolTipComponent />
-        <div className="mt-20 mr-20 text-right">
+        <div className="absolute w-fit right-10 bottom-10">
           <ToolTipComponent />
         </div>
       </div>
