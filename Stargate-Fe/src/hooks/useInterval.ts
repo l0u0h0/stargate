@@ -7,7 +7,7 @@ interface useIntervalProps {
 const useInterval: useIntervalProps = (callback, delay) => {
   // useRef를 사용해 렌더 횟수 최소화
   const savedCallback = useRef<(() => void) | null>(null);
-  
+
   // callback에 변화가 감지될 때 감지해 최신 상태 유지
   useEffect(() => {
     savedCallback.current = callback;

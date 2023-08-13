@@ -114,6 +114,8 @@ const StarVideo = () => {
   useEffect(() => {
     console.log('컴포넌트 실행');
 
+    void getMeetingData();
+
     // 웹소켓 서버 URL 설정
     const socket = socketRef.current;
 
@@ -192,9 +194,11 @@ const StarVideo = () => {
       `location.search.${roomNum}`
     ).catch((error) => console.log(error));
     console.log(response);
-    if (response != null) {
+    if (response != undefined) {
       setMeetingData(response);
       console.log(meetingData);
+    } else {
+      setTotalTime(sumTime(60, 10, 2));
     }
   };
 
@@ -208,7 +212,13 @@ const StarVideo = () => {
   };
 
   useInterval(() => {
-    setTime({ min: totalTime / 60, sec: totalTime % 60 });
+    if (totalTime === 0) {
+      // 시간이 다 되었을 때 다음 사람에 대한 요청이 이루어져야함.
+      return 0;
+    }
+    setTime({ min: Math.trunc(totalTime / 60), sec: totalTime % 60 });
+    console.log(totalTime);
+    setTotalTime(totalTime - 1);
   }, 1000);
 
   // User Data가 들어오면 meetingTime 계산해서 카운트 훅 시작
