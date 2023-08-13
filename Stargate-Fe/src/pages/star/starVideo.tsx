@@ -198,7 +198,7 @@ const StarVideo = () => {
       setMeetingData(response);
       console.log(meetingData);
     } else {
-      setTotalTime(sumTime(60, 10, 2));
+      setTotalTime(sumTime(10, 10, 0));
     }
   };
 
@@ -212,13 +212,14 @@ const StarVideo = () => {
   };
 
   useInterval(() => {
-    if (totalTime === 0) {
+    if (totalTime < 0) {
       // 시간이 다 되었을 때 다음 사람에 대한 요청이 이루어져야함.
+      console.log('next User Come');
       return 0;
     }
     setTime({ min: Math.trunc(totalTime / 60), sec: totalTime % 60 });
     console.log(totalTime);
-    setTotalTime(totalTime - 1);
+    totalTime < 0 ? setTotalTime(totalTime) : setTotalTime(totalTime - 1);
   }, 1000);
 
   // User Data가 들어오면 meetingTime 계산해서 카운트 훅 시작
