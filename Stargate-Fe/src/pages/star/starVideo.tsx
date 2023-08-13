@@ -170,6 +170,7 @@ const StarVideo = () => {
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
   const [roomNum, setRoomNum] = useState(13);
   const [totalTime, setTotalTime] = useState(0);
+  const [loadUser, setLoadUser] = useState(true);
   const [time, setTime] = useState({ min: 0, sec: 0 });
   const [meetingData, setMeetingData] = useState<starMeetingDataType>({
     waitingTime: 0,
@@ -194,6 +195,7 @@ const StarVideo = () => {
       `location.search.${roomNum}`
     ).catch((error) => console.log(error));
     console.log(response);
+    setLoadUser(false);
     if (response != undefined) {
       setMeetingData(response);
       console.log(meetingData);
@@ -202,20 +204,41 @@ const StarVideo = () => {
     }
   };
 
+  // 미팅타임과 웨이팅 타임 합계한 유저 당 미팅시간
   const sumTime = (
     meetingTime: number,
     waitingTime: number,
     photoNum: number
   ) => {
-    const time = meetingTime + waitingTime + photoNum * 10;
+    const time = meetingTime + waitingTime - photoNum * 10;
     return time;
   };
 
+  let sutter = 10;
+
+  const countingSutter = (num: number) => {
+    console.log(num);
+  };
+
   useInterval(() => {
-    if (totalTime < 0) {
+    if (totalTime < 0 || !loadUser) {
       // 시간이 다 되었을 때 다음 사람에 대한 요청이 이루어져야함.
-      console.log('next User Come');
+      console.log('next User Comming || not yet loadusers');
       return 0;
+    }
+    if (totalTime <= meetingData.photoNum * 10) {
+      // 10초 간격으로 사진 촬영 카운팅 시작
+      countingSutter(sutter);
+      sutter -= 1;
+      // 10초가 지나면 실행 분기
+      if (sutter < 0) {
+        // 사진 촬영 횟수가 끝나면 아무런 액션 취하지 않기
+        if (meetingData.photoNum < 0) return 0;
+        // 셔터 초기화시켜주고
+        sutter = 10;
+        // 사진 촬영 횟수 하나 줄여주고
+        meetingData.photoNum -= 1;
+      }
     }
     setTime({ min: Math.trunc(totalTime / 60), sec: totalTime % 60 });
     console.log(totalTime);
@@ -225,17 +248,19 @@ const StarVideo = () => {
   // User Data가 들어오면 meetingTime 계산해서 카운트 훅 시작
   useEffect(() => {
     setTotalTime(
+      // 유저의 실제 미팅 시간 + 사진 촬영 시간이 총 합계 미팅시간
       sumTime(
         meetingData.meetingTime,
         meetingData.waitingTime,
         meetingData.photoNum
-      )
+      ) +
+        meetingData.photoNum * 10
     );
   }, [meetingData]);
 
   return (
     <div className="w-screen h-screen">
-      <VideoHeaderComponent min={time.min} sec={time.sec} />
+      <VideoHeaderComponent min={time.min} sec={time.sec} type="star" />
       <div className="flex flex-row w-screen h-full">
         <NotepadComponent />
         {myStream && (
