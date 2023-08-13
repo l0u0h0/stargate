@@ -191,6 +191,7 @@ const StarVideo = () => {
     const response = await getStarMeetingDataApi(
       `location.search.${roomNum}`
     ).catch((error) => console.log(error));
+    console.log(response);
     if (response != null) {
       setMeetingData(response);
       console.log(meetingData);
@@ -211,7 +212,7 @@ const StarVideo = () => {
   }, 1000);
 
   // User Data가 들어오면 meetingTime 계산해서 카운트 훅 시작
-  const getCounting = useCallback(async () => {
+  useEffect(() => {
     setTotalTime(
       sumTime(
         meetingData.meetingTime,
@@ -223,7 +224,7 @@ const StarVideo = () => {
 
   return (
     <div className="w-screen h-screen">
-      <VideoHeaderComponent />
+      <VideoHeaderComponent min={time.min} sec={time.sec} />
       <div className="flex flex-row w-screen h-full">
         <NotepadComponent />
         {myStream && (

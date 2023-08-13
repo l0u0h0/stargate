@@ -2,7 +2,12 @@ import TimeLeftComponent from '@/atoms/common/TimeLeftComponent';
 import ProFileIcon from '@/atoms/video/ProFileIcon';
 import React, { useState } from 'react';
 
-const VideoHeaderComponent = (min: number, sec: number) => {
+interface VideoHeaaderProps {
+  min: number;
+  sec: number;
+}
+
+const VideoHeaderComponent: React.FC<VideoHeaaderProps> = ({ min, sec }) => {
   const [nextUser, setNextUser] = useState('김수환');
 
   return (
