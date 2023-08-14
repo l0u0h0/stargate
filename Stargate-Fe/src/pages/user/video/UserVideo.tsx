@@ -5,8 +5,8 @@ import peerService from '@/peer/peer';
 const UserVideo = () => {
   const [myStream, setMyStream] = useState<MediaStream | null>(null);
   const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
-  const socketRef = useRef<WebSocket | null>(
-    new WebSocket('ws://i9a406.p.ssafy.io:8080/api/rtc/asdf.13')
+  const socketRef = useRef<WebSocket>(
+    new WebSocket('ws://i9a406.p.ssafy.io:8080/api/rtc/asdf.19')
   );
   const socket = socketRef.current;
 
@@ -51,6 +51,7 @@ const UserVideo = () => {
     const ansData = {
       type: 'ans',
       ans: ans,
+      time: 30
     };
     socket.send(JSON.stringify(ansData));
     console.log('3. 연예인한테 응답보냄');
@@ -60,9 +61,9 @@ const UserVideo = () => {
   useEffect(() => {
     console.log('컴포넌트 실행');
 
-    // 웹소켓 서버 URL 설정
-    const socketUrl = 'ws://i9a406.p.ssafy.io:8080/rtc/asdf.12';
-    const socket = socketRef.current;
+    // // 웹소켓 서버 URL 설정
+    // const socketUrl = 'ws://i9a406.p.ssafy.io:8080/rtc/asdf.137';
+    // const socket = socketRef.current;
 
     socket.onopen = async () => {
       console.log('서버 오픈~');

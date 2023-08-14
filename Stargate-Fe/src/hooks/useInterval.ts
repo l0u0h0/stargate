@@ -9,9 +9,9 @@ const useInterval: useIntervalProps = (callback, delay) => {
   const savedCallback = useRef<(() => void) | null>(null);
 
   // callback에 변화가 감지될 때 감지해 최신 상태 유지
-  useEffect(() => {
-    savedCallback.current = callback;
-  }, [callback]);
+  // useEffect(() => {
+  //   savedCallback.current = callback;
+  // }, [callback]);
 
   // 인터벌이랑 클로저 세팅
   useEffect(() => {

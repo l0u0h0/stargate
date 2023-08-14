@@ -6,7 +6,7 @@ interface starMeetingDataType {
   meetingTime: number;
   photoNum: number;
   memberNo: number;
-  meetingUser: [{
+  meetingFUsers: [{
     email: string;
     name: string;
     nickname: string;
@@ -20,10 +20,12 @@ interface starMeetingDataType {
 
 // 연예인 화상통화 정보 가져오기
 const getStarMeetingDataApi = async (params: string) => {
+  let response;
   await api
-    .get(`/meetingroom/member/get/:${params}`)
+    .get(`/meetingroom/member/get?roomId=${params}`)
     .then((res: AxiosResponse<starMeetingDataType>) => {
-      return res.data;
+      console.log(res);
+      response = res.data;
     })
     .catch((error) => {
       if (axios.isAxiosError(error)) {
@@ -33,7 +35,7 @@ const getStarMeetingDataApi = async (params: string) => {
       }
       console.log(error);
     });
-  return;
+  return response;
 };
 
 export { getStarMeetingDataApi };

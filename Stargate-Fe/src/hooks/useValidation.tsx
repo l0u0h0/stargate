@@ -105,9 +105,9 @@ const userValidationCheck = (user: userType) => {
   const inputDate = user.birth.split('-');
   const nowDate = new Date().toLocaleDateString().split('.');
 
-  if (parseInt(inputDate[2]) > parseInt(nowDate[2])) {
+  if (parseInt(inputDate[0]) > parseInt(nowDate[0])) {
     if (parseInt(inputDate[1]) > parseInt(nowDate[1])) {
-      if (parseInt(inputDate[0]) > parseInt(nowDate[0])) {
+      if (parseInt(inputDate[2]) > parseInt(nowDate[2])) {
         return '생년월일은 미래일 수 없습니다.';
       }
       return '생년월일은 미래일 수 없습니다.';
