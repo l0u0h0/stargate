@@ -6,17 +6,17 @@ interface VideoHeaaderProps {
   min: number;
   sec: number;
   type: string;
-  fUserData?: 
-    {
-      email: string;
-      name: string;
-      nickname: string;
-      birthday: string;
-      isPolaroidEnable: boolean;
-      postitContents: string;
-      totalMeetingCnt: number;
-    }[];
-  
+  fUserData:
+    | {
+        email: string;
+        name: string;
+        nickname: string;
+        birthday: string;
+        isPolaroidEnable: boolean;
+        postitContents: string;
+        totalMeetingCnt: number;
+      }[]
+    | null;
   fUserIdx: number;
 }
 
@@ -27,12 +27,11 @@ const VideoHeaderComponent: React.FC<VideoHeaaderProps> = ({
   sec,
   type,
   fUserData,
-  fUserIdx
+  fUserIdx,
 }) => {
   const [nextUser, setNextUser] = useState('김수환');
 
   console.log(fUserData);
-
 
   return type == 'star' && fUserData != undefined ? (
     <div className="flex flex-row w-screen my-5">
