@@ -5,8 +5,11 @@ import peerService from '@/peer/peer';
 const UserVideo = () => {
   const [myStream, setMyStream] = useState<MediaStream | null>(null);
   const [remoteStream, setRemoteStream] = useState<MediaStream | null>(null);
+  const testUrl =
+    'ws://i9a406.p.ssafy.io:8080/api/rtc/3acbf7ba-2452-44de-b634-a438c3076d3b.2a6c04eb-8cc2-4bed-9870-1cc55cb46bc6';
   const socketRef = useRef<WebSocket>(
-    new WebSocket('ws://i9a406.p.ssafy.io:8080/api/rtc/asdf.19')
+    // new WebSocket('ws://i9a406.p.ssafy.io:8080/api/rtc/asdf.19')
+    new WebSocket(testUrl)
   );
   const socket = socketRef.current;
 
@@ -51,7 +54,7 @@ const UserVideo = () => {
     const ansData = {
       type: 'ans',
       ans: ans,
-      time: 30
+      time: 30,
     };
     socket.send(JSON.stringify(ansData));
     console.log('3. 연예인한테 응답보냄');
