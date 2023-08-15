@@ -172,6 +172,7 @@ const StarVideo = () => {
    * @author UHAN
    */
   ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  const [receiveTime, setReceiveTime] = useState(0);
   const [roomNum, setRoomNum] = useState(13);
   const [userIdx, setUserIdx] = useState(0);
   const [timer, setTimer] = useState({
@@ -236,10 +237,11 @@ const StarVideo = () => {
           console.log('Connection state:', peerService.peer.connectionState);
           console.log(peerService);
           // UHAN
+          console.log(receivedData.time);
+          setReceiveTime(receivedData.time);
+          // setTime({ min: Math.trunc(totalTime / 60), sec: totalTime % 60 });
           setOnTimer(true);
-          // console.log(receivedData.time);
-          // // setTime({ min: Math.trunc(totalTime / 60), sec: totalTime % 60 });
-          // console.log(timer);
+          console.log(timer);
           // YHAN
         }
         if (receivedData.type === 'candidate') {
@@ -301,6 +303,7 @@ const StarVideo = () => {
       if (!meetingData) await getMeetingData();
     };
     void fetchData();
+    console.log(meetingData);
   }, []);
 
   useEffect(() => {
@@ -309,13 +312,14 @@ const StarVideo = () => {
       console.log('아직 데이터 없음!');
       return;
     }
-    const meetingTime = meetingData.meetingTime - meetingData.photoNum * 10;
+    // const meetingTime = meetingData.meetingTime - meetingData.photoNum * 10;
 
+    const meetingTime = receiveTime;
     setTimer((prev) => ({
       ...prev,
-      min: Math.floor(meetingTime / 60),
+      min: Math.trunc(meetingTime / 60),
       sec: meetingTime % 60,
-      waitingMin: Math.floor(meetingData.waitingTime / 60),
+      waitingMin: Math.trunc(meetingData.waitingTime / 60),
       waitingSec: meetingData.waitingTime % 60,
     }));
 
@@ -326,7 +330,7 @@ const StarVideo = () => {
     if (meetingData && meetingOrder === meetingData.meetingFUsers.length) {
       // 통화 종료 시 이벤트 핸들링
     }
-  }, [meetingData, meetingOrder]);
+  }, [meetingData, meetingOrder, receiveTime]);
 
   const tickWaiting = () => {
     console.log('대기 시간 으로 넘 ㅓ어 감');
@@ -426,7 +430,7 @@ const StarVideo = () => {
         clearInterval(intervalId);
       };
     }
-  }, [meetingOrder, timer.sec, onTimer, tick]);
+  }, [meetingOrder, timer.sec, onTimer]);
 
   // useInterval(() => {
   //   if (totalTime < 0 || !loadUser) {
