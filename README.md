@@ -1,6 +1,6 @@
 ## <img src="https://pic.sopili.net/pub/emoji/twitter/2/72x72/1f320.png" width=32 height=32> 스타게이트
 #### [화상통화 팬사인회 App 스타게이트](https://stargatea406.netlify.app/)
-![스타게이트_-_1](/uploads/ab4dfeb6812b29e8881da4a69b6c4910/스타게이트_-_1.png)
+![스타게이트_-_1]([/uploads/ab4dfeb6812b29e8881da4a69b6c4910/스타게이트_-_1.png](https://lab.ssafy.com/s09-webmobile1-sub2/S09P12A406/uploads/ab4dfeb6812b29e8881da4a69b6c4910/%EC%8A%A4%ED%83%80%EA%B2%8C%EC%9D%B4%ED%8A%B8_-_1.png))
 
 ## Link
  - [스타게이트 Link](https://stargatea406.netlify.app/)
