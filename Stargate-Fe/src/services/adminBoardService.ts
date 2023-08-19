@@ -1,3 +1,4 @@
+import Swal from 'sweetalert2';
 import { api } from './api';
 
 const fetchAdminBoard = async () => {
@@ -8,10 +9,8 @@ const fetchAdminBoard = async () => {
       },
       withCredentials: false,
     });
-    console.log(response);
     return response.data;
   } catch (error) {
-    console.log('에러발생', error);
   }
 };
 
@@ -23,10 +22,22 @@ const fetchAdminData = async () => {
       },
       withCredentials: false,
     });
-    console.log(response);
     return response.data;
   } catch (error) {
-    console.log('에러발생', error);
+  }
+};
+
+const updateAdminData = async (formData: FormData) => {
+  try {
+    const response = await api.put('/pusers/update', formData, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      },
+      withCredentials: false,
+    });
+    Swal.fire('수정 성공', '데이터가 수정되었습니다', 'success');
+    return response.data;
+  } catch (error) {
   }
 };
 
@@ -41,10 +52,8 @@ const fetchGroup = async () => {
       },
       withCredentials: false,
     });
-    // console.log(response);
     return response.data;
   } catch (error) {
-    console.log('에러발생', error);
   }
 };
 
@@ -63,9 +72,8 @@ const createGroup = async (name: string) => {
         withCredentials: false,
       }
     );
-    console.log(response);
+    return response.data;
   } catch (error) {
-    console.log('그룹 생성 에러:', error);
   }
 };
 
@@ -84,9 +92,7 @@ const updateGroup = async (groupNo: number, name: string) => {
         withCredentials: false,
       }
     );
-    console.log(response);
   } catch (error) {
-    console.log('그룹 업데이트 에러:', error);
   }
 };
 
@@ -101,9 +107,7 @@ const deleteGroup = async (groupNo: number) => {
       },
       withCredentials: false,
     });
-    console.log('그룹 삭제', response);
   } catch (error) {
-    console.log('그룹 삭제 에러:', error);
   }
 };
 
@@ -122,9 +126,8 @@ const createMember = async (groupNo: number, name: string) => {
         withCredentials: false,
       }
     );
-    console.log('멤버 생성 response', response);
+    return response.data;
   } catch (error) {
-    console.log('멤버 생성 에러:', error);
   }
 };
 
@@ -143,9 +146,7 @@ const updateMember = async (memberNo: number, name: string) => {
         withCredentials: false,
       }
     );
-    console.log(response);
   } catch (error) {
-    console.log('멤버 업데이트 에러:', error);
   }
 };
 
@@ -160,15 +161,14 @@ const deleteMember = async (memberNo: number) => {
       },
       withCredentials: false,
     });
-    console.log('멤버 삭제', response);
   } catch (error) {
-    console.log('멤버 삭제 에러:', error);
   }
 };
 
 export {
   fetchAdminBoard,
   fetchAdminData,
+  updateAdminData,
   fetchGroup,
   createGroup,
   updateGroup,

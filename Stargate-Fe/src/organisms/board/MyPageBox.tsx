@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import InputComponent from '../../atoms/common/InputComponent';
 import PasswordFormComponent from '../auth/PasswordFormComponent';
 import TextButtonComponent from '@/atoms/common/TextButtonComponent';
+import { updateAdminData } from '@/services/adminBoardService';
+import { updateUserData } from '@/services/userBoardService';
+import { nameShouldFetch } from '@/recoil/myPageState';
+import { useRecoilState } from 'recoil';
 
 /**
- * Todos
+ * @todo
  * InputComponents 충돌 수정
  */
 
@@ -39,7 +43,7 @@ interface BoxType {
 
 const MyPageBox = (props: MyPageBoxProps) => {
   const { isAdmin, email, name, nickname, phone, birthday, code } = props;
-
+  const [nameFetch, setNameFetch] = useRecoilState(nameShouldFetch);
   /**
    * @author UHan
    * 객체에서 비밀번호는 꼭 키이름을 pw로 지정해줘야함
@@ -81,9 +85,46 @@ const MyPageBox = (props: MyPageBoxProps) => {
   // 생년월일 입력 받으면
   // `${(user as userType).birth}T00:00:00.000` 이렇게 포맷팅
 
+  // Box객체 FormData로 변환
+  const userFormData = new FormData();
+  const adminFormData = new FormData();
+
+  const updateAdmin = async () => {
+    adminFormData.append('email', boxEmail);
+    adminFormData.append('name', boxName);
+    adminFormData.append('code', boxCode);
+    adminFormData.append('originalPassword', (box as BoxType).pw);
+    if ((box as BoxType).newPw) {
+      userFormData.append('newPassword', (box as BoxType).newPw);
+    }
+    const data = await updateAdminData(adminFormData);
+    setNameFetch(true);
+  };
+
+  const updateUser = async () => {
+    userFormData.append('email', boxEmail);
+    userFormData.append('name', boxName);
+    userFormData.append('nickname', boxNickname);
+    userFormData.append('birthday ', boxBirthday);
+    userFormData.append('password', (box as BoxType).pw);
+    if ((box as BoxType).newPw) {
+      userFormData.append('newPassword', (box as BoxType).newPw);
+    }
+    userFormData.append('phone', boxPhone);
+    const data = await updateUserData(userFormData);
+    setNameFetch(true);
+  };
+
+  const handleUpdate = () => {
+    if (isAdmin) {
+      updateAdmin();
+    } else {
+      updateUser();
+    }
+  };
   return (
-    <div className="my-5 flex flex-col h-screen">
-      <p className="form-title text-white">마이페이지</p>
+    <div className="my-5 flex flex-col h-full">
+      <p className="form-title text-white mx-auto w-s text-center">마이페이지</p>
       <div className="flex items-center">
         <InputComponent
           text="이메일"
@@ -92,6 +133,7 @@ const MyPageBox = (props: MyPageBoxProps) => {
           value={boxEmail}
           getter={box}
           setter={setBox}
+          disabled
         />
       </div>
       {isAdmin ? (
@@ -180,7 +222,9 @@ const MyPageBox = (props: MyPageBoxProps) => {
           setter={setNewPw}
         />
       </div>
-      <button className="self-center medium-white mb-5">수정하기</button>
+      <button className="self-center medium-white mb-5" onClick={handleUpdate}>
+        수정하기
+      </button>
       <div className="self-center text-black">
         <TextButtonComponent text={'탈퇴하기'} black={true} />
       </div>

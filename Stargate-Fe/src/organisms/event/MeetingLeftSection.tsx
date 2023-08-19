@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import AdminInput from '@/atoms/event/AdminInput';
-import DropDown from '@/atoms/event/DropDown';
-import AdminToggle from '@/atoms/common/AdminToggle';
+import React, { useState, useEffect } from "react";
+import AdminInput from "@/atoms/event/AdminInput";
+import DropDown from "@/atoms/event/DropDown";
+import AdminToggle from "@/atoms/common/AdminToggle";
+import Swal from "sweetalert2";
 
 interface MeetingFUser {
   no: number;
@@ -42,33 +43,66 @@ const MeetingLeftSection = ({
 }: MeetingLeftSectionProps) => {
   const [picSec, setPicSec] = useState<number>(40);
   const [photoTime, setPhotoTime] = useState<boolean>(false);
+  const [initial, setInitial] = useState(false);
   // const [totalSec, setTotalSec] = useState<number>(80);
-  const [numbers, setNumbers] = useState<number[]>([4]);
+
+  const [selectDate, setSelectDate] = useState<string | null>(null);
+  const [selectTime, setSelectTime] = useState<string | null>(null);
+  const [numbers, setNumbers] = useState<number[]>([]);
+
+  useEffect(() => {
+    if (formData.startDate && !initial) {
+      // initializing
+      const arr =
+        formData.startDate instanceof Date
+          ? formData.startDate.toISOString().split("T")
+          : formData.startDate.split("T");
+      setSelectDate(arr[0]);
+      setSelectTime(arr[1]);
+      setInitial(true);
+    }
+    if (formData.photoNum > 0) {
+      setPhotoTime(true);
+      setPicSec(formData.photoNum * 10);
+      const cnt = Math.floor(formData.meetingTime / 2 / 10);
+      let newNumbers: number[] = [formData.photoNum];
+
+      newNumbers = Array.from({ length: cnt - 4 }, (_, index) => 4 + index);
+      setNumbers(newNumbers);
+    }
+  }, [formData]);
+
   useEffect(() => {
     // photoTime이 false일 때 picSec를 0으로 업데이트
     if (!photoTime) {
       setPicSec(0);
-    } else {
-      setPicSec(40);
     }
   }, [photoTime]);
 
+  useEffect(() => {
+    if (selectDate && selectTime) {
+      // 상위로 전달
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        startDate: `${selectDate}T${selectTime}:00`,
+      }));
+    }
+  }, [selectDate, selectTime]);
+
   const handleStartDate = (value: string): void => {
-    const [year, month, day] = value.split('-');
-    const newDate: Date = new Date(Number(year), Number(month) - 1, Number(day));
-    const stringDate: string = newDate.toISOString().slice(0, -1)
+    const [year, month, day] = value.split("-");
+    const newDate: Date = new Date(
+      Date.UTC(Number(year), Number(month) - 1, Number(day))
+    );
     if (newDate.getTime() < Date.now()) {
-      // value가 현재보다 과거 날짜일 경우 경고 띄우기
-      alert('과거 날짜는 선택할 수 없습니다.');
+      Swal.fire("날짜 설정 실패", "과거 날짜는 선택할 수 없습니다.", "error");
       return;
     }
+    setSelectDate(value);
+  };
 
-    // 상위로 전달
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      startDate: stringDate,
-    }));
-    console.log(`시작 날짜 ${value}`);
+  const handleTimeChange = (value: string): void => {
+    setSelectTime(value);
   };
 
   const handleTotalTime = (value: number): void => {
@@ -81,11 +115,8 @@ const MeetingLeftSection = ({
       ...prevFormData,
       meetingTime: value,
     }));
-    console.log(`전체 미팅 시간은 ${value}초`);
-    console.log(formData);
 
     const cnt = Math.floor(value / 2 / 10);
-    console.log(`컷 수는 ${cnt}`);
 
     let newNumbers: number[] = [4];
 
@@ -95,8 +126,12 @@ const MeetingLeftSection = ({
 
   const handleTimeBlur = (e: React.FocusEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    if (typeof value == 'number' && value <= 80) {
-      alert('전체 미팅 시간은 80초보다 커야 합니다.');
+    if (typeof value == "number" && value <= 80) {
+      Swal.fire(
+        "시간 설정 실패",
+        "전체 미팅 시간은 80초보다 커야 합니다.",
+        "error"
+      );
     }
   };
 
@@ -110,18 +145,37 @@ const MeetingLeftSection = ({
 
   return (
     <div className="mb-6 w-550">
-      <AdminInput
-        labelFor="시작 날짜"
-        type="date"
-        placeholder=""
-        max="9999-12-31"
-        value={
-          formData.startDate instanceof Date
-            ? formData.startDate.toISOString().split('T')[0]
-            : ''
-        } // startDate가 null이 아니면 value로 설정, null이면 빈 문자열로 설정
-        onInputChange={handleStartDate}
-      />
+      <div className="flex items-end">
+        <div className="w-52">
+          <AdminInput
+            labelFor="시작 날짜"
+            type="date"
+            placeholder=""
+            max="9999-12-31"
+            value={
+              formData.startDate instanceof Date
+                ? formData.startDate.toISOString().split("T")[0]
+                : selectDate
+            } // startDate가 null이 아니면 value로 설정, null이면 빈 문자열로 설정
+            onInputChange={handleStartDate}
+          />
+        </div>
+        <p className="p1b text-white h-full">{selectDate}</p>
+      </div>
+
+      <div className="flex items-end w-48">
+        <AdminInput
+          labelFor="시작 시간"
+          type="time"
+          placeholder=""
+          // 여기 밸류값 변경해야해요!!!!!!!!!!!!!!!!!!!!!!!
+          value={selectTime} // startDate가 null이 아니면 value로 설정, null이면 빈 문자열로 설정
+          onInputChange={(e) => {
+            setSelectTime(e);
+          }}
+        />
+        <p className="p1b text-white h-full">{selectTime}</p>
+      </div>
 
       <div className="flex items-end w-48">
         <AdminInput
@@ -140,7 +194,7 @@ const MeetingLeftSection = ({
 
       <div className="flex items-end w-48 h-8 mt-5">
         <div className="w-32 h-8 mx-1 mt-4 font-semibold leading-8 text-left text-white font-suit text-14">
-          {'사진 촬영'}
+          {"사진 촬영"}
         </div>
         <AdminToggle photoTime={photoTime} setPhotoTime={setPhotoTime} />
       </div>
@@ -165,7 +219,7 @@ const MeetingLeftSection = ({
         </p>
       </div>
       <div className="mx-1 my-2 font-medium text-white font-suit text-14">
-        연예인 1 명의 미팅 시간은 사인회 시간 {formData.meetingTime - picSec}{' '}
+        연예인 1 명의 미팅 시간은 사인회 시간 {formData.meetingTime - picSec}{" "}
         초와 촬영 시간 {picSec} 초를 더한 {formData.meetingTime} 초 입니다
       </div>
     </div>

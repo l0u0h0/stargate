@@ -23,6 +23,7 @@ interface InputProps {
   setter: React.Dispatch<React.SetStateAction<object>>;
   value?: string;
   placehoder?: string;
+  disabled?: boolean;
 }
 
 const InputComponent: React.FC<InputProps> = ({
@@ -35,16 +36,16 @@ const InputComponent: React.FC<InputProps> = ({
   setter,
   value,
   placehoder,
+  disabled,
 }) => {
   // state 값 class 지정 분기
   if (state == 'red') {
     state = 'input-warning';
   } else if (state != undefined) {
-    state = `font-suit text-12 font-medium text-green-400`;
+    state = `font-suit text-12 font-medium text-green`;
   }
 
   // Input onChange 시 setter 호출해 state 값 변경해주기
-  // 더 좋은 방법 없을까? 고민해보기
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setter({
@@ -65,6 +66,7 @@ const InputComponent: React.FC<InputProps> = ({
             type={type}
             placeholder={placehoder != undefined ? placehoder : text}
             value={value}
+            disabled={disabled ? true : false}
           />
         </div>
       ) : (
@@ -76,10 +78,11 @@ const InputComponent: React.FC<InputProps> = ({
             type={type}
             placeholder={placehoder != undefined ? placehoder : text}
             value={value}
+            disabled={disabled ? true : false}
           />
         </div>
       )}
-      <p className={`mt-1 ${state} block h-4`}>{notice}</p>
+      <p className={`mt-1.5 ${state} block h-4`}>{notice}</p>
     </div>
   );
 };

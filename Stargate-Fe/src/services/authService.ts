@@ -60,7 +60,6 @@ const checkTokenExpTime = async () => {
 // 로그인 요청 성공 시 엑세스 토큰 헤더에 넣고 리프레쉬 토큰 스토리지에 저장
 const onSuccessLogin = (response: AxiosResponse<tokenType>, type: boolean) => {
   const { accessToken, refreshToken } = response.data;
-  console.log(accessToken);
   api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
 
   const expTime = Date.now() / 1000 + 59 * 60 * 24;
@@ -82,8 +81,6 @@ const onSuccessLogin = (response: AxiosResponse<tokenType>, type: boolean) => {
 const onNewAccessToken = (response: AxiosResponse<newTokenType>) => {
   const { accessToken } = response.data;
   api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
-
-  console.log('AccessToken 재발급');
 
   const expTime = Date.now() / 1000 + 59 * 60 * 24;
 
@@ -109,30 +106,19 @@ const loginApi = async (formData: FormData, type: boolean) => {
       response = res.status == 200 ? onSuccessLogin(res, type) : 'FAIL';
     })
     .catch((error) => {
-      console.log(error);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
-      response = error['response'].data
+      response = error['response'].data;
     });
 
   return response;
 };
 
-// 로그아웃 요청, 헤더의 Authorization과 로컬 스토리지 비우기
-// 토큰 값 base64로 디코드
-// auth 값이 유저가 아닌 경우 (관리자인 경우)
-// api 요청 보내지 않기.!
+// 로그아웃 요청
 const logoutApi = async () => {
   await checkTokenExpTime();
   try {
     let result;
-    // if (api.defaults.headers.common['Authorization'] != null) {
-    //   const tokenDecode = api.defaults.headers.common['Authorization']
-    //     ?.toString()
-    //     .split('.')[1];
-    //   const payload = atob(tokenDecode);
-    //   // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    //   result = JSON.parse(payload.toString());
-    // }
+
     if (localStorage.getItem('accessToken') != null) {
       const tokenDecode = localStorage
         .getItem('accessToken')
@@ -142,7 +128,6 @@ const logoutApi = async () => {
         const payload = atob(tokenDecode[1]);
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         result = JSON.parse(payload.toString());
-        console.log(result);
       }
       // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
       if (result.auth && result.auth == 'USER') {
@@ -167,7 +152,6 @@ const logoutApi = async () => {
     sessionStorage.clear();
     return 'SUCCESS';
   } catch (error) {
-    console.log(error);
     return '로그인 실패';
   }
 };
@@ -181,9 +165,8 @@ const signUpApi = async (formData: FormData) => {
     .post('/fusers/register', formData, {
       // withCredentials: false,
     })
-    .then((response) => console.log(response.status))
+    .then((response) => {})
     .catch((error) => {
-      console.log(error);
       throw new Error('회원가입에 문제가 발생했습니다.');
     });
 
@@ -198,11 +181,10 @@ const reAccessApi = async () => {
       : localStorage.getItem('refreshToken')
   );
 
-  // await api
   await axios
     .post('/jwt/new-access-token', refreshToken)
     .then(onNewAccessToken)
-    .catch((error) => console.log(error));
+    .catch((error) => {});
 };
 
 // 유저 이메일 중복검사
@@ -220,11 +202,11 @@ const verifyEmail = async (email: string) => {
       const { exist } = response.data;
       result = exist;
     })
-    .catch((error) => console.log(error));
+    .catch((error) => {});
   return !result;
 };
 
-// 유저 아이디 찾기 => Request 값 이름과 전화번호
+// 유저 아이디 찾기
 const idInquiryApi = async (formData: FormData) => {
   let result = {
     email: '',
@@ -237,14 +219,12 @@ const idInquiryApi = async (formData: FormData) => {
       result = { ...response.data };
     })
     .catch((error) => {
-      console.log(error);
       result = { ...result, email: 'NoData' };
     });
   return result;
 };
 
-// 유저 비밀번호 찾기 => Request 값 이메일 하나
-// 1. 인증번호 발송 => 백에서 인증번호 생성해서 유저 이메일로 하나 Response로 하나 보내기
+// 유저 비밀번호 찾기
 const pwInquiryApi = async (email: string) => {
   let result = {
     email: 'NoData',
@@ -258,10 +238,9 @@ const pwInquiryApi = async (email: string) => {
       withCredentials: false,
     })
     .then((response: AxiosResponse<pwInquiryType>) => {
-      console.log(response);
       result = { ...response.data };
     })
-    .catch((error) => console.log(error));
+    .catch((error) => {});
   return result;
 };
 // 2. 인증번호 입력한거랑 DB에 저장된 인증번호랑 같은 지 검사
@@ -275,9 +254,8 @@ const checkAuthNumApi = (email: string, code: string) => {
       },
       withCredentials: false,
     })
-    .then((res) => console.log(res))
+    .then()
     .catch((error) => {
-      console.log(error);
       result = 'FAIL';
     });
 
@@ -285,10 +263,9 @@ const checkAuthNumApi = (email: string, code: string) => {
 };
 
 // 유저 비밀번호 재설정 API
-// => JSON 타입으로 이멜, 비밀번호로 재설정 요청
 const pwResetApi = async (email: string, password: string) => {
   let status = 0;
-  console.log('service ' + email, password);
+  
   await api
     .post('/fusers/new-pw', JSON.stringify({ email, password }), {
       headers: {
@@ -299,7 +276,7 @@ const pwResetApi = async (email: string, password: string) => {
     .then((res) => {
       status = res.status;
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {});
   return status.toString();
 };
 
@@ -320,7 +297,7 @@ const adminVerifyEmail = async (formData: FormData) => {
       const { exist } = response.data;
       result = exist;
     })
-    .catch((error) => console.log(error));
+    .catch((error) => {});
   return !result;
 };
 
@@ -338,7 +315,6 @@ const adminLoginApi = async (formData: FormData, type: boolean) => {
       response = res.status == 200 ? onSuccessLogin(res, type) : 'FAIL';
     })
     .catch((error) => {
-      console.log(error);
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
       response = error['response'].data;
     });
@@ -356,7 +332,7 @@ const adminSignUpApi = async (formData: FormData) => {
       withCredentials: false,
     })
     .then()
-    .catch((error) => console.log(error));
+    .catch((error) => {});
 
   return response;
 };

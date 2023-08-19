@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // 서버 URL 상수
-const SERVER_URL = 'https://www.stargate-a406.kro.kr/api';
+const SERVER_URL = import.meta.env.VITE_SERVER_URL;
 
 /**
  * api
@@ -22,9 +22,7 @@ api.interceptors.request.use(
     const access = localStorage.getItem('accessToken');
     if (access) {
       config.headers.Authorization = `Bearer ${access}`;
-      // console.log('인터셉트해서 토큰 추가', access)
     } else {
-      console.log('토큰 없음')
     }
     return config;
   }, 

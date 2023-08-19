@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   createMember,
   updateMember,
@@ -11,8 +11,9 @@ import {
   groupsShouldFetch,
   selectedGroupMembersState,
   selectedGroupNoState,
-  selectedGroupNameState
+  selectedGroupNameState,
 } from '@/recoil/adminManagementState';
+import { MemberData } from '@/types/board/type';
 /**
  * AdminManagementInput
  * @param isGroup => 인풋 태그 타입 설정 변수
@@ -30,16 +31,6 @@ interface AdminManagementInputProps {
   onEnter: () => void;
 }
 
-interface MemberData {
-  memberNo: number;
-  name: string;
-}
-
-interface newGroup {
-  groupNo: number;
-  name: string;
-}
-
 const AdminManagementInput = ({
   isGroup,
   groupNo,
@@ -52,13 +43,12 @@ const AdminManagementInput = ({
     MemberData[]
   >(selectedGroupMembersState);
   const [groups, setGroups] = useRecoilState(groupsState);
-  const [selectedGroupNo, setSelectedGroupNo] = useRecoilState(selectedGroupNoState);
-  const [selectedGroupName, setSelectedGroupName] = useRecoilState(selectedGroupNameState);
+  const [selectedGroupNo, setSelectedGroupNo] =
+    useRecoilState(selectedGroupNoState);
+  const [selectedGroupName, setSelectedGroupName] = useRecoilState(
+    selectedGroupNameState
+  );
   const [groupsFetch, setGroupsFetch] = useRecoilState(groupsShouldFetch);
-
-  useEffect(() => {
-    setInputValue(value || '');
-  }, [value]);
 
   // Input onChange 시 value값 변경해주기
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -72,20 +62,17 @@ const AdminManagementInput = ({
         await updateGroup(groupNo, inputValue);
         setGroupsFetch(true);
       } catch (error) {
-        console.log('그룹 업데이트 에러:', error);
       }
     } else {
       try {
         const newGroup = await createGroup(inputValue);
-        console.log(newGroup)
-        if (newGroup !== undefined){
-          setGroups([...groups, newGroup])
-          // setSelectedGroupNo(newGroup.groupNo);
-          // setSelectedGroupName(newGroup.name);
+        if (newGroup !== undefined) {
+          setGroups([...groups, newGroup]);
+          setSelectedGroupNo(newGroup.groupNo);
+          setSelectedGroupName(newGroup.name);
           setGroupsFetch(true);
         }
       } catch (error) {
-        console.log('그룹 생성 에러:', error);
       }
     }
   };
@@ -100,41 +87,31 @@ const AdminManagementInput = ({
             : member
         );
         setSelectedGroupMembers(updatedMembers);
-        console.log('멤버 업데이트', inputValue);
         setGroupsFetch(true);
       } catch (error) {
-        console.log('멤버 업데이트 에러:', error);
       }
     } else {
       if (groupNo)
         try {
           const newMember = await createMember(groupNo, inputValue);
-          console.log(inputValue,'===', newMember)
           if (newMember !== undefined) {
-            console.log('멤버 생성 시작');
             setSelectedGroupMembers([...selectedGroupMembers, newMember]);
             setGroupsFetch(true);
           }
-          console.log('멤버 생성', inputValue);
         } catch (error) {
-          console.log('멤버 생성 에러:', error);
         }
       else {
-        console.log('그룹번호없음');
       }
     }
   };
 
-  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyPress = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
       if (isGroup) {
-        groupInputHandle();
-        console.log('그룹')
+        await groupInputHandle();
       } else {
-        memberInputHandle();
-        console.log('멤버')
+        await memberInputHandle();
       }
-      console.log('엔터');
       onEnter();
     }
   };
