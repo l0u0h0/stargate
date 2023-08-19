@@ -1,6 +1,6 @@
-![image](https://github.com/l0u0h0/stargate/assets/72871841/dbe0b5ab-a2c8-4a5c-87d7-0e68be3efd26)## <img src="https://pic.sopili.net/pub/emoji/twitter/2/72x72/1f320.png" width=32 height=32> 스타게이트
+## <img src="https://pic.sopili.net/pub/emoji/twitter/2/72x72/1f320.png" width=32 height=32> 스타게이트
 #### [화상통화 팬사인회 App 스타게이트](https://stargatea406.netlify.app/)
-!(![스타게이트_1](https://github.com/l0u0h0/stargate/assets/72871841/8da3aa23-abc3-4832-a8f0-2b364dc814ee)
+![스타게이트_1](https://github.com/l0u0h0/stargate/assets/72871841/8da3aa23-abc3-4832-a8f0-2b364dc814ee)
 
 
 ## Link
