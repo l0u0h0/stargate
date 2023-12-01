@@ -5,7 +5,7 @@
 
 ## Link
  - [스타게이트 Link](https://stargatea406.netlify.app/)
- - [Visit Project Repository]([Visit Project Repository](https://github.com/l0u0h0/stargate))
+ - [프로젝트 Repository](https://github.com/l0u0h0/stargate)
  - [Proto Type](https://www.figma.com/file/XV9X0H24uaUo6EEIHUlKHW/%ED%94%84%EB%A1%9C%ED%86%A0%ED%83%80%EC%9E%85?type=design&node-id=0%3A1&mode=design&t=iLza45bmqasaKXw7-1)
 
 ## Guide
