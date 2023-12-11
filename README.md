@@ -16,6 +16,8 @@
 - 📖 [프로젝트 진행 노션 링크](https://denim-meteorite-208.notion.site/Home-39ce6338ae194561b848609f18ab6d79?pvs=4)
 - [시연 영상 (관리자 관점)](https://youtu.be/5--jl63PSaE)
 - [시연 영상 (팬 관점)](https://youtu.be/jkVMuuSQKvY)
+- 개발 기간
+  - 2023.07.03 ~ 2023.08.18
 
 ## Link
 
@@ -287,10 +289,12 @@ like this:
 ### PR / MR 가이드
 
 - Merge 형식
+
   - 제목
     - `**기능: 작업내역[JIRA 티켓]**`
     - ex) refactor: auth 페이지 사용하지 않는 변수 제거 [COMMWEBFNT-217]
   - 내용
+
     ```
     ### Description
 
@@ -304,6 +308,7 @@ like this:
 
     테스트 항목
     ```
+
 - master, develop branch에는 commit할 수 없습니다.
 - master는 prod에 배포하는 branch이기 때문에 주의해주세요.
 
